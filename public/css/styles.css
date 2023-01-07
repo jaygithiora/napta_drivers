@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.main {
+    background: url('../images/truck.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.dark {
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1));
+    color: white;
+}
+
+.dark h3 {
+    font-size: 3em;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+/*
+.dark p{
+    font-size: 1.4em;
+}*/
+
+.dark .btn {
+    border-radius: 0px;
+    margin-right: 1em;
+}
+
+.btn {
+    padding: 0.8em 2em;
+}
+.table .btn{
+    padding: 0.4em 1em;
+}
+
+.btn-primary {
+    background-color: #021B79;
+    border-color: #021B79;
+}
+
+.btn-outline-primary {
+    color: #021B79;
+    border-color: #021B79;
+}
+
+.text-primary {
+    color: #021B79 !important;
+}
+
+.bg-primary {
+    background-color: #021B79 !important;
+}
+
+.btn-warning {
+    background-color: #ff6a00;
+    border-color: #ff6a00;
+    color: white;
+}
+
+.btn-outline-warning {
+    color: #ff6a00;
+    border-color: #ff6a00;
+}
+
+.text-warning {
+    color: #feb47b !important;
+    font-weight: 300;
+}
+
+.btn-white {
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+
+.btn-outline-warning {
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+/*
+label{
+    padding-bottom: 0.5em;
+    padding-top: 0.8em;
+}*/
+input.form-control, select.form-control {
+    border-color: #021B79;
+    height: 48px;
+}
+
+.form-control:focus {
+    box-shadow: none;
+}
+
+h1 {
+    font-weight: 800;
+}
+
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active,
+.sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #FF6C02/*#333399*/
+}
+[class*=sidebar-dark-] {
+    background-color:  #000428
+}
+.small-box1{
+    background-color: #072A40;
+    color: #fff;
+}
+.small-box2{
+    background-color: #178CA4;
+    color: #fff;
+}
+.small-box3{
+    background-color: #18B7BE;
+    color: #fff;
+}
+.small-box4{
+    background-color: #5A8100;
+    color: #fff;
+}
+a{
+    color: #072A40;
+}
+a:hover{
+    color: #333399;
+}
+/*.dropdown .profile{
+    border: 1px solid #333399;
+    border-radius: 100px;
+}
+
+.dropdown .profile i{
+    background-color: #333399;
+    color: #feb47b;
+    padding: 0.3em;
+    border-radius: 100px;
+}
+.dropdown a{
+    padding-top: 0.3rem;
+    padding-bottom: 0.2rem;
+}*/
