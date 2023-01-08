@@ -6,17 +6,7 @@
         <div class="d-none d-md-block col-md-6 main m-0 p-0">
             <div class='w-100 d-flex align-items-center dark'>
                 <div class='p-5 w-100'>
-                    <h3>Swift</h3>
-                    <h4>It's got easier with swift</h4>
-                    <ul>
-                        <li>Lorem ipsum dolor sit</li>
-                        <li> consectetur adipisicing elit.</li>
-                        <li>Accusantium voluptatibus</li>
-                        <li>repellendus ducimus laudantium</li>
-                        <li>facere necessitatibus nesciunt fuga</li>
-                        <li> sequi vitae esse doloremque quo est</li>
-                        <li>numquam recusandae, nam natus atque?</li>
-                    </ul>
+                    <h3>{{ config('app.name', 'Laravel') }}</h3>
                 </div>
             </div>
         </div>
@@ -24,22 +14,34 @@
             <div class="p-4 w-100">
                 <h3>Register</h3>
                 <hr>
-                <form method="POST" action="{{ route('register') }}">
+                <form method="POST" action="{{ route('register') }}" class='row'>
                     @csrf
 
-                    <div class="form-group">
-                        <label for="name">{{ __('Name') }}</label>
-                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" 
-                        autofocus placeholder="Name">
+                    <div class="col-sm-6 form-group">
+                        <label for="firstname">{{ __('First Name') }}</label>
+                        <input id="firstname" type="text" class="form-control @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" required autocomplete="firstname" 
+                        autofocus placeholder="First Name">
 
-                        @error('name')
+                        @error('firstname')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
                     </div>
 
-                    <div class="form-group mt-3">
+                    <div class="col-sm-6 form-group">
+                        <label for="larstname">{{ __('Last Name') }}</label>
+                        <input id="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required autocomplete="lastname" 
+                        autofocus placeholder="Last Name">
+
+                        @error('lastname')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-sm-12 form-group mt-3">
                         <label for="email">{{ __('Email Address') }}</label>
                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" 
                         value="{{ old('email') }}" required autocomplete="email" placeholder="Email Address">
@@ -50,7 +52,31 @@
                             </span>
                         @enderror
                     </div>
-                    <div class="form-group mt-3">
+
+                    <div class="col-sm-6 form-group mt-3">
+                        <label for="country">{{ __('Country') }}</label>
+                        <select class="form-control @error('country') is-invalid @enderror" name="country" id='country' required>
+                        </select>
+
+                        @error('country')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-sm-6 form-group mt-3">
+                        <label for="phone">{{ __('Phone Number') }}</label>
+                        <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" 
+                        value="{{ old('phone') }}" required autocomplete="email" placeholder="Phone Number">
+
+                        @error('phone')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-6 form-group mt-3">
                         <label for="password">{{ __('Password') }}</label>
                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" 
                         required autocomplete="new-password" placeholder="Password">
@@ -62,7 +88,7 @@
                         @enderror
                     </div>
 
-                    <div class="form-group mt-3">
+                    <div class="col-sm-6 form-group mt-3">
                         <label for="password-confirm">{{ __('Confirm Password') }}</label>
 
                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" 
@@ -88,6 +114,28 @@
         $(document).ready(function(){
             $('.navbar').addClass('d-none');
             $('.footer').addClass('d-none');
+            $('#country').select2({
+                width: '100%',
+                placeholder: 'Select',
+                //dropdownParent: $('#modelModal'),
+                allowClear: true,
+                ajax: {
+                    url: '{{url("index/search/countries")}}',
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.name,
+                                    id: item.id
+                                }
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            });
         });
    </script> 
 @endpush

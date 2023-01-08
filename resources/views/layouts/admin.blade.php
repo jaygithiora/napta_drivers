@@ -212,7 +212,7 @@
             <a href="{{url('home')}}" class="brand-link">
                 <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
                     style="opacity: .8">
-                <span class="brand-text font-weight-light">SWIFT</span>
+                <span class="brand-text font-weight-light">{{ config('app.name', 'Laravel') }}</span>
             </a>
 
             <!-- Sidebar -->
@@ -269,6 +269,7 @@
                                 </p>
                             </a>
                         </li>
+                        <!--
                         <li class="nav-item {{ Request::is('vehicles*')?'menu-open':'' }}">
                             <a href="#" class="nav-link {{ Request::is('vehicles*')?'active':'' }}">
                                 <i class="nav-icon fas fa-truck"></i>
@@ -326,7 +327,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li>-->
                         
                         <li class="nav-item">
                             <a href="{{ url('countries') }}" class="nav-link {{ Request::is('countries')?'active':'' }}">

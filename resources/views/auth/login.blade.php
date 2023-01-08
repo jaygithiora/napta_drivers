@@ -6,17 +6,7 @@
         <div class="d-none d-md-block col-md-6 main m-0 p-0">
             <div class='w-100 d-flex align-items-center dark'>
                 <div class='p-5 w-100'>
-                    <h3>Swift</h3>
-                    <h4>It's got easier with swift</h4>
-                    <ul>
-                        <li>Lorem ipsum dolor sit</li>
-                        <li> consectetur adipisicing elit.</li>
-                        <li>Accusantium voluptatibus</li>
-                        <li>repellendus ducimus laudantium</li>
-                        <li>facere necessitatibus nesciunt fuga</li>
-                        <li> sequi vitae esse doloremque quo est</li>
-                        <li>numquam recusandae, nam natus atque?</li>
-                    </ul>
+                    <h3>{{ config('app.name', 'Laravel') }}</h3>
                 </div>
             </div>
         </div>

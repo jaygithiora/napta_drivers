@@ -20,6 +20,7 @@ use App\Http\Controllers\Account\CountryController;
 */
 
 Route::get('/', [IndexController::class, 'index']);
+Route::get('index/search/countries', [IndexController::class, 'searchCountries']);
 
 Auth::routes();
 

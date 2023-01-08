@@ -25,7 +25,9 @@ class UsersController extends Controller
     public function getUsers(Request $request){
         return Datatables::of(User::get())
             ->addIndexColumn()
-            ->editColumn('created_at', function ($row) {
+            ->addColumn('name', function ($row) {
+                return $row->firstname . ' ' . $row->lastname;
+            })->editColumn('created_at', function ($row) {
                 return Carbon::parse($row->created_at)->diffForHumans();
             })->addColumn('status', function ($row) {
             return "<span class='badge bg-primary'>Active</span>";
