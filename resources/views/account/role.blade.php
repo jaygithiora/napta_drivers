@@ -11,7 +11,8 @@
                 <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ url('home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">User Roles</li>
+                        <li class="breadcrumb-item active"><a href="{{ url('users/roles') }}">User Roles</a></li>
+                        <li class="breadcrumb-item active">View Role</li>
     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -28,17 +29,28 @@
 
                 <!-- small box -->
                 <div class="card card-primary card-outline">
+                    <div class="card-body box-profile row d-flex align-items-center">
+                        <div class='col-8'>
+                            <h3>{{$role->name}}</h3>
+                        </div>
+                        <div class='col-4 text-end'>
+                            <button class='btn btn-primary' data-bs-toggle="modal" data-bs-target="#permissionsModal"><i
+                                    class='fas fa-plus'></i> Add Permissions</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- small box -->
+                <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
-                        <div class="text-end">
-                            <button class="btn btn-primary btn-sm btn-launch-modal" data-bs-toggle="modal" data-bs-target="#roleModal"><i
-                                    class='fas fa-plus'></i> Add Role</button>
+                        <div class="">
+                            <h5><strong><i class='fas fa-user-lock'></i> | {{$role->name}}</strong> Permissions</h5>
                         </div>
 
                         <div class="table-responsive">
                             <table class='table w-100'>
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th><input type='checkbox' name='all' value='0'></th>
                                         <th>Name</th>
                                         <th>Users</th>
                                         <th>Status</th>
@@ -61,21 +73,20 @@
 <!-- /.content -->
 
 <!-- Profile Modal -->
-<div class="modal fade" id="roleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="permissionsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><i class='fas fa-user-lock'></i> <span>New Role</span></h5>
+                <h5 class="modal-title" id="exampleModalLabel"><i class='fas fa-user-lock'></i> <span><strong>{{$role->name}}</strong> Permissions</span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ url('users/roles/add') }}">
+                <form method="POST" action="{{ url('users/role/permissions/add') }}">
                     @csrf
                     <input type='hidden' name='id' value='0'>
                     <div class='form-group'>
                         <label>Role Name</label>
-                        <input type='text' placeholder="Role Name" name="name" class='form-control' autofocus
-                            required />
+                        <select name="permissions[]" id='permissions' class='form-control' multiple="multiple"></select>
                     </div>
                     <div class='alert feedback border d-none'>
                         <i class='fas fa-spinner fa-pulse'></i> Saving... Please wait
@@ -98,10 +109,10 @@
         var table = $('.table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ url('users/datatable/roles') }}",
+            ajax: "{{ url('users/datatables/role/permissions/'.$role->id) }}",
             dom: 'lBtrip', //'lfBtrip'
             columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'checkbox', name: 'checkbox', sortable:false },
                 { data: 'name', name: 'name' },
                 { data: 'role', name: 'role' },
                 { data: 'status', name: 'status' },
@@ -176,6 +187,28 @@
             $('#roleModal input[name=id]').val(id);
             $('#roleModal input[name=name]').val(name);
         });
+        $('#permissions').select2({
+                width: '100%',
+                placeholder: 'Select',
+                dropdownParent: $('#permissionsModal'),
+                allowClear: true,
+                ajax: {
+                    url: '{{url("users/permissions/search")}}',
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.name,
+                                    id: item.id
+                                }
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            });
     });
 </script>
 @endpush

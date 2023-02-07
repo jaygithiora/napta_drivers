@@ -35,7 +35,7 @@
                                    alt="User profile picture">
                             </div>
             
-                            <h3 class="profile-username text-center">{{ \Auth::user()->name }}</h3>
+                            <h3 class="profile-username text-center">{{ \Auth::user()->firstname }} {{ \Auth::user()->lastname }}</h3>
             
                             <p class="text-muted text-center">{{ \Auth::user()->email }}</p>
                         </div>
@@ -67,8 +67,12 @@
                         @csrf
                         <input type='hidden' name='id' value='{{ \Auth::user()->id }}'>
                         <div class='form-group'>
-                            <label>Name</label>
-                            <input type='text' placeholder="Full Name" name="name" value="{{ \Auth::user()->name }}" class='form-control' autofocus required/>
+                            <label>First Name</label>
+                            <input type='text' placeholder="First Name" name="firstname" value="{{ \Auth::user()->firstname }}" class='form-control' autofocus required/>
+                        </div>
+                        <div class='form-group'>
+                            <label>Last Name</label>
+                            <input type='text' placeholder="Last Name" name="lastname" value="{{ \Auth::user()->lastname }}" class='form-control' autofocus required/>
                         </div>
                         <div class='form-group'>
                             <label>Email Address</label>

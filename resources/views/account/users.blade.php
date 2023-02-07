@@ -30,7 +30,7 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-end">
-                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#userModal"><i
+                            <button class="btn btn-primary btn-sm btn-launch-modal" data-bs-toggle="modal" data-bs-target="#userModal"><i
                                     class='fas fa-user-plus'></i> Add User</button>
                         </div>
                         <div class="table-responsive">

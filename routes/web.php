@@ -50,14 +50,23 @@ Route::get('datatable/countries', [CountryController::class, 'getCountries']);
 Route::post('countries/add', [CountryController::class, 'addCountry']);
 Route::get('search/countries', [CountryController::class, 'searchCountries']);
 
-Route::get('/users', [UsersController::class, 'index']);
-Route::get('/datatable/users', [UsersController::class, 'getUsers']);
-Route::post('/users/add', [UsersController::class, 'addUser']);
+Route::controller(UsersController::class)->prefix('users')->group(function () {
+    Route::get('/', [UsersController::class, 'index']);
+    Route::get('/datatable/users', [UsersController::class, 'getUsers']);
+    Route::post('/add', [UsersController::class, 'addUser']);
 
-Route::get('/users/roles', [UsersController::class, 'roles']);
-Route::get('/datatable/roles', [UsersController::class, 'getRoles']);
-Route::post('/users/roles/add', [UsersController::class, 'addRole']);
+    Route::get('/roles', [UsersController::class, 'roles']);
+    Route::get('/datatable/roles', [UsersController::class, 'getRoles']);
+    Route::post('/roles/add', [UsersController::class, 'addRole']);
 
-Route::get('/profile', [ProfileController::class, 'index']);
-Route::post('/profile/update/name', [ProfileController::class, 'editProfileName']);
-Route::post('/profile/change/password', [ProfileController::class, 'changePassword']);
+    Route::get('/roles/view/{id}', [UsersController::class, 'viewRole']);
+    Route::get('/permissions/search', [UsersController::class, 'searchPermissions']);
+    Route::get('datatables/role/permissions/{id}', [UsersController::class, 'getRolePermissions']);
+});
+
+Route::controller(ProfileController::class)->prefix('profile')->group(function () {
+    Route::get('/','index');
+    Route::post('/update/name', 'editProfileName');
+    Route::post('/change/password', 'changePassword');
+});
+
