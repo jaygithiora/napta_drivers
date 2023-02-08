@@ -58,7 +58,8 @@ Route::controller(UsersController::class)->prefix('users')->group(function () {
     Route::get('/roles', [UsersController::class, 'roles']);
     Route::get('/datatable/roles', [UsersController::class, 'getRoles']);
     Route::post('/roles/add', [UsersController::class, 'addRole']);
-
+    Route::get('search/roles', [UsersController::class, 'searchRoles']);
+    
     Route::get('/roles/view/{id}', [UsersController::class, 'viewRole']);
     Route::get('/permissions/search', [UsersController::class, 'searchPermissions']);
     Route::get('datatables/role/permissions/{id}', [UsersController::class, 'getRolePermissions']);

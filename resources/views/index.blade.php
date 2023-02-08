@@ -3,14 +3,40 @@
 @section('content')
 <div class="container-fluid main">
     <div class="row d-flex align-items-center dark">
-        <div class="col-md-6 ps-5 pe-5">
-            <h3>NAPTA <span class='text-warning'>Professional</span> Drivers</h3>
-            <p>Napta Professional Drivers is a subsidiary of the National Public Transport Alliance –Napta, 
-                a non-profit organization working to improve public transport through research, innovation, 
-                training, advocacy and investments.</p>
-            <button class='btn btn-warning'><i class='fas fa-sign-in'></i> Sign In</button>&nbsp;
-            <button class='btn btn-white'><i class='fas fa-user-plus'></i> Join Napta</button>
+        <div class="col-sm-12">
+            <div class="container">
+                <div class="col-md-6 pt-5 pb-5">
+                    <h3>NAPTA <span class='text-warning'>Professional</span> Drivers</h3>
+                    <p>Napta Professional Drivers is a subsidiary of the National Public Transport Alliance –Napta, 
+                        a non-profit organization working to improve public transport through research, innovation, 
+                        training, advocacy and investments.</p>
+                    <a href='{{url("register?role=user")}}' class='btn btn-warning'><i class='fas fa-search'></i> Find a Driver</a>&nbsp;
+                    <a href='{{url("register?role=driver")}}' class='btn btn-white'><i class='fas fa-user-plus'></i> Join as Driver</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 @endsection
+@push('js')
+<script>
+    $(document).ready(function(){
+        var header = $(".navbar");
+        $(window).scroll(function() {
+            var scroll = $(window).scrollTop();
+
+            if (scroll >= 30) {
+                header.addClass('bg-light');
+                header.removeClass('navbar-dark');
+                header.addClass('navbar-light');
+                header.addClass('shadow-sm');
+            } else {
+                header.removeClass('bg-light');
+                header.addClass('navbar-dark');
+                header.removeClass('navbar-light');
+                header.removeClass('shadow-sm');
+            }
+        });
+    });
+</script>
+@endpush

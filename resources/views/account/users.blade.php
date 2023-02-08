@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.account')
 
 @section('content')
     <!-- Content Header (Page header) -->
@@ -37,9 +37,11 @@
                             <table class='table w-100'>
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <!--<th>#</th>-->
                                         <th>Name</th>
                                         <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Country</th>
                                         <th>Role</th>
                                         <th>Status</th>
                                         <th>Date</th>
@@ -62,10 +64,10 @@
 
 <!-- Profile Modal -->
 <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><i class='fas fa-user-plus'></i> New User</h5>
+                <h5 class="modal-title" id="exampleModalLabel"><i class='fas fa-user-plus'></i> <span>New User</span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -82,18 +84,30 @@
                         <input type='text' placeholder="Last Name" name="lastname" class='form-control' autofocus
                             required />
                     </div>
-                    <div class='col-sm-6 form-group'>
+                    <div class='col-sm-12 form-group'>
                         <label>Email Address</label>
                         <input type='email' placeholder="Email Address" name="email" class='form-control' required />
                     </div>
-                    <div class='form-group'>
-                        <label>Password</label>
-                        <input type='password' placeholder="Password" name="password" class='form-control' required />
+                    <div class='col-sm-6 form-group'>
+                        <label>Country</label>
+                        <select id='countries' name="country" class='form-control'></select>
                     </div>
-                    <div class='form-group'>
-                        <label>Confirm Password</label>
-                        <input type='password' placeholder="Confirm Password" name="confirm_password"
+                    <div class='col-sm-6 form-group'>
+                        <label>User Role</label>
+                        <select id='roles' name="role" class='form-control' id='roles'></select>
+                    </div>
+                    <div class='col-sm-6 form-group'>
+                        <label>Phone Number</label>
+                        <input type='text' placeholder="Phone Number" name="phone"
                             class='form-control' required />
+                    </div>
+                    <div class='col-sm-6 form-group'>
+                        <label>Status</label>
+                        <select name="status" class='form-control'>
+                            <option disabled>Status</option>
+                            <option value='1'>Active</option>
+                            <option value='0'>In-Active</option>
+                        </select>
                     </div>
                     <div class='alert feedback border d-none'>
                         <i class='fas fa-spinner fa-pulse'></i> Saving... Please wait
@@ -119,9 +133,11 @@
             ajax: "{{ url('users/datatable/users') }}",
             dom: 'lBtrip', //'lfBtrip'
             columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                //{ data: 'DT_RowIndex', name: 'DT_RowIndex' },
                 { data: 'name', name: 'name' },
                 { data: 'email', name: 'email' },
+                { data: 'phone', name: 'phone' },
+                { data: 'country.name', name: 'country.name' },
                 { data: 'role', name: 'role' },
                 { data: 'status', name: 'status' },
                 { data: 'created_at', name: 'created_at' },
@@ -132,6 +148,60 @@
                     searchable: true
                 },
             ]
+        });
+        $('#countries').select2({
+            width: '100%',
+            placeholder: 'Select Country',
+            //dropdownParent: $('#modelModal'),
+            allowClear: true,
+            ajax: {
+                url: '{{url("index/search/countries")}}',
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+        $('#roles').select2({
+            width: '100%',
+            placeholder: 'Select Role',
+            //dropdownParent: $('#modelModal'),
+            allowClear: true,
+            ajax: {
+                url: '{{url("users/search/roles")}}',
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+        $('.btn-launch-modal').click(function(){
+            $('#userModal .modal-title span').text("New User");
+            $('#userModal input[name=id]').val(0);
+            $('#userModal input[name=firstname]').val("");
+            $('#userModal input[name=lastname]').val("");
+            $('#userModal input[name=email').val("");
+            $('#userModal input[name=phone]').val("");
+            $('#roles').empty();
+            $('#countries').empty();
         });
         $('#userModal .btnSave').click(function () {
             var btn = $(this);
@@ -158,17 +228,23 @@
                 $('#userModal .feedback').addClass('alert-danger');
                 $('#userModal .feedback').html("");
                 if (data.errors) {
-                    if (data.errors.name) {
-                        $('#userModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.name + "<br>");
+                    if (data.errors.firstname) {
+                        $('#userModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.firstname + "<br>");
+                    }
+                    if (data.errors.lastname) {
+                        $('#userModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.lastname + "<br>");
                     }
                     if (data.errors.email) {
                         $('#userModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.email + "<br>");
                     }
-                    if (data.errors.password) {
-                        $('#userModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.password + "<br>");
+                    if (data.errors.phone) {
+                        $('#userModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.phone + "<br>");
                     }
-                    if (data.errors.confirm_password) {
-                        $('#userModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.confirm_password + "<br>");
+                    if (data.errors.country) {
+                        $('#userModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.country + "<br>");
+                    }
+                    if (data.errors.status) {
+                        $('#userModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.status + "<br>");
                     }
                 } else if (data.error) {
                     $('#userModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.error);
@@ -180,6 +256,43 @@
                 }, 3000);
                 btn.removeAttr('disabled');
             });
+        });
+        $(document).on('click', '.table .btn-edit', function(){
+            $('#userModal .modal-title span').text("Edit User");
+            $('#roles').empty();
+            $('#countries').empty();
+            var row = $(this).closest('tr');
+            var id = row.find('.id').text();
+            var firstname = row.find('.firstname').text();
+            var lastname = row.find('.lastname').text();
+            var email = row.find('.email').text();
+            var phone = row.find('.phone').text();
+            var status = row.find('.status').text();
+            var roleId = parseInt(row.find('.role_id').text());
+            var roleName = row.find('.role_name').text();
+            var countryId = parseInt(row.find('.country_id').text());
+            var countryName = row.find('.country_name').text();
+            if(roleId > 0){
+                var data = {
+                    id: roleId,
+                    text: roleName
+                };
+                var newOption = new Option(data.text, data.id, false, false);
+                $('#roles').append(newOption).trigger('change');
+            }
+            var data = {
+                id: countryId,
+                text: countryName
+            };
+            var newOption = new Option(data.text, data.id, false, false);
+            $('#countries').append(newOption).trigger('change');
+
+            $('#userModal input[name=id]').val(id);
+            $('#userModal input[name=firstname]').val(firstname);
+            $('#userModal input[name=lastname]').val(lastname);
+            $('#userModal input[name=email').val(email);
+            $('#userModal input[name=phone]').val(phone);
+            $('#userModal select[name=status]').val(status);
         });
     });
 </script>

@@ -15,6 +15,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/app.css')}}">
+    <!--fontawesome-->
+    <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css')}}">
     <!--Select2 css-->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     
@@ -22,7 +24,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top pt-4 pb-4">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top pt-3 pb-3">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -33,23 +35,37 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
+                    <ul class="navbar-nav ms-auto">
+                        
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Home') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url('register?role=user')}}">{{ __('Find a Driver') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url('register?role=driver')}}">{{ __('Join as Driver') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('About Us') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Contact Us') }}</a>
+                        </li>
                         @guest
+                            @if (Route::has('register'))
+                                <!--<li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}"><i class='fas fa-pencil-alt'></i> {{ __('Register') }}</a>
+                                </li>-->
+                            @endif
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="btn btn-warning btn-sm" href="{{ route('login') }}"><i class='fas fa-sign-in'></i> &nbsp;{{ __('Login') }}</a>
                                 </li>
                             @endif
                         @else

@@ -136,6 +136,7 @@
                     cache: true
                 }
             });
+            
         });
    </script> 
 @endpush

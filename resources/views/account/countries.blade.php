@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.account')
 
 @section('content')
     <!-- Content Header (Page header) -->
@@ -30,14 +30,14 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-end">
-                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#countryModal"><i
+                            <button class="btn btn-primary btn-sm btn-launch-modal" data-bs-toggle="modal" data-bs-target="#countryModal"><i
                                     class='fas fa-plus'></i> Add Country</button>
                         </div>
                         <div class="table-responsive">
                             <table class='table w-100'>
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <!--<th>#</th>-->
                                         <th>Name</th>
                                         <th>Country Code</th>
                                         <th>Phone Code</th>
@@ -65,7 +65,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><i class='fas fa-plus'></i> New Country</h5>
+                <h5 class="modal-title" id="exampleModalLabel"><i class='fas fa-plus'></i> <span>New Country</span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -117,7 +117,7 @@
             ajax: "{{ url('datatable/countries') }}",
             dom: 'lBtrip', //'lfBtrip'
             columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                //{ data: 'DT_RowIndex', name: 'DT_RowIndex' },
                 { data: 'name', name: 'name' },
                 { data: 'country_code', name: 'country_code' },
                 { data: 'phone_code', name: 'phone_code' },
@@ -130,6 +130,13 @@
                     searchable: true
                 },
             ]
+        });
+        $('.btn-launch-modal').click(function(){
+            $('#countryModal input[name=id]').val(0);
+            $('#countryModal input[name=name]').val("");
+            $('#countryModal input[name=phone_code]').val("");
+            $('#countryModal input[name=country_code]').val("");
+            $('#countryModal select[name=status]').val(1);
         });
         
         $('#countryModal .btnSave').click(function () {
@@ -179,6 +186,20 @@
                 }, 3000);
                 btn.removeAttr('disabled');
             });
+        });
+        $(document).on('click', '.table .btn-edit', function(){
+            var row = $(this).closest('tr');
+            var id = row.find('.id').text();
+            var name = row.find('.name').text();
+            var phone_code = row.find('.phone_code').text();
+            var country_code = row.find('.country_code').text();
+            var status = row.find('.status').text();
+
+            $('#countryModal input[name=id]').val(id);
+            $('#countryModal input[name=name]').val(name);
+            $('#countryModal input[name=phone_code]').val(phone_code);
+            $('#countryModal input[name=country_code]').val(country_code);
+            $('#countryModal select[name=status]').val(status);
         });
     });
 </script>
