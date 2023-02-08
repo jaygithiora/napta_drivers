@@ -112,7 +112,7 @@ class UsersController extends Controller
         if ($role->save()) {
             return response()->json(['success' => 'Role updated successfully!']);
         } else {
-            return response()->json(['error' => 'Unable to update role!']);
+            return response()->json(['error' => 'Unable to update role!'], 401);
         }
     }
 
@@ -160,7 +160,19 @@ class UsersController extends Controller
             ->make(true);
     }
 
-    public function addRolePermission(Request $request){
-
+    public function addRolePermissions(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|min:0',
+            'permissions.*' => 'required|integer|min:1',
+        ]);
+        if($validator->fails()){
+            return response()->json(['errors' => $validator->messages()]);
+        }
+        $role = Role::where('id', $request->id)->first();
+        foreach($request->permissions as $id ){
+            $permission = Permission::where('id', $id)->first();
+            $role->givePermissionTo($permission);
+        }
+        return response()->json(['success' => "Permissions assigned successfully!"]);
     }
 }

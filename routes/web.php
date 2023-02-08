@@ -62,6 +62,7 @@ Route::controller(UsersController::class)->prefix('users')->group(function () {
     Route::get('/roles/view/{id}', [UsersController::class, 'viewRole']);
     Route::get('/permissions/search', [UsersController::class, 'searchPermissions']);
     Route::get('datatables/role/permissions/{id}', [UsersController::class, 'getRolePermissions']);
+    Route::post('/role/permissions/add', [UsersController::class, 'addRolePermissions']);
 });
 
 Route::controller(ProfileController::class)->prefix('profile')->group(function () {

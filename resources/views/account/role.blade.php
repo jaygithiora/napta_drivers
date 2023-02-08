@@ -83,7 +83,7 @@
             <div class="modal-body">
                 <form method="POST" action="{{ url('users/role/permissions/add') }}">
                     @csrf
-                    <input type='hidden' name='id' value='0'>
+                    <input type='hidden' name='id' value='{{ $role->id }}'>
                     <div class='form-group'>
                         <label>Role Name</label>
                         <select name="permissions[]" id='permissions' class='form-control' multiple="multiple"></select>
@@ -125,55 +125,50 @@
                 },
             ]
         });
-        $('.btn-launch-modal').click(function(){
-            $('#roleModal .modal-title span').text("Add Role");
-            $('#roleModal input[name=id]').val(0);
-            $('#roleModal input[name=name]').val("");
-        });
-        $('#roleModal .btnSave').click(function () {
+        $('#permissionsModal .btnSave').click(function () {
             var btn = $(this);
             btn.attr('disabled', 'disabled');
-            $('#roleModal .feedback').removeClass('d-none');
-            $('#roleModal .feedback').removeClass('alert-danger');
-            $('#roleModal .feedback').removeClass('alert-success');
-            $('#roleModal .feedback').html("<i class='fas fa-spinner fa-pulse'></i> Saving... Please wait");
-            var formData = $('#roleModal form').serialize();
+            $('#permissionsModal .feedback').removeClass('d-none');
+            $('#permissionsModal .feedback').removeClass('alert-danger');
+            $('#permissionsModal .feedback').removeClass('alert-success');
+            $('#permissionsModal .feedback').html("<i class='fas fa-spinner fa-pulse'></i> Saving... Please wait");
+            var formData = $('#permissionsModal form').serialize();
             $.ajax({
-                url: '{{ url("users/roles/add") }}',
+                url: '{{ url("users/role/permissions/add") }}',
                 type: 'POST',
                 data: formData
             }).done(function (data) {
-                $('#roleModal .feedback').addClass('alert-success');
-                $('#roleModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.success);
+                $('#permissionsModal .feedback').addClass('alert-success');
+                $('#permissionsModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.success);
                 table.draw();
                 setTimeout(() => {
-                    $('#roleModal .feedback').addClass('d-none');
+                    $('#permissionsModal .feedback').addClass('d-none');
                 }, 3000);
                 btn.removeAttr('disabled');
             }).fail(function (response) {
                 let data = response.responseJSON;
-                $('#roleModal .feedback').addClass('alert-danger');
-                $('#roleModal .feedback').html("");
+                $('#permissionsModal .feedback').addClass('alert-danger');
+                $('#permissionsModal .feedback').html("");
                 if (data.errors) {
                     if (data.errors.name) {
-                        $('#roleModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.name + "<br>");
+                        $('#permissionsModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.name + "<br>");
                     }
                     if (data.errors.email) {
-                        $('#roleModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.email + "<br>");
+                        $('#permissionsModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.email + "<br>");
                     }
                     if (data.errors.password) {
-                        $('#roleModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.password + "<br>");
+                        $('#permissionsModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.password + "<br>");
                     }
                     if (data.errors.confirm_password) {
-                        $('#roleModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.confirm_password + "<br>");
+                        $('#permissionsModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.confirm_password + "<br>");
                     }
                 } else if (data.error) {
-                    $('#roleModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.error);
+                    $('#permissionsModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.error);
                 } else {
-                    $('#roleModal .feedback').html("<i class='fas fa-exclamation-circle'></i> <b>Whoops</b> Something went wrong with the server!");
+                    $('#permissionsModal .feedback').html("<i class='fas fa-exclamation-circle'></i> <b>Whoops</b> Something went wrong with the server!");
                 }
                 setTimeout(() => {
-                    $('#roleModal .feedback').addClass('d-none');
+                    $('#permissionsModal .feedback').addClass('d-none');
                 }, 3000);
                 btn.removeAttr('disabled');
             });
@@ -183,9 +178,9 @@
             var id = row.find('.id').text();
             var name = row.find('td:nth-child(2)').text();
 
-            $('#roleModal .modal-title span').text("Edit Role");
-            $('#roleModal input[name=id]').val(id);
-            $('#roleModal input[name=name]').val(name);
+            $('#permissionsModal .modal-title span').text("Edit Role");
+            $('#permissionsModal input[name=id]').val(id);
+            $('#permissionsModal input[name=name]').val(name);
         });
         $('#permissions').select2({
                 width: '100%',

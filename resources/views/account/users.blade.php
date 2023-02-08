@@ -62,22 +62,27 @@
 
 <!-- Profile Modal -->
 <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><i class='fas fa-user-plus'></i> New User</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ url('users/add') }}">
+                <form method="POST" action="{{ url('users/add') }}" class="row">
                     @csrf
                     <input type='hidden' name='id' value='0'>
-                    <div class='form-group'>
-                        <label>Name</label>
-                        <input type='text' placeholder="Full Name" name="name" class='form-control' autofocus
+                    <div class='col-sm-6 form-group'>
+                        <label>First Name</label>
+                        <input type='text' placeholder="First Name" name="firstname" class='form-control' autofocus
                             required />
                     </div>
-                    <div class='form-group'>
+                    <div class='col-sm-6 form-group'>
+                        <label>Last Name</label>
+                        <input type='text' placeholder="Last Name" name="lastname" class='form-control' autofocus
+                            required />
+                    </div>
+                    <div class='col-sm-6 form-group'>
                         <label>Email Address</label>
                         <input type='email' placeholder="Email Address" name="email" class='form-control' required />
                     </div>
@@ -111,7 +116,7 @@
         var table = $('.table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ url('datatable/users') }}",
+            ajax: "{{ url('users/datatable/users') }}",
             dom: 'lBtrip', //'lfBtrip'
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
