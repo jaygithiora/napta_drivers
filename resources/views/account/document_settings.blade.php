@@ -6,12 +6,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                <h1 class="m-0"><i class='fas fa-globe'></i> Countries</h1>
+                <h1 class="m-0"><i class='fas fa-folder-plus'></i> Document Types</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ url('home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Countries</li>
+                        <li class="breadcrumb-item active">Document Types</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -30,8 +30,8 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-end">
-                            <button class="btn btn-primary btn-sm btn-launch-modal" data-bs-toggle="modal" data-bs-target="#countryModal"><i
-                                    class='fas fa-plus'></i> Add Country</button>
+                            <button class="btn btn-primary btn-sm btn-launch-modal" data-bs-toggle="modal" data-bs-target="#documentTypeModal"><i
+                                    class='fas fa-plus'></i> Add Document Type</button>
                         </div>
                         <div class="table-responsive">
                             <table class='table w-100'>
@@ -39,8 +39,8 @@
                                     <tr>
                                         <!--<th>#</th>-->
                                         <th>Name</th>
-                                        <th>Country Code</th>
-                                        <th>Phone Code</th>
+                                        <th>Description</th>
+                                        <th>Required</th>
                                         <th>Status</th>
                                         <th>Date</th>
                                         <th class='text-end'>Action</th>
@@ -61,31 +61,35 @@
 <!-- /.content -->
 
 <!-- Profile Modal -->
-<div class="modal fade" id="countryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="documentTypeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><i class='fas fa-plus'></i> <span>New Country</span></h5>
+                <h5 class="modal-title" id="exampleModalLabel"><i class='fas fa-plus'></i> <span>Add Document Type</span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ url('countries/add') }}">
+                <form method="POST" action="{{ url('settings/document_type/add') }}" class='row'>
                     @csrf
                     <input type='hidden' name='id' value='0'>
-                    <div class='form-group'>
-                        <label>Country Name</label>
-                        <input type='text' placeholder="Country Name" name="name" class='form-control' autofocus
+                    <div class='col-12 form-group'>
+                        <label>Document Name</label>
+                        <input type='text' placeholder="Document Name" name="name" class='form-control' autofocus
                             required />
                     </div>
-                    <div class='form-group'>
-                        <label>Country Code</label>
-                        <input type='text' name="country_code" class='form-control' placeholder='Country Code' required>
+                    <div class='col-12 form-group'>
+                        <label>Description</label>
+                        <textarea name='description' class='form-control' placeholder='document type descripion' rows='4'></textarea>
                     </div>
-                    <div class='form-group'>
-                        <label>Phone Code</label>
-                        <input type='text' name="phone_code" class='form-control' placeholder='Phone Code' required>
+                    <div class='col form-group'>
+                        <label>Required</label>
+                        <select name="required" class='form-control'>
+                            <option disabled>Select Status</option>
+                            <option value='1'>Yes</option>
+                            <option value='0'>No</option>
+                        </select>
                     </div>
-                    <div class='form-group'>
+                    <div class='col form-group'>
                         <label>Status</label>
                         <select name="status" class='form-control'>
                             <option disabled>Select Status</option>
@@ -93,7 +97,7 @@
                             <option value='0'>In-Active</option>
                         </select>
                     </div>
-                    <div class='alert feedback border d-none'>
+                    <div class='col-12 alert feedback border d-none'>
                         <i class='fas fa-spinner fa-pulse'></i> Saving... Please wait
                     </div>
                 </form>
@@ -114,13 +118,13 @@
         var table = $('.table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ url('settings/datatable/countries') }}",
+            ajax: "{{ url('settings/datatable/document_types') }}",
             dom: 'lBtrip', //'lfBtrip'
             columns: [
                 //{ data: 'DT_RowIndex', name: 'DT_RowIndex' },
                 { data: 'name', name: 'name' },
-                { data: 'country_code', name: 'country_code' },
-                { data: 'phone_code', name: 'phone_code' },
+                { data: 'description', name: 'description' },
+                { data: 'required', name: 'required' },
                 { data: 'status', name: 'status' },
                 { data: 'created_at', name: 'created_at' },
                 {
@@ -132,57 +136,57 @@
             ]
         });
         $('.btn-launch-modal').click(function(){
-            $('#countryModal input[name=id]').val(0);
-            $('#countryModal input[name=name]').val("");
-            $('#countryModal input[name=phone_code]').val("");
-            $('#countryModal input[name=country_code]').val("");
-            $('#countryModal select[name=status]').val(1);
+            $('#documentTypeModal input[name=id]').val(0);
+            $('#documentTypeModal input[name=name]').val("");
+            $('#documentTypeModal input[name=description]').val("");
+            $('#documentTypeModal select[name=required]').val(1);
+            $('#documentTypeModal select[name=status]').val(1);
         });
         
-        $('#countryModal .btnSave').click(function () {
+        $('#documentTypeModal .btnSave').click(function () {
             var btn = $(this);
             btn.attr('disabled', 'disabled');
-            $('#countryModal .feedback').removeClass('d-none');
-            $('#countryModal .feedback').removeClass('alert-danger');
-            $('#countryModal .feedback').removeClass('alert-success');
-            $('#countryModal .feedback').html("<i class='fas fa-spinner fa-pulse'></i> Saving... Please wait");
-            var formData = $('#countryModal form').serialize();
+            $('#documentTypeModal .feedback').removeClass('d-none');
+            $('#documentTypeModal .feedback').removeClass('alert-danger');
+            $('#documentTypeModal .feedback').removeClass('alert-success');
+            $('#documentTypeModal .feedback').html("<i class='fas fa-spinner fa-pulse'></i> Saving... Please wait");
+            var formData = $('#documentTypeModal form').serialize();
             $.ajax({
-                url: '{{ url("settings/countries/add") }}',
+                url: '{{ url("settings/document_type/add") }}',
                 type: 'POST',
                 data: formData
             }).done(function (data) {
-                $('#countryModal .feedback').addClass('alert-success');
-                $('#countryModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.success);
+                $('#documentTypeModal .feedback').addClass('alert-success');
+                $('#documentTypeModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.success);
                 table.draw();
                 setTimeout(() => {
-                    $('#countryModal .feedback').addClass('d-none');
+                    $('#documentTypeModal .feedback').addClass('d-none');
                 }, 3000);
                 btn.removeAttr('disabled');
             }).fail(function (response) {
                 let data = response.responseJSON;
-                $('#countryModal .feedback').addClass('alert-danger');
-                $('#countryModal .feedback').html("");
+                $('#documentTypeModal .feedback').addClass('alert-danger');
+                $('#documentTypeModal .feedback').html("");
                 if (data.errors) {
                     if (data.errors.name) {
-                        $('#countryModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.name + "<br>");
+                        $('#documentTypeModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.name + "<br>");
                     }
-                    if (data.errors.email) {
-                        $('#countryModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.email + "<br>");
+                    if (data.errors.description) {
+                        $('#documentTypeModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.description + "<br>");
                     }
-                    if (data.errors.password) {
-                        $('#countryModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.password + "<br>");
+                    if (data.errors.required) {
+                        $('#documentTypeModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.required + "<br>");
                     }
-                    if (data.errors.confirm_password) {
-                        $('#countryModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.confirm_password + "<br>");
+                    if (data.errors.status) {
+                        $('#documentTypeModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.status + "<br>");
                     }
                 } else if (data.error) {
-                    $('#countryModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.error);
+                    $('#documentTypeModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.error);
                 } else {
-                    $('#countryModal .feedback').html("<i class='fas fa-exclamation-circle'></i> <b>Whoops</b> Something went wrong with the server!");
+                    $('#documentTypeModal .feedback').html("<i class='fas fa-exclamation-circle'></i> <b>Whoops</b> Something went wrong with the server!");
                 }
                 setTimeout(() => {
-                    $('#countryModal .feedback').addClass('d-none');
+                    $('#documentTypeModal .feedback').addClass('d-none');
                 }, 3000);
                 btn.removeAttr('disabled');
             });
@@ -191,15 +195,15 @@
             var row = $(this).closest('tr');
             var id = row.find('.id').text();
             var name = row.find('.name').text();
-            var phone_code = row.find('.phone_code').text();
-            var country_code = row.find('.country_code').text();
+            var phone_code = row.find('.description').text();
+            var country_code = row.find('.required').text();
             var status = row.find('.status').text();
 
-            $('#countryModal input[name=id]').val(id);
-            $('#countryModal input[name=name]').val(name);
-            $('#countryModal input[name=phone_code]').val(phone_code);
-            $('#countryModal input[name=country_code]').val(country_code);
-            $('#countryModal select[name=status]').val(status);
+            $('#documentTypeModal input[name=id]').val(id);
+            $('#documentTypeModal input[name=name]').val(name);
+            $('#documentTypeModal textarea[name=description]').val(phone_code);
+            $('#documentTypeModal select[name=required]').val(country_code);
+            $('#documentTypeModal select[name=status]').val(status);
         });
     });
 </script>

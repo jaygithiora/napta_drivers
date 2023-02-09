@@ -46,10 +46,10 @@
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Home') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url('register?role=user')}}">{{ __('Find a Driver') }}</a>
+                            <a class="nav-link" href="{{url('find/drivers')}}">{{ __('Find a Driver') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url('register?role=driver')}}">{{ __('Join as Driver') }}</a>
+                            <a class="nav-link" href="{{url('register/driver')}}">{{ __('Join as Driver') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('About Us') }}</a>
@@ -59,9 +59,9 @@
                         </li>
                         @guest
                             @if (Route::has('register'))
-                                <!--<li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}"><i class='fas fa-pencil-alt'></i> {{ __('Register') }}</a>
-                                </li>-->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
                             @endif
                             @if (Route::has('login'))
                                 <li class="nav-item">
@@ -69,6 +69,10 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item">
+                                <a class="btn btn-warning btn-sm" href="{{ route('home') }}"><i class='fas fa-tachometer-alt'></i> &nbsp;{{ __('Dashboard') }}</a>
+                             </li>
+                        <!--
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
@@ -85,7 +89,7 @@
                                         @csrf
                                     </form>
                                 </div>
-                            </li>
+                            </li>-->
                         @endguest
                     </ul>
                 </div>

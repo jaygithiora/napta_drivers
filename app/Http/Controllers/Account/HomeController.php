@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -24,6 +26,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('account.home');
+        $user = Auth::user();
+        if($user->hasRole('Driver')){
+            
+        }
+        return view('account.home', ['user'=>$user]);
     }
 }

@@ -329,14 +329,6 @@
                             </ul>
                         </li>-->
                         
-                        <li class="nav-item">
-                            <a href="{{ url('countries') }}" class="nav-link {{ Request::is('countries')?'active':'' }}">
-                                <i class="nav-icon fas fa-globe"></i>
-                                <p>
-                                    Countries
-                                </p>
-                            </a>
-                        </li>
                         <li class="nav-item {{ Request::is('users*')?'menu-open':'' }}">
                             <a href="#" class="nav-link {{ Request::is('users*')?'active':'' }}">
                                 <i class="nav-icon fas fa-users"></i>
@@ -360,6 +352,31 @@
                                 </li>
                             </ul>
                         </li>
+                        
+                        <li class="nav-item {{ Request::is('settings*')?'menu-open':'' }}">
+                            <a href="#" class="nav-link {{ Request::is('settings*')?'active':'' }}">
+                                <i class="nav-icon fas fa-cog"></i>
+                                <p>
+                                    Settings
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('settings/document_types') }}" class="nav-link {{ Request::is('settings/document_types')||Request::is('settings/document_types*')?'active':'' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Document Settings</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('settings/countries') }}" class="nav-link {{ Request::is('settings/countries')?'active':'' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Countries</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        
                         <li class="nav-item">
                             <a href="{{ url('profile') }}" class="nav-link {{ Request::is('profile')?'active':'' }}">
                                 <i class="nav-icon far fa-user"></i>
