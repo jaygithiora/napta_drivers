@@ -11,7 +11,12 @@ class DocumentTypeRole extends Model
     use HasFactory;
     protected $fillable = ["role_id", "document_type_id"];
 
-    public function role(){
+    public function role()
+    {
         return $this->belongsTo(Role::class);
+    }
+    public function document_type()
+    {
+        return $this->belongsTo(DocumentType::class);
     }
 }

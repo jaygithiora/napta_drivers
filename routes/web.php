@@ -75,7 +75,8 @@ Route::controller(SettingsController::class)->prefix('settings')->group(function
     Route::post('document_type/add', 'addDocumentType');
     Route::get('/datatable/document_types', 'getDocumentTypes');
     Route::get('/document_types/view/{id}', 'viewDocumentType');
-    Route::get('document_types/datatable/view/roles{id}', 'getDocumentTypeRoles');
+    Route::get('/document_types/datatable/view/roles/{id}', 'getDocumentTypeRoles');
+    Route::post('/document_type/roles/add', 'addDocumentTypeRoles');
 });
 Route::controller(ProfileController::class)->prefix('profile')->group(function () {
     Route::get('/','index');

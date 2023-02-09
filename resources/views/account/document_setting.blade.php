@@ -43,8 +43,8 @@
                                 <thead>
                                     <tr>
                                         <!--<th>#</th>-->
-                                        <th>Name</th>
-                                        <th>Status</th>
+                                        <th>Document Name</th>
+                                        <th>Role</th>
                                         <th>Date</th>
                                         <th class='text-end'>Action</th>
                                     </tr>
@@ -72,7 +72,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ url('settings/document_type/role/add') }}">
+                <form method="POST" action="{{ url('settings/document_type/roles/add') }}">
                     @csrf
                     <input type='hidden' name='id' value='{{$document_type->id}}'>
                     
@@ -102,12 +102,12 @@
         var table = $('.table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ url('settings/datatable/document_types') }}",
+            ajax: "{{ url('settings/document_types/datatable/view/roles/'.$document_type->id) }}",
             dom: 'lBtrip', //'lfBtrip'
             columns: [
                 //{ data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                { data: 'name', name: 'name' },
-                { data: 'status', name: 'status' },
+                { data: 'document_type.name', name: 'document_type.name' },
+                { data: 'role.name', name: 'role.name' },
                 { data: 'created_at', name: 'created_at' },
                 {
                     data: 'action',
@@ -140,11 +140,6 @@
             }
         });
         $('.btn-launch-modal').click(function(){
-            $('#rolesModal input[name=id]').val(0);
-            $('#rolesModal input[name=name]').val("");
-            $('#rolesModal input[name=description]').val("");
-            $('#rolesModal select[name=required]').val(1);
-            $('#rolesModal select[name=status]').val(1);
         });
         
         $('#rolesModal .btnSave').click(function () {
@@ -156,7 +151,7 @@
             $('#rolesModal .feedback').html("<i class='fas fa-spinner fa-pulse'></i> Saving... Please wait");
             var formData = $('#rolesModal form').serialize();
             $.ajax({
-                url: '{{ url("settings/document_type/role/add") }}',
+                url: '{{ url("settings/document_type/roles/add") }}',
                 type: 'POST',
                 data: formData
             }).done(function (data) {
@@ -172,17 +167,11 @@
                 $('#rolesModal .feedback').addClass('alert-danger');
                 $('#rolesModal .feedback').html("");
                 if (data.errors) {
-                    if (data.errors.name) {
-                        $('#rolesModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.name + "<br>");
+                    if (data.errors.id) {
+                        $('#rolesModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.id + "<br>");
                     }
-                    if (data.errors.description) {
-                        $('#rolesModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.description + "<br>");
-                    }
-                    if (data.errors.required) {
-                        $('#rolesModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.required + "<br>");
-                    }
-                    if (data.errors.status) {
-                        $('#rolesModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.status + "<br>");
+                    if (data.errors.roles) {
+                        $('#rolesModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.roles + "<br>");
                     }
                 } else if (data.error) {
                     $('#rolesModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.error);
