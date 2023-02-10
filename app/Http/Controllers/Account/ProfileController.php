@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
+use App\Models\DocumentTypeRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +19,13 @@ class ProfileController extends Controller
 
     public function index()
     {
-        return view('account.profile');
+        $user = User::with('roles')->findOrFail(\Auth::user()->id);
+        $documentTypes = null;
+        if($user->roles->count() > 0){
+            $role = $user->roles->first();
+            $documentTypes = DocumentTypeRole::with('document_type')->get();
+        }
+        return view('account.profile', ['user'=>$user, 'documentTypes'=>$documentTypes]);
     }
     public function editProfileName(Request $request)
     {
@@ -62,5 +69,9 @@ class ProfileController extends Controller
         } else {
             return response()->json(['error' => 'Current Password is incorrect!'], 401);
         }
+    }
+
+    public function uploadDocuments(Request $request){
+
     }
 }

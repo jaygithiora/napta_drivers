@@ -25,19 +25,49 @@
             <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col-md-12 mb-3">
-                    
-                    <!-- small box -->
-                    <div class="card card-primary card-outline">
-                        <div class="card-body box-profile">
-                            <div class="text-center">
-                              <img class="profile-user-img img-fluid img-circle"
-                                   src="../../dist/img/user4-128x128.jpg"
-                                   alt="User profile picture">
+                    <div class="card card-primary card-outline card-outline-tabs">
+                        <div class="card-header p-0 border-bottom-0">
+                            <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#profile-tab" role="tab" aria-controls="profile-tab" aria-selected="true"><i class='fas fa-user'></i> Profile</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#profile-docs-tab" role="tab" aria-controls="profile-docs-tab" aria-selected="false"><i class='fas fa-cloud-upload-alt'></i> Document Uploads</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-two-tab">
+                                <div class="tab-pane fade show active text-center" id="profile-tab" role="tabpanel" aria-labelledby="profile-tab">
+                                    <div class="text-center">
+                                        <img class="profile-user-img img-fluid img-circle"
+                                        src="../../dist/img/user4-128x128.jpg"
+                                        alt="User profile picture">
+                                    </div>
+                                    <h3 class="profile-username text-center">{{ \Auth::user()->firstname }} {{ \Auth::user()->lastname }}</h3>
+                                    @foreach($user->roles as $role)
+                                        <span class='badge border border-primary text-primary'>{{$role->name}}</span>
+                                    @endforeach
+                                    <br>
+                                    <span class="text-muted">{{ \Auth::user()->email }}</span>
+                                </div>
+                                <div class="tab-pane fade" id="profile-docs-tab" role="tabpanel" aria-labelledby="profile-docs-tab">
+                                    @if($documentTypes != null)
+                                        
+                                        <form method="POST" action="{{ url('profile/documents/upload') }}" class="alert border dropzone" id='dropzone'>
+                                            @csrf
+                                            @foreach($documentTypes as $doc)
+                                                <input type='radio' name='document_type_id' id='doc{{$doc->document_type->id}}'>
+                                                <label for='doc{{$doc->document_type->id}}' style='font-weight: 400;'>{{$doc->document_type->name}}</label>&nbsp;
+                                            @endforeach
+                                            <div class='dz-default dz-message'>
+                                                
+                                                <h6><i class='fas fa-cloud-upload-alt'></i> &nbsp;Drop files here or click to upload </h6>
+                                            </div>
+                                        </form>
+                                    @endif
+                                </div>
                             </div>
-            
-                            <h3 class="profile-username text-center">{{ \Auth::user()->firstname }} {{ \Auth::user()->lastname }}</h3>
-            
-                            <p class="text-muted text-center">{{ \Auth::user()->email }}</p>
                         </div>
                         <div class='card-footer text-end'>
                             <button class='btn btn-white btn-sm border'  data-bs-toggle="modal" data-bs-target="#changePasswordModal"> <i class='fas fa-edit'></i>&nbsp;Change Password</button>&nbsp;
@@ -129,6 +159,87 @@
 @endsection
 @push('js')
     <script>
+        Dropzone.options.dropzone =
+            {
+                maxFiles: 5, 
+                maxFilesize: 4,
+                acceptedFiles: "image/*,application/pdf,.doc,.docx,.xls,.xlsx,.csv,.tsv,.ppt,.pptx,.pages,.odt,.rtf",
+                addRemoveLinks: true,
+                timeout: 50000,
+                init:function() {
+                    // Get images
+                    var myDropzone = this;
+                    $.ajax({
+                        url: "{{ url('profile/documents/upload')}}",
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data){
+                        //console.log(data);
+                        $.each(data, function (key, value) {
+                            var file = {name: value.name, size: value.size};
+                            myDropzone.options.addedfile.call(myDropzone, file);
+                            myDropzone.options.thumbnail.call(myDropzone, file, value.path);
+                            myDropzone.emit("complete", file);
+                        });
+                        }
+                    });
+                },
+                removedfile: function(file) 
+                {
+                    if (this.options.dictRemoveFile) {
+                        return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
+                            if(file.previewElement.id != ""){
+                                var name = file.previewElement.id;
+                            }else{
+                                var name = file.name;
+                            }
+                            //console.log(name);
+                            $.ajax({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    },
+                                type: 'POST',
+                                url: "{{ url('profile/documents/remove') }}",
+                                data: {filename: name},
+                                success: function (data){
+                                    alert(data.success +" File has been successfully removed!");
+                                },
+                                error: function(e) {
+                                    alert(data.error);
+                                    console.log(e);
+                                }
+                            });
+                            var fileRef;
+                            return (fileRef = file.previewElement) != null ? 
+                            fileRef.parentNode.removeChild(file.previewElement) : void 0;
+                        });
+                    }		
+                },
+                success: function(file, response) 
+                {
+                    file.previewElement.id = response.success;
+                    //console.log(file); 
+                    // set new images names in dropzone’s preview box.
+                    var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
+                    file.previewElement.querySelector("img").alt = response.success;
+                    olddatadzname.innerHTML = response.success;
+                },
+                error: function(file, response)
+                {
+                    if($.type(response) === "string")
+                        var message = response; //dropzone sends it's own error messages in string
+                    else
+                        var message = response.message;
+                    file.previewElement.classList.add("dz-error");
+                    _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+                    _results = [];
+                    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                        node = _ref[_i];
+                        _results.push(node.textContent = message);
+                    }
+                    return _results;
+                }
+            }
         $(document).ready(function(){
             $('#profileModal .btnSave').click(function(){
                 var btn = $(this);

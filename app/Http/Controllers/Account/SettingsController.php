@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use DataTables;
 
-class SettingsController extends Controller
+class SettingsController extends HomeController
 {
     public function documentSettings(){
         return view('account.document_settings');
