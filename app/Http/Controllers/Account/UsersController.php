@@ -25,7 +25,7 @@ class UsersController extends Controller
 
     public function getUsers(Request $request)
     {
-        return Datatables::of(User::with(['country', 'roles']))
+        return Datatables::of(User::with(['country', 'roles', 'documents']))
             ->addIndexColumn()
             ->addColumn('name', function ($row) {
                 return $row->firstname . ' ' . $row->lastname;
@@ -33,6 +33,8 @@ class UsersController extends Controller
             return Carbon::parse($row->created_at)->diffForHumans();
         })->addColumn('status', function ($row) {
             return $row->status?"<span class='badge bg-primary'>Active</span>":"<span class='badge bg-danger'>In-Active</span>";
+        })->addColumn('files', function ($row) {
+            return $row->documents->count()." File(s)";
         })->addColumn('role', function ($row) {
             $name = "";
             foreach ($row->roles as $role) {
@@ -58,7 +60,7 @@ class UsersController extends Controller
                                 '<span class="d-none country_name">'.$row->country->name.'</span>'.
                                 '<span class="d-none country_id">'.$row->country->id.'</span>'.
                                 '<button class="btn-edit btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#userModal"><i class="fas fa-edit"></i> Edit</button> ' . '
-                                <!--<a href="javascript:void(0)" class="delete btn btn-outline-primary btn-sm"><i class="fas fa-eye"></i> View</a>-->'
+                                <a href="javascript:void(0)" class="delete btn btn-outline-primary btn-sm"><i class="fas fa-eye"></i> View</a>'
                         .'</div>';
             return $actionBtn;
         })
@@ -213,5 +215,9 @@ class UsersController extends Controller
             $role->givePermissionTo($permission);
         }
         return response()->json(['success' => "Permissions assigned successfully!"]);
+    }
+
+    public function documents(){
+        return view('account.documents');
     }
 }

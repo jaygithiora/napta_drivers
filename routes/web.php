@@ -80,6 +80,9 @@ Route::controller(SettingsController::class)->prefix('settings')->group(function
 });
 Route::controller(ProfileController::class)->prefix('profile')->group(function () {
     Route::get('/','index');
+    Route::post('/documents/upload', 'uploadDocuments');
+    Route::get('/documents', 'getDocuments');
+    Route::post('/documents/remove', 'removeDocument');
     Route::post('/update/name', 'editProfileName');
     Route::post('/change/password', 'changePassword');
 });

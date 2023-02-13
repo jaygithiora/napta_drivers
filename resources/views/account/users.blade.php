@@ -41,6 +41,7 @@
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Phone</th>
+                                        <th>Files</th>
                                         <th>Country</th>
                                         <th>Role</th>
                                         <th>Status</th>
@@ -137,6 +138,7 @@
                 { data: 'name', name: 'name' },
                 { data: 'email', name: 'email' },
                 { data: 'phone', name: 'phone' },
+                { data: 'files', name: 'files' },
                 { data: 'country.name', name: 'country.name' },
                 { data: 'role', name: 'role' },
                 { data: 'status', name: 'status' },

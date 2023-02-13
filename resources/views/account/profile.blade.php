@@ -53,11 +53,11 @@
                                 </div>
                                 <div class="tab-pane fade" id="profile-docs-tab" role="tabpanel" aria-labelledby="profile-docs-tab">
                                     @if($documentTypes != null)
-                                        
+                                        @if($documentTypes->count() > 0)
                                         <form method="POST" action="{{ url('profile/documents/upload') }}" class="alert border dropzone" id='dropzone'>
                                             @csrf
                                             @foreach($documentTypes as $doc)
-                                                <input type='radio' name='document_type_id' id='doc{{$doc->document_type->id}}'>
+                                                <input type='radio' name='document_type_id' id='doc{{$doc->document_type->id}}' value='{{$doc->document_type->id}}' checked>
                                                 <label for='doc{{$doc->document_type->id}}' style='font-weight: 400;'>{{$doc->document_type->name}}</label>&nbsp;
                                             @endforeach
                                             <div class='dz-default dz-message'>
@@ -65,6 +65,11 @@
                                                 <h6><i class='fas fa-cloud-upload-alt'></i> &nbsp;Drop files here or click to upload </h6>
                                             </div>
                                         </form>
+                                        @else
+                                            <div class='alert alert-warning'><i class='fas fa-ban'></i> &nbsp;No Uploads yet</div>
+                                        @endif
+                                    @else
+                                        <div class='alert alert-warning'><i class='fas fa-ban'></i> &nbsp;No Uploads yet</div>
                                     @endif
                                 </div>
                             </div>
@@ -170,13 +175,13 @@
                     // Get images
                     var myDropzone = this;
                     $.ajax({
-                        url: "{{ url('profile/documents/upload')}}",
+                        url: "{{ url('profile/documents')}}",
                         type: 'GET',
                         dataType: 'json',
                         success: function(data){
                         //console.log(data);
                         $.each(data, function (key, value) {
-                            var file = {name: value.name, size: value.size};
+                            var file = {name: value.name+"("+value.document_type+")", size: value.size};
                             myDropzone.options.addedfile.call(myDropzone, file);
                             myDropzone.options.thumbnail.call(myDropzone, file, value.path);
                             myDropzone.emit("complete", file);

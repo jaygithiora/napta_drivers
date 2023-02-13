@@ -92,6 +92,20 @@ body {
     color: #ffffff;
     border-color: #ffffff;
 }
+.dz-remove{
+    text-decoration: none !important;
+    /*color: #ff6a00 !important;*/
+    background-color: #ff6a00;
+    padding: 0.5em 1em;
+    margin-top: 0.4em;
+    border-radius: 5px;
+    border: 1px solid #ff6a00 !important;
+}
+.dz-remove:hover{
+    text-decoration: none !important;
+    color: #ff6a00 !important;
+    background-color: #fff;
+}
 
 /*
 label{

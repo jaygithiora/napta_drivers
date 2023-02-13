@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use App\Models\DocumentTypeRole;
+use App\Models\DocumentUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +24,7 @@ class ProfileController extends Controller
         $documentTypes = null;
         if($user->roles->count() > 0){
             $role = $user->roles->first();
-            $documentTypes = DocumentTypeRole::with('document_type')->get();
+            $documentTypes = DocumentTypeRole::with('document_type')->where('role_id', $role->id)->get();
         }
         return view('account.profile', ['user'=>$user, 'documentTypes'=>$documentTypes]);
     }
@@ -72,6 +73,52 @@ class ProfileController extends Controller
     }
 
     public function uploadDocuments(Request $request){
+        \Log::info($request->all());
+        $validator = Validator::make($request->all(), [
+            "document_type_id" => 'required|integer|min:1',
+            'file' => 'required|file',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->messages()], 400);
+        }
+        $image = $request->file('file');
+        $fileInfo = $image->getClientOriginalName();
+        $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
+        $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
+        $fileName = $filename . '-' . time() . '.' . $extension;
+        $image->move(public_path('uploads'), $fileName);
 
+        $documentUpload = new DocumentUpload;
+        $documentUpload->upload_name = $fileInfo;
+        $documentUpload->name = $fileName;
+        $documentUpload->user_id = Auth::user()->id;
+        $documentUpload->document_type_id = $request->document_type_id;
+        if ($documentUpload->save()) {
+            return response()->json(['success' => $fileName]);
+        } else {
+            return response()->json(['error' => "Unable to save file!"], 401);
+        }
+    }
+    public function getDocuments(Request $request)
+    {
+        $documentUploads = DocumentUpload::with("document_type")->where('user_id', Auth::user()->id)->get()->toArray();
+        foreach ($documentUploads as $doc) {
+            $obj['name'] = $doc['name'];
+            $filePath = public_path('uploads/') . $doc['name'];
+            $obj['size'] = filesize($filePath);
+            $obj['path'] = url('uploads/' . $doc['name']);
+            $obj['document_type'] = $doc['document_type']['name'];
+            $data[] = $obj;
+        }
+        return response()->json($data);
+    }
+    public function removeDocument(Request $request){
+        $filename =  $request->get('filename');
+        DocumentUpload::where('name',$filename)->delete();
+        $path = public_path('uploads').$filename;
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        return response()->json(['success'=>$filename]);
     }
 }
