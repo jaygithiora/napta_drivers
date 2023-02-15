@@ -269,6 +269,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ url('drivers/requests') }}" class="nav-link {{ Request::is('drivers/requests')?'active':'' }}">
+                                <i class="nav-icon fas fa-taxi"></i>
+                                <p>
+                                    Driver Requests
+                                </p>
+                            </a>
+                        </li>
                         <!--
                         <li class="nav-item {{ Request::is('vehicles*')?'menu-open':'' }}">
                             <a href="#" class="nav-link {{ Request::is('vehicles*')?'active':'' }}">
@@ -341,7 +349,7 @@
                                 <li class="nav-item">
                                     <a href="{{ url('users') }}" class="nav-link {{ Request::is('users')?'active':'' }}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Users</p>
+                                        <p>All Users</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -372,6 +380,12 @@
                                     <a href="{{ url('settings/countries') }}" class="nav-link {{ Request::is('settings/countries')?'active':'' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Countries</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('settings/vehicle_types') }}" class="nav-link {{ Request::is('settings/vehicle_types')?'active':'' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Vehicle Settings</p>
                                     </a>
                                 </li>
                             </ul>

@@ -10,6 +10,7 @@ use App\Http\Controllers\Account\VehicleController;
 use App\Http\Controllers\Account\CountryController;
 use App\Http\Controllers\Auth\RegisterDriverController;
 use App\Http\Controllers\Account\SettingsController;
+use App\Http\Controllers\Account\DriverController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,6 +52,10 @@ Route::get('/permits', [PermitController::class, 'permits']);
 
 Route::get('search/countries', [CountryController::class, 'searchCountries']);
 
+Route::controller(DriverController::class)->prefix('drivers')->group(function () {
+    Route::get('/requests', 'driverRequests');
+});
+
 Route::controller(UsersController::class)->prefix('users')->group(function () {
     Route::get('/', [UsersController::class, 'index']);
     Route::get('/datatable/users', [UsersController::class, 'getUsers']);
@@ -77,6 +82,10 @@ Route::controller(SettingsController::class)->prefix('settings')->group(function
     Route::get('/document_types/view/{id}', 'viewDocumentType');
     Route::get('/document_types/datatable/view/roles/{id}', 'getDocumentTypeRoles');
     Route::post('/document_type/roles/add', 'addDocumentTypeRoles');
+
+    Route::get('vehicle_types', 'vehicleTypes');
+    Route::get('datatable/vehicle_types', 'getVehicleTypes');
+    Route::post('vehicle_type/add', 'addVehicleType');
 });
 Route::controller(ProfileController::class)->prefix('profile')->group(function () {
     Route::get('/','index');

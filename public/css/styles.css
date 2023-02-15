@@ -175,6 +175,9 @@ a{
 a:hover{
     color: #333399;
 }
+a.btn{
+    text-decoration: none !important;
+}
 /*.dropdown .profile{
     border: 1px solid #333399;
     border-radius: 100px;

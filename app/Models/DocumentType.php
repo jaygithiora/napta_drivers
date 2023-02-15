@@ -10,4 +10,8 @@ class DocumentType extends Model
     use HasFactory;
 
     protected $fillable = ["name", "description", "required", "status"];
+
+    public function document_uploads(){
+        return $this->hasMany(DocumentUpload::class);
+    }
 }

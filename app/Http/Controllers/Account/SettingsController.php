@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use App\Models\DocumentType;
 use App\Models\DocumentTypeRole;
+use App\Models\VehicleType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -87,7 +88,6 @@ class SettingsController extends HomeController
             })->escapeColumns([])
             ->make(true);
     }
-
     public function addDocumentTypeRoles(Request $request){
         $validator = Validator::make($request->all(), [
             "id"=>'required|integer|min:1',
@@ -110,6 +110,54 @@ class SettingsController extends HomeController
             return response()->json(['success' => 'Document Type Role pdated successfully!']);
         }else{
             return response()->json(['error' => 'Invalid Document Type Id!']);
+        }
+    }
+
+    public function vehicleTypes(){
+        return view('account.vehicle_types');
+    }
+    public function getVehicleTypes(Request $request){
+        return Datatables::of(VehicleType::get())
+            ->addIndexColumn()
+            ->editColumn('created_at', function ($row) {
+                return Carbon::parse($row->created_at)->diffForHumans();
+            })->editColumn('status', function ($row) {
+                return $row->status?"<span class='badge bg-primary'>Active</span>":"<span class='badge bg-secondary'>In-Active</span>";
+            })->addColumn('action', function ($row) {
+                $actionBtn = '<div style="white-space: nowrap;" class="text-end">' .
+                                '<span class="d-none id">'.$row->id.'</span>'.
+                                '<span class="d-none name">'.$row->name.'</span>'.
+                                '<span class="d-none description">'.$row->description.'</span>'.
+                                '<span class="d-none status">'.$row->status.'</span>'.
+                                '<button class="btn-edit btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#vehicleTypeModal"><i class="fas fa-edit"></i> Edit</button> ' . '
+                                 <!--<a href="'.url('/settings/document_types/view/'.$row->id).'" class="delete btn btn-outline-primary btn-sm"><i class="fas fa-eye"></i> View</a>-->'
+                            . '</div>';
+                return $actionBtn;
+            })->escapeColumns([])
+            ->make(true);
+    }
+    public function addVehicleType(Request $request){
+        $validator = Validator::make($request->all(), [
+            "id"=>'required|integer|min:0',
+            "name"=>'required|string|unique:vehicle_types,name,'.$request->id,
+            "description"=>"nullable|string",
+            "status"=>"required|min:0|max:1"
+        ]);
+        if ($validator->fails()){
+            return response()->json(['errors' => $validator->messages()], 400);
+        }
+        $vehicleType = new VehicleType;
+        if ($request->id > 0) {
+            $vehicleType = VehicleType::findOrFail($request->id);
+        }
+        $vehicleType->name = $request->name;
+        $vehicleType->description = $request->description;
+        $vehicleType->status = $request->status;
+
+        if ($vehicleType->save()) {
+            return response()->json(['success' => 'Vehicle Type updated successfully!']);
+        }else{
+            return response()->json(['error' => 'Unable to update Vehicle Type!']);
         }
     }
 }
