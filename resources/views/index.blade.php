@@ -17,6 +17,50 @@
         </div>
     </div>
 </div>
+<div class='container'>
+    <div class='row pt-5 pb-5'>
+        <div class='col-sm-12'>
+            <h4><i class='fas fa-truck'></i> &nbsp;Vehicle Categories</h4>
+        </div>
+        @foreach($vehicle_types as $vehicle_type)
+            <div class='col-sm-4 mt-3'>
+                <div class='card border h-100'>
+                    <div class='card-body'>
+                        <h5><i class='fas fa-circle text-primary small'></i> {{$vehicle_type->name}}</h5>
+                        <p>{{$vehicle_type->description}}</p>
+                    </div>
+                    
+                    <div class='card-footer bg-white border-0 text-center'>
+                        <button class='btn btn-primary btn-sm w-100'><i class='fas fa-search'></i> Find Drivers</button>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+<div class='container-fluid bg-white'>
+    <div class='container'>
+        <div class='row pt-5 pb-5'>
+            <div class='col-sm-12'>
+                <h4><i class='fas fa-user'></i> &nbsp;Our Top Drivers</h4>
+            </div>
+            @foreach($vehicle_types as $vehicle_type)
+                <div class='col-sm-4 mt-3'>
+                    <div class='card border h-100'>
+                        <div class='card-body'>
+                            <h5><i class='fas fa-circle text-primary small'></i> {{$vehicle_type->name}}</h5>
+                            <p>{{$vehicle_type->description}}</p>
+                        </div>
+                        
+                        <div class='card-footer bg-white border-0 text-center'>
+                            <button class='btn btn-warning btn-sm w-100'><i class='fas fa-search'></i> Find Drivers</button>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</div>
 @endsection
 @push('js')
 <script>
