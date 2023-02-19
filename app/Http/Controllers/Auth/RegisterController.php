@@ -40,6 +40,8 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+        $role = Role::where('name', 'User')->first();
+        view()->share('role', $role);
     }
 
     /**

@@ -1,12 +1,11 @@
 <?php
 
+use App\Http\Controllers\Account\DocumentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\Account\HomeController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\UsersController;
-use App\Http\Controllers\Account\PermitController;
-use App\Http\Controllers\Account\VehicleController;
 use App\Http\Controllers\Account\CountryController;
 use App\Http\Controllers\Auth\RegisterDriverController;
 use App\Http\Controllers\Account\SettingsController;
@@ -30,30 +29,14 @@ Route::get('register/driver', [RegisterDriverController::class, 'index']);
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-Route::get('/vehicles', [VehicleController::class, 'index']);
-Route::get('datatable/vehicles', [VehicleController::class, 'getVehicles']);
-Route::post('vehicles/add', [VehicleController::class, 'addVehicle']);
-
-Route::get('/vehicles/make', [VehicleController::class, 'vehicleMake']);
-Route::get('datatable/vehicles/make', [VehicleController::class, 'getVehiclesMake']);
-Route::post('vehicles/make/add', [VehicleController::class, 'addVehicleMake']);
-Route::get('search/vehicles/make', [VehicleController::class, 'searchVehiclesMake']);
-
-Route::get('/vehicles/models', [VehicleController::class, 'vehicleModels']);
-Route::get('datatable/vehicles/models', [VehicleController::class, 'getVehiclesModel']);
-Route::post('vehicles/model/add', [VehicleController::class, 'addVehicleModel']);
-Route::get('search/vehicles/model', [VehicleController::class, 'searchVehiclesModel']);
-
-
-Route::get('/vehicles/owners', [VehicleController::class, 'vehicleOwners']);
-
-Route::get('/permits', [PermitController::class, 'permits']);
-
 Route::get('search/countries', [CountryController::class, 'searchCountries']);
 
 Route::controller(DriverController::class)->prefix('drivers')->group(function () {
     Route::get('/requests', 'driverRequests');
+    Route::get('document/uploads/{id}', 'viewDocumentUpload');
+});
+Route::controller(DocumentController::class)->prefix('documents')->group(function(){
+    Route::get('upload/{id}', 'viewDocumentsUpload');
 });
 
 Route::controller(UsersController::class)->prefix('users')->group(function () {

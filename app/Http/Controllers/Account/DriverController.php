@@ -15,4 +15,8 @@ class DriverController extends Controller
     public function driverRequests(){
         return view('account.driver_requests');
     }
+
+    public function viewDocumentUpload(Request $request){
+        return view('account.document_upload');
+    }
 }

@@ -31,26 +31,18 @@ class HomeController extends Controller
     public function index()
     {
         $user = User::with('roles')->where('id', Auth::user()->id)->first();
-        $can_proceed = true;
-        $driver = Driver::where('id', Auth::user()->id)->first();
-        if($user->hasRole('Driver')){
-            $role = Role::where('name', 'Driver')->first();
-            $uploads = DocumentTypeRole::where('role_id', $role->id)->with('document_type.document_uploads')->whereHas("document_type", function ($query) {
+        $role_ids = $user->roles->pluck('id');
+        $uploads = DocumentTypeRole::whereIn('role_id', $role_ids)->with('document_type.document_uploads')->whereHas("document_type", function ($query) {
                 $query->where('required', 1);
             })->get();
             foreach($uploads as $upload){
                 if($upload->document_type->required){
                     if($upload->document_type->document_uploads->count() == 0){
                         $can_proceed = false;
+                        return redirect()->to('documents/upload/'.$upload->id);
                     }
                 }
             }
-            if($driver == null){
-                $driver = new Driver;
-                $driver->user_id = Auth()->user()->id;
-                $driver->save();
-            }
-        }
-        return view('account.home', ['user'=>$user, 'can_proceed'=>$can_proceed, 'driver'=>$driver]);
+        return view('account.home', ['user'=>$user]);
     }
 }

@@ -22,11 +22,6 @@ return new class extends Migration
             $table->boolean("status")->default(true);
             $table->timestamps();
         });
-        $country = new Country;
-        $country->name = "Kenya";
-        $country->country_code = "KE";
-        $country->phone_code = "254";
-        $country->save();
     }
 
     /**

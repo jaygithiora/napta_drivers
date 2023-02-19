@@ -16,10 +16,10 @@
                 <hr>
                 <form method="POST" action="{{ route('register') }}" class='row'>
                     @csrf
-
+                    <input type='hidden' name='role' value="{{$role != null?$role->id:''}}">
                     <div class="col-sm-6 form-group">
                         <label for="firstname">{{ __('First Name') }}</label>
-                        <input id="firstname" type="text" class="form-control @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" required autocomplete="firstname" 
+                        <input id="firstname" type="text" class="form-control @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" required autocomplete="firstname"
                         autofocus placeholder="First Name">
 
                         @error('firstname')
@@ -31,7 +31,7 @@
 
                     <div class="col-sm-6 form-group">
                         <label for="larstname">{{ __('Last Name') }}</label>
-                        <input id="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required autocomplete="lastname" 
+                        <input id="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required autocomplete="lastname"
                         autofocus placeholder="Last Name">
 
                         @error('lastname')
@@ -43,7 +43,7 @@
 
                     <div class="col-sm-12 form-group mt-3">
                         <label for="email">{{ __('Email Address') }}</label>
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" 
+                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
                         value="{{ old('email') }}" required autocomplete="email" placeholder="Email Address">
 
                         @error('email')
@@ -67,7 +67,7 @@
 
                     <div class="col-sm-6 form-group mt-3">
                         <label for="phone">{{ __('Phone Number') }}</label>
-                        <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" 
+                        <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone"
                         value="{{ old('phone') }}" required autocomplete="email" placeholder="Phone Number">
 
                         @error('phone')
@@ -78,7 +78,7 @@
                     </div>
                     <div class="col-sm-6 form-group mt-3">
                         <label for="password">{{ __('Password') }}</label>
-                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" 
+                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"
                         required autocomplete="new-password" placeholder="Password">
 
                         @error('password')
@@ -91,7 +91,7 @@
                     <div class="col-sm-6 form-group mt-3">
                         <label for="password-confirm">{{ __('Confirm Password') }}</label>
 
-                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" 
+                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password"
                             placeholder="Confirm Password">
                     </div>
 
@@ -136,7 +136,7 @@
                     cache: true
                 }
             });
-            
+
         });
-   </script> 
+   </script>
 @endpush
