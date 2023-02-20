@@ -26,13 +26,13 @@
             <div class='col-sm-4 mt-3'>
                 <div class='card border h-100'>
                     <div class='card-body'>
-                        <h5><i class='fas fa-circle text-primary small'></i> {{$vehicle_type->name}}</h5>
+                        <h5><i class='fas fa-circle text-primary'></i> {{$vehicle_type->name}}</h5>
                         <p>{{$vehicle_type->description}}</p>
                     </div>
-                    
+                    <!--
                     <div class='card-footer bg-white border-0 text-center'>
                         <button class='btn btn-primary btn-sm w-100'><i class='fas fa-search'></i> Find Drivers</button>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         @endforeach
@@ -51,10 +51,10 @@
                             <h5><i class='fas fa-circle text-primary small'></i> {{$vehicle_type->name}}</h5>
                             <p>{{$vehicle_type->description}}</p>
                         </div>
-                        
+                        <!--
                         <div class='card-footer bg-white border-0 text-center'>
                             <button class='btn btn-warning btn-sm w-100'><i class='fas fa-search'></i> Find Drivers</button>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             @endforeach

@@ -32,11 +32,17 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('search/countries', [CountryController::class, 'searchCountries']);
 
 Route::controller(DriverController::class)->prefix('drivers')->group(function () {
+    Route::get('/', 'drivers');
+    Route::get('/datatable', 'getDrivers');
     Route::get('/requests', 'driverRequests');
     Route::get('document/uploads/{id}', 'viewDocumentUpload');
 });
 Route::controller(DocumentController::class)->prefix('documents')->group(function(){
     Route::get('upload/{id}', 'viewDocumentsUpload');
+    Route::get('all_documents', 'documents');
+    Route::get('datatable/all_documents', 'getDocuments');
+    Route::get('my_documents', 'myDocuments');
+    Route::get('datatable/my_documents', 'getMyDocuments');
 });
 
 Route::controller(UsersController::class)->prefix('users')->group(function () {

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->text("description")->nullable();
             $table->string("image")->nullable();
+            $table->boolean("suspended")->default(false);
             $table->boolean("status")->default(false);
             $table->timestamps();
         });

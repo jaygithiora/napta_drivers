@@ -22,23 +22,6 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            @if($user->hasRole('Driver'))
-                @if(!$can_proceed)
-                    <div class='row alert border-dark d-flex align-items-center bg-white'>
-                        <div class='col-2 col-sm-1 text-right '>
-                            <i class='fas fa-info-circle fa-3x'></i>
-                        </div>
-                        <div class='col-10 col-sm-8'>
-                            Hi <b>{{$user->firstname}}</b>, Welcome to the driver Dashoard. <br>
-                            <span class='bg-danger pt-1 pb-1 pe-2 ps-2 small' style='border-radius: 5px;'><i class='fas fa-exclamation-triangle'></i> &nbsp;Please complete your profile by uploading all documents for verification</span>
-                            
-                        </div>
-                        <div class='col-12 col-sm-3 text-right'>
-                            <a href='{{url("profile")}}' class='btn btn-danger btn-sm'><i class='fas fa-cloud-upload-alt'></i> Upload Documents</a>
-                        </div>
-                    </div>
-                @endif
-            @endif
             <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col-lg-3 col-6">

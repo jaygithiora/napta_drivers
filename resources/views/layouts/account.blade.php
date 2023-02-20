@@ -277,42 +277,38 @@
                                 </p>
                             </a>
                         </li>
-                        <!--
-                        <li class="nav-item {{ Request::is('vehicles*')?'menu-open':'' }}">
-                            <a href="#" class="nav-link {{ Request::is('vehicles*')?'active':'' }}">
-                                <i class="nav-icon fas fa-truck"></i>
+                        <li class="nav-item">
+                            <a href="{{ url('drivers') }}" class="nav-link {{ Request::is('drivers')?'active':'' }}">
+                                <i class="nav-icon fas fa-id-card-alt"></i>
                                 <p>
-                                    Vehicles
+                                    Drivers
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Request::is('documents*')?'menu-open':'' }}">
+                            <a href="#" class="nav-link {{ Request::is('documents*')?'active':'' }}">
+                                <i class="nav-icon fas fa-file-upload"></i>
+                                <p>
+                                    Documents
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('vehicles/make') }}" class="nav-link {{ Request::is('vehicles/make')?'active':'' }}">
+                                    <a href="{{ url('documents/all_documents') }}" class="nav-link {{ Request::is('documents/all_documents')?'active':'' }}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Vehicles Make</p>
+                                        <p>All Documents</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('vehicles/models') }}" class="nav-link {{ Request::is('vehicles/models')?'active':'' }}">
+                                    <a href="{{ url('documents/my_documents') }}" class="nav-link {{ Request::is('documents/my_documents')?'active':'' }}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Vehicles Models</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('vehicles') }}" class="nav-link {{ Request::is('vehicles')?'active':'' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Vehicles</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('vehicles/owners') }}" class="nav-link {{ Request::is('vehicles/owners')?'active':'' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Vehicle Owners</p>
+                                        <p>My Documents</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
+                        <!--
                         <li class="nav-item {{ Request::is('permits*')?'menu-open':'' }}">
                             <a href="#" class="nav-link {{ Request::is('permits*')?'active':'' }}">
                                 <i class="nav-icon fas fa-ticket-alt"></i>
