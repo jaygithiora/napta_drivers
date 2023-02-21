@@ -178,6 +178,9 @@ a:hover{
 a.btn{
     text-decoration: none !important;
 }
+.dropdown-toggle::after {
+    content: none;
+}
 /*.dropdown .profile{
     border: 1px solid #333399;
     border-radius: 100px;

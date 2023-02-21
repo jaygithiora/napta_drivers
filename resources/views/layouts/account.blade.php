@@ -269,21 +269,28 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ url('drivers/requests') }}" class="nav-link {{ Request::is('drivers/requests')?'active':'' }}">
-                                <i class="nav-icon fas fa-taxi"></i>
-                                <p>
-                                    Driver Requests
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('drivers') }}" class="nav-link {{ Request::is('drivers')?'active':'' }}">
+                        <li class="nav-item {{ Request::is('drivers*')?'menu-open':'' }}">
+                            <a href="#" class="nav-link {{ Request::is('drivers*')?'active':'' }}">
                                 <i class="nav-icon fas fa-id-card-alt"></i>
                                 <p>
                                     Drivers
+                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('drivers') }}" class="nav-link {{ Request::is('drivers') ||Request::is('drivers/view*') ?'active':'' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>All Drivers</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('drivers/requests') }}" class="nav-link {{ Request::is('drivers/requests')?'active':'' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Drivers Requests</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item {{ Request::is('documents*')?'menu-open':'' }}">
                             <a href="#" class="nav-link {{ Request::is('documents*')?'active':'' }}">

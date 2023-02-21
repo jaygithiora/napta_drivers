@@ -109,7 +109,7 @@
         var table = $('.table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ url('documents/datatable/my_documents') }}",
+            ajax: "{{ url('documents/datatable/my_documents/'.Auth::user()->id) }}",
             dom: 'lBtrip', //'lfBtrip'
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
