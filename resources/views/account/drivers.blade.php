@@ -42,7 +42,6 @@
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>Files</th>
                                         <th>Country</th>
                                         <th>Role</th>
                                         <th>Status</th>
@@ -136,11 +135,10 @@
             dom: 'lBtrip', //'lfBtrip'
             columns: [
                 //{ data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                { data: 'user.name', name: 'user.name' },
+                { data: 'name', name: 'name' },
                 { data: 'user.email', name: 'user.email' },
-                { data: 'phone', name: 'phone' },
-                { data: 'files', name: 'files' },
-                { data: 'country.name', name: 'country.name' },
+                { data: 'user.phone', name: 'user.phone' },
+                { data: 'user.country.name', name: 'user.country.name' },
                 { data: 'role', name: 'role' },
                 { data: 'status', name: 'status' },
                 { data: 'created_at', name: 'created_at' },

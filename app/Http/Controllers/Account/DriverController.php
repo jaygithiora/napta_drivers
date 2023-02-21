@@ -18,9 +18,14 @@ class DriverController extends Controller
         return view('account.drivers');
     }
     public function getDrivers(Request $request){
-        return DataTables::of(Driver::with(['user'])->get())
+        return DataTables::of(Driver::with(['user.country', 'user.roles'])->get())
             ->addIndexColumn()
-            ->editColumn('created_at', function ($row) {
+            ->editColumn('name', function($row){
+                return $row->user->firstname.' '.$row->user->lastname;
+            })->editColumn('role', function($row){
+                $role = $row->user->roles->first();
+                return $role != null?$role->name:"";
+            })->editColumn('created_at', function ($row) {
                 return Carbon::parse($row->created_at)->diffForHumans();
             })->addColumn('status', function ($row) {
                 return "<span class='badge bg-primary'>Active</span>";
@@ -31,7 +36,7 @@ class DriverController extends Controller
                                 '<span class="d-none phone_code">'.$row->phone_code.'</span>'.
                                 '<span class="d-none country_code">'.$row->country_code.'</span>'.
                                 '<span class="d-none status">'.$row->status.'</span>'.
-                                '<button class="btn-edit btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#countryModal"><i class="fas fa-edit"></i> Edit</button> ' . '
+                                '<button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i> View</button> ' . '
                                 <!--<a href="javascript:void(0)" class="delete btn btn-outline-primary btn-sm"><i class="fas fa-eye"></i> View</a>-->'
                             . '</div>';
                 return $actionBtn;

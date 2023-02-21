@@ -23,10 +23,11 @@
             <h4><i class='fas fa-truck'></i> &nbsp;Vehicle Categories</h4>
         </div>
         @foreach($vehicle_types as $vehicle_type)
-            <div class='col-sm-4 mt-3'>
+            <div class='col-sm-3 mt-3'>
                 <div class='card border h-100'>
                     <div class='card-body'>
                         <h5><i class='fas fa-circle text-primary'></i> {{$vehicle_type->name}}</h5>
+                        <span class='text-muted'><i class='fas fa-check-circle text-green'></i> 123 drivers</span>
                         <p>{{$vehicle_type->description}}</p>
                     </div>
                     <!--
@@ -44,12 +45,47 @@
             <div class='col-sm-12'>
                 <h4><i class='fas fa-user'></i> &nbsp;Our Top Drivers</h4>
             </div>
-            @foreach($vehicle_types as $vehicle_type)
-                <div class='col-sm-4 mt-3'>
+            @foreach($drivers as $driver)
+                <div class='col-sm-3 mt-3'>
                     <div class='card border h-100'>
+                        <img src='{{asset("images/bg.jpg")}}' class='card-img-top '/>
                         <div class='card-body'>
-                            <h5><i class='fas fa-circle text-primary small'></i> {{$vehicle_type->name}}</h5>
-                            <p>{{$vehicle_type->description}}</p>
+                            <h5><i class='fas fa-circle text-primary small'></i> {{$driver->user->firstname}} {{$driver->user->lastname}}</h5>
+                            <span class='text-muted'><i class='fas fa-check-circle text-green'></i> 123 Orders</span><br>
+                            @foreach($vehicle_types as $vehicle_type)
+                                <span class='badge bg-primary'>{{$vehicle_type->name}}</span>
+                            @endforeach<br>
+                            <i class='fas fa-star text-danger'></i><i class='fas fa-star text-danger'></i><i class='fas fa-star text-danger'></i>
+                            <i class='fas fa-star text-danger'></i><i class='fas fa-star-half text-danger'></i>
+                        </div>
+                        <!--
+                        <div class='card-footer bg-white border-0 text-center'>
+                            <button class='btn btn-warning btn-sm w-100'><i class='fas fa-search'></i> Find Drivers</button>
+                        </div>-->
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+<div class='container-fluid'>
+    <div class='container'>
+        <div class='row pt-5 pb-5'>
+            <div class='col-sm-12'>
+                <h4><i class='fas fa-comments'></i> &nbsp;What our customers had to say</h4>
+            </div>
+            @foreach($drivers as $driver)
+                <div class='col-sm-3 mt-3'>
+                    <div class='card border h-100'>
+                        <img src='{{asset("images/bg.jpg")}}' class='card-img-top '/>
+                        <div class='card-body'>
+                            <h5><i class='fas fa-circle text-primary small'></i> {{$driver->user->firstname}} {{$driver->user->lastname}}</h5>
+                            <span class='text-muted'><i class='fas fa-check-circle text-green'></i> 123 Orders</span><br>
+                            @foreach($vehicle_types as $vehicle_type)
+                                <span class='badge bg-primary'>{{$vehicle_type->name}}</span>
+                            @endforeach<br>
+                            <i class='fas fa-star text-danger'></i><i class='fas fa-star text-danger'></i><i class='fas fa-star text-danger'></i>
+                            <i class='fas fa-star text-danger'></i><i class='fas fa-star-half text-danger'></i>
                         </div>
                         <!--
                         <div class='card-footer bg-white border-0 text-center'>
