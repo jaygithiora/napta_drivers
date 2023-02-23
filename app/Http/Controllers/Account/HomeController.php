@@ -31,6 +31,15 @@ class HomeController extends Controller
     public function index()
     {
         $user = User::with('roles')->where('id', Auth::user()->id)->first();
+        $driver = null;
+        if($user->hasRole('Driver')){
+            if(Driver::where('user_id', Auth::user()->id)->count() == 0){
+                $driver = new Driver;
+                $driver->user_id = Auth::user()->id;
+                $driver->save();
+            }
+            $driver = Driver::with(['user'])->where('user_id', Auth::user()->id)->first();
+        }
         $roleIds = $user->roles->pluck('id');
         $uploads = DocumentTypeRole::whereIn('role_id', $roleIds)->with('document_type.document_uploads')->whereHas("document_type", function ($query) {
             $query->where('required', 1);
@@ -42,6 +51,6 @@ class HomeController extends Controller
                 }
             }
         }
-        return view('account.home', ['user'=>$user]);
+        return view('account.home', ['user'=>$user, 'driver'=>$driver]);
     }
 }

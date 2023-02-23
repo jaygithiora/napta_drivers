@@ -24,6 +24,18 @@
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
             <div class="row">
+                @if($driver != null)
+                    @if(!$driver->status)
+                        <div class='alert border border-warning bg-white'>
+                            <i class='fas fa-exclamation-circle'></i> Hi <b>{{ $driver->user->firstname }}</b>. Welcome to <b>{{ config('app.name', 'Laravel') }}</b>. You profile is under review and you're start getting clients once your profile is approved
+                        </div>
+                    @endif
+                    @if($driver->suspended)
+                        <div class='alert border border-danger bg-white'>
+                            <i class='fas fa-exclamation-circle'></i> Hi <b>{{ $driver->user->firstname }}</b>. Your account has been <b class='text-danger'>suspended</b> for non-compliance. If you'd wish to lodge a contestation <a href='#' class='btn btn-danger btn-sm'><span class='text-white'>click here</span></a>
+                        </div>
+                    @endif
+                @endif
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
                     <div class="small-box small-box1">

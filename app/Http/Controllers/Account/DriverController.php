@@ -28,7 +28,7 @@ class DriverController extends Controller
             })->editColumn('created_at', function ($row) {
                 return Carbon::parse($row->created_at)->diffForHumans();
             })->addColumn('status', function ($row) {
-                return $row->suspended?"<span class='badge bg-danger'>Suspended</span>":($row->status?"<span class='badge bg-primary'>Active</span>":"<span class='badge bg-secondary'>Pending</span>");
+                return $row->status == 0?"<span class='badge bg-secondary'>Pending</span>":($row->status == 1?"<span class='badge bg-primary'>Approved</span>":($row->status == 2?"<span class='badge bg-warning'>Suspended</span>":"<span class='badge bg-danger'>Denied</span>"));
             })->addColumn('action', function ($row) {
                 $actionBtn = '<div style="white-space: nowrap;" class="text-end">' .
                                 '<span class="d-none id">'.$row->id.'</span>'.

@@ -59,21 +59,19 @@
             </div>
             <div class='col-sm-7 col-md-8 col-lg-9'>
                 <div class='card mb-3'>
+                    <div class='card-body row d-flex align-items-center'>
+                        <div class='col'>
+                            <h5><i class='far fa-user'></i> Driver's Profile</h5>
+                        </div>
+                        <div class='col text-right'>
+                            <button class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#reviewModal'><i class='fas fa-cog'></i> Review</button>
+                        </div>
+                    </div>
+                </div>
+                <div class='card mb-3'>
                     <div class='card-header row'>
                         <div class='col'>
                             <h5><i class='fas fa-cloud-upload-alt'></i> Driver's Uploads</h5>
-                        </div>
-                        <div class='col text-right'>
-                            <div class="dropdown">
-                                <a class="btn btn-primary dropdown-toggle btn-sm" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Options&nbsp;<span><i class="fas fa-angle-down"></i></span>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <li><a href="'.asset('uploads/'.$row->name).'" class="dropdown-item" download="'.$row->upload_name.'"><i class="fas fa-cloud-download-alt"></i> Download</a></li>
-                                    <li><a href="'.asset('uploads/'.$row->name).'" class="dropdown-item text-success" download="'.$row->upload_name.'"><i class="fas fa-thumbs-up"></i> Approve</a></li>
-                                    <li><a href="'.asset('uploads/'.$row->name).'" class="dropdown-item text-danger" download="'.$row->upload_name.'"><i class="fas fa-thumbs-down"></i> Reject</a></li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                     <div class='card-body'>
@@ -102,19 +100,19 @@
 <!-- /.content -->
 
 <!-- Profile Modal -->
-<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><i class='fas fa-user-plus'></i> <span>New User</span></h5>
+                <h5 class="modal-title" id="exampleModalLabel"><i class='fas fa-cog'></i> <span>Review Status</span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ url('users/add') }}" class="row">
+                <form method="POST" action="{{ url('drivers/review') }}" class="row">
                     @csrf
-                    <input type='hidden' name='id' value='0'>
+                    <input type='hidden' name='id' value='{{ $driver->id }}'>
                     <div class='col-sm-6 form-group'>
-                        <label>First Name</label>
+                        <label>Review Notes</label>
                         <input type='text' placeholder="First Name" name="firstname" class='form-control' autofocus
                             required />
                     </div>

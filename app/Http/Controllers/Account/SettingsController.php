@@ -9,7 +9,7 @@ use App\Models\VehicleType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables;
 
 class SettingsController extends HomeController
 {
@@ -75,7 +75,7 @@ class SettingsController extends HomeController
     }
 
     public function getDocumentTypeRoles(Request $request){
-        return Datatables::of(DocumentTypeRole::with(['role', 'document_type'])->where('document_type_id', $request->id)->get())
+        return DataTables::of(DocumentTypeRole::with(['role', 'document_type'])->where('document_type_id', $request->id)->get())
             ->addIndexColumn()
             ->editColumn('created_at', function ($row) {
                 return Carbon::parse($row->created_at)->diffForHumans();
