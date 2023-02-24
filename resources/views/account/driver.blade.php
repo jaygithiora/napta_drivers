@@ -111,39 +111,16 @@
                 <form method="POST" action="{{ url('drivers/review') }}" class="row">
                     @csrf
                     <input type='hidden' name='id' value='{{ $driver->id }}'>
-                    <div class='col-sm-6 form-group'>
+                    <div class='col-sm-12 form-group'>
                         <label>Review Notes</label>
-                        <input type='text' placeholder="First Name" name="firstname" class='form-control' autofocus
-                            required />
-                    </div>
-                    <div class='col-sm-6 form-group'>
-                        <label>Last Name</label>
-                        <input type='text' placeholder="Last Name" name="lastname" class='form-control' autofocus
-                            required />
+                        <textarea placeholder="Comments" name="comments" rows='4' class='form-control' required>{{$driverApproval != null?$driverApproval->comments:""}}</textarea>
                     </div>
                     <div class='col-sm-12 form-group'>
-                        <label>Email Address</label>
-                        <input type='email' placeholder="Email Address" name="email" class='form-control' required />
-                    </div>
-                    <div class='col-sm-6 form-group'>
-                        <label>Country</label>
-                        <select id='countries' name="country" class='form-control'></select>
-                    </div>
-                    <div class='col-sm-6 form-group'>
-                        <label>User Role</label>
-                        <select id='roles' name="role" class='form-control' id='roles'></select>
-                    </div>
-                    <div class='col-sm-6 form-group'>
-                        <label>Phone Number</label>
-                        <input type='text' placeholder="Phone Number" name="phone"
-                            class='form-control' required />
-                    </div>
-                    <div class='col-sm-6 form-group'>
                         <label>Status</label>
                         <select name="status" class='form-control'>
-                            <option disabled>Status</option>
-                            <option value='1'>Active</option>
-                            <option value='0'>In-Active</option>
+                            <option disabled>Approval Status</option>
+                            <option value='1' {{$driverApproval != null?($driverApproval->status==1?"selected":""):""}}>Approve</option>
+                            <option value='2' {{$driverApproval != null?($driverApproval->status==2?"selected":""):""}}>Reject</option>
                         </select>
                     </div>
                     <div class='alert feedback border d-none'>
@@ -181,50 +158,6 @@
                     searchable: true
                 },
             ]
-        });
-        $('#countries').select2({
-            width: '100%',
-            placeholder: 'Select Country',
-            //dropdownParent: $('#modelModal'),
-            allowClear: true,
-            ajax: {
-                url: '{{url("index/search/countries")}}',
-                dataType: 'json',
-                delay: 250,
-                processResults: function (data) {
-                    return {
-                        results: $.map(data, function (item) {
-                            return {
-                                text: item.name,
-                                id: item.id
-                            }
-                        })
-                    };
-                },
-                cache: true
-            }
-        });
-        $('#roles').select2({
-            width: '100%',
-            placeholder: 'Select Role',
-            //dropdownParent: $('#modelModal'),
-            allowClear: true,
-            ajax: {
-                url: '{{url("users/search/roles")}}',
-                dataType: 'json',
-                delay: 250,
-                processResults: function (data) {
-                    return {
-                        results: $.map(data, function (item) {
-                            return {
-                                text: item.name,
-                                id: item.id
-                            }
-                        })
-                    };
-                },
-                cache: true
-            }
         });
         $('.btn-launch-modal').click(function(){
             $('#userModal .modal-title span').text("New User");
@@ -290,7 +223,11 @@
                 btn.removeAttr('disabled');
             });
         });
-        $(document).on('click', '.table .btn-edit', function(){
+        $(document).on('click', '.table .btn-approve', function(e){
+            e.preventDefault();
+            var form = $(this).closest('td').find('form');
+            form.find('input[name=status]').val(1);
+            return;
             $('#userModal .modal-title span').text("Edit User");
             $('#roles').empty();
             $('#countries').empty();

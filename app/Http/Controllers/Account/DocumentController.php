@@ -79,23 +79,22 @@ class DocumentController extends Controller
             ->editColumn('created_at', function ($row) {
                 return Carbon::parse($row->created_at)->diffForHumans();
             })->addColumn('status', function ($row) {
-                return "<span class='badge bg-primary'>Active</span>";
+                return $row->status==1?"<span class='badge bg-success'>Approved</span>":($row->status==2?"<span class='badge bg-danger'>Rejected</span>":"<span class='badge bg-secondary'>Pending</span>");
             })->addColumn('action', function ($row) {
-                $actionBtn = '<div style="white-space: nowrap;" class="text-end">' .
-                                '<span class="id d-none">'.$row->id.'</span>'.
+                return '<div style="white-space: nowrap;" class="text-end">' .
+                                '<form class="d-none" action="driver/review" method="POST">'.csrf_field().'<input type="hidden" value="'.$row->id.'"><input type="hidden" name="status" value="'.$row->id.'"></form>'.
                                 '<div class="dropdown">
                                     <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fas fa-ellipsis-v"></i>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                         <li><a href="'.asset('uploads/'.$row->name).'" class="dropdown-item" download="'.$row->upload_name.'"><i class="fas fa-cloud-download-alt"></i> Download</a></li>
-                                        <li><a href="'.asset('uploads/'.$row->name).'" class="dropdown-item text-success" download="'.$row->upload_name.'"><i class="fas fa-thumbs-up"></i> Approve</a></li>
+                                        <li><a href="#" class="dropdown-item text-success btn-approve"><i class="fas fa-thumbs-up"></i> Approve</a></li>
                                         <li><a href="'.asset('uploads/'.$row->name).'" class="dropdown-item text-danger" download="'.$row->upload_name.'"><i class="fas fa-thumbs-down"></i> Reject</a></li>
                                     </ul>
                                 </div>'.
                                 '<!--<a href="'.asset('uploads/'.$row->name).'" class="btn btn-primary btn-sm" download="'.$row->upload_name.'"><i class="fas fa-cloud-download-alt"></i></a>-->'
                             . '</div>';
-                return $actionBtn;
             })->escapeColumns([])
             ->make(true);
     }

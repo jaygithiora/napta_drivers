@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use App\Models\Driver;
+use App\Models\DriverApproval;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -45,7 +46,8 @@ class DriverController extends Controller
     }
     public function driver(Request $request){
         $driver = Driver::with('user.country')->where('id', $request->id)->first();
-        return view('account.driver', ['driver'=>$driver]);
+        $driverApproval = DriverApproval::where('driver_id', $request->id)->orderBy('id', 'DESC')->first();
+        return view('account.driver', ['driver'=>$driver, 'driverApproval'=>$driverApproval]);
     }
     public function driverRequests(){
         return view('account.driver_requests');
