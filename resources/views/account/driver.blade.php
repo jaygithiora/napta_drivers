@@ -69,9 +69,11 @@
                     </div>
                 </div>
                 <div class='card mb-3'>
-                    <div class='card-header row'>
-                        <div class='col'>
-                            <h5><i class='fas fa-cloud-upload-alt'></i> Driver's Uploads</h5>
+                    <div class='card-header'>
+                        <div class='row'>
+                            <div class='col'>
+                                <h5><i class='fas fa-cloud-upload-alt'></i> Driver's Uploads</h5>
+                            </div>
                         </div>
                     </div>
                     <div class='card-body'>
@@ -137,6 +139,30 @@
         </div>
     </div>
 </div>
+
+
+<!-- Profile Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!--<div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class='fas fa-cog'></i> <span>Review Status</span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>-->
+            <div class="modal-body m-0">
+                <div class='alert border-secondary text-muted'>
+                    <i class='fas fa-spinner fa-pulse'></i> <b>Approving...</b> Please wait
+                </div>
+            </div>
+            <!--<div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i
+                        class='fas fa-times'></i> Close</button>
+                <button type="button" class="btn btn-primary btn-sm btnSave"><i class='fas fa-paper-plane'></i> Save
+                    changes</button>
+            </div>-->
+        </div>
+    </div>
+</div>
 @endsection
 @push('js')
 <script>
@@ -144,7 +170,7 @@
         var table = $('.uploads').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ url('documents/datatable/my_documents/'.Auth::user()->id) }}",
+            ajax: "{{ url('documents/datatable/my_documents/'.$driver->user_id) }}",
             dom: 'lBtrip', //'lfBtrip'
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
@@ -223,46 +249,36 @@
                 btn.removeAttr('disabled');
             });
         });
+        $('#feedbackModal').modal({backdrop: 'static', keyboard: false});
         $(document).on('click', '.table .btn-approve', function(e){
             e.preventDefault();
             var form = $(this).closest('td').find('form');
             form.find('input[name=status]').val(1);
-            return;
-            $('#userModal .modal-title span').text("Edit User");
-            $('#roles').empty();
-            $('#countries').empty();
-            var row = $(this).closest('tr');
-            var id = row.find('.id').text();
-            var firstname = row.find('.firstname').text();
-            var lastname = row.find('.lastname').text();
-            var email = row.find('.email').text();
-            var phone = row.find('.phone').text();
-            var status = row.find('.status').text();
-            var roleId = parseInt(row.find('.role_id').text());
-            var roleName = row.find('.role_name').text();
-            var countryId = parseInt(row.find('.country_id').text());
-            var countryName = row.find('.country_name').text();
-            if(roleId > 0){
-                var data = {
-                    id: roleId,
-                    text: roleName
-                };
-                var newOption = new Option(data.text, data.id, false, false);
-                $('#roles').append(newOption).trigger('change');
-            }
-            var data = {
-                id: countryId,
-                text: countryName
-            };
-            var newOption = new Option(data.text, data.id, false, false);
-            $('#countries').append(newOption).trigger('change');
-
-            $('#userModal input[name=id]').val(id);
-            $('#userModal input[name=firstname]').val(firstname);
-            $('#userModal input[name=lastname]').val(lastname);
-            $('#userModal input[name=email').val(email);
-            $('#userModal input[name=phone]').val(phone);
-            $('#userModal select[name=status]').val(status);
+            var formData = form.serialize();
+            $('#feedbackModal .alert').addClass('border-secondary');
+            $('#feedbackModal .alert').addClass('text-muted');
+            $('#feedbackModal .alert').html("<i class='fas fa-spinner fa-pulse'></i> <b>Approving</b>. Please wait...");
+            $('#feedbackModal').modal('show');
+            $('#feedbackModal').on('shown.bs.modal', function(){
+                $.ajax({
+                    url: "{{ url('documents/review') }}",
+                    type: 'POST',
+                    data: formData
+                }).done(function(data){
+                    alert("success");
+                    $('#feedbackModal').modal('hide');
+                }).fail(function(data){
+                    $('#feedbackModal .alert').removeClass('border-secondary');
+                    $('#feedbackModal .alert').removeClass('text-muted');
+                    $('#feedbackModal .alert').addClass('border-danger');
+                    $('#feedbackModal .alert').addClass('text-danger');
+                    $('#feedbackModal .alert').html("<i class='fas fa-exclamation-circle'></i> <b>Whoops</b>. Something went wrong!");
+                    setTimeout(function(){
+                        $('#feedbackModal').modal('hide');
+                    }, 3000);
+                });
+            });
+            
         });
     });
 </script>

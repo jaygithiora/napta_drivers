@@ -82,7 +82,7 @@ class DocumentController extends Controller
                 return $row->status==1?"<span class='badge bg-success'>Approved</span>":($row->status==2?"<span class='badge bg-danger'>Rejected</span>":"<span class='badge bg-secondary'>Pending</span>");
             })->addColumn('action', function ($row) {
                 return '<div style="white-space: nowrap;" class="text-end">' .
-                                '<form class="d-none" action="driver/review" method="POST">'.csrf_field().'<input type="hidden" value="'.$row->id.'"><input type="hidden" name="status" value="'.$row->id.'"></form>'.
+                                '<form class="d-none" action="driver/review" method="POST">'.csrf_field().'<input type="hidden" name="id" value="'.$row->id.'"><input type="hidden" name="status" value="'.$row->id.'"></form>'.
                                 '<div class="dropdown">
                                     <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fas fa-ellipsis-v"></i>
