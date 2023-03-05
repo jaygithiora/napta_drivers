@@ -25,56 +25,45 @@
             <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col-md-12 mb-3">
-                    <div class="card card-primary card-outline card-outline-tabs">
-                        <div class="card-header p-0 border-bottom-0">
-                            <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#profile-tab" role="tab" aria-controls="profile-tab" aria-selected="true"><i class='fas fa-user'></i> Profile</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#profile-docs-tab" role="tab" aria-controls="profile-docs-tab" aria-selected="false"><i class='fas fa-cloud-upload-alt'></i> Document Uploads</a>
-                                </li>
-                            </ul>
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h5><i class='fas fa-user'></i> Profile</h5>
                         </div>
                         <div class="card-body">
-                            <div class="tab-content" id="custom-tabs-two-tab">
-                                <div class="tab-pane fade show active text-center" id="profile-tab" role="tabpanel" aria-labelledby="profile-tab">
-                                    <div class="text-center">
-                                        <img class="profile-user-img img-fluid img-circle"
-                                        src="../../dist/img/user4-128x128.jpg"
-                                        alt="User profile picture">
+                            <div class="row d-flex align-items-center">
+                                <div class="col-sm-6 col-md-5 col-lg-4">
+                                    <div class='alert border preview'>
+                                        <img src='{{asset('images/male_avatar.svg')}}' class="img-fluid"/>
                                     </div>
-                                    <h3 class="profile-username text-center">{{ \Auth::user()->firstname }} {{ \Auth::user()->lastname }}</h3>
-                                    @foreach($user->roles as $role)
-                                        <span class='badge border border-primary text-primary'>{{$role->name}}</span>
-                                    @endforeach
-                                    <br>
-                                    <span class="text-muted">{{ \Auth::user()->email }}</span>
                                 </div>
-                                <div class="tab-pane fade" id="profile-docs-tab" role="tabpanel" aria-labelledby="profile-docs-tab">
-                                    @if($documentTypes != null)
-                                        @if($documentTypes->count() > 0)
-                                        <form method="POST" action="{{ url('profile/documents/upload') }}" class="alert border dropzone" id='dropzone'>
-                                            @csrf
-                                            @foreach($documentTypes as $doc)
-                                                <input type='radio' name='document_type_id' id='doc{{$doc->document_type->id}}' value='{{$doc->document_type->id}}' checked>
-                                                <label for='doc{{$doc->document_type->id}}' style='font-weight: 400;'>{{$doc->document_type->name}}</label>&nbsp;
-                                            @endforeach
-                                            <div class='dz-default dz-message'>
-                                                
-                                                <h6><i class='fas fa-cloud-upload-alt'></i> &nbsp;Drop files here or click to upload </h6>
-                                            </div>
-                                        </form>
-                                        @else
-                                            <div class='alert alert-warning'><i class='fas fa-ban'></i> &nbsp;No Uploads yet</div>
-                                        @endif
-                                    @else
-                                        <div class='alert alert-warning'><i class='fas fa-ban'></i> &nbsp;No Uploads yet</div>
-                                    @endif
+                                <div class='col-sm-6 col-md-7 col-lg-8'>
+                                    <table>
+                                        <tr>
+                                            <td><b>Name:</b></td>
+                                            <td class='p-1'>{{ \Auth::user()->firstname }} {{ \Auth::user()->lastname }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Role:</b></td>
+                                            <td class='p-1'>
+                                                @foreach($user->roles as $role)
+                                                    <span class='badge border border-primary text-primary'>{{$role->name}}</span>
+                                                @endforeach
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Email:</b></td>
+                                            <td class='p-1'><span class="text-muted">{{ \Auth::user()->email }}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Phone:</b></td>
+                                            <td class='p-1'><span class="text-muted">{{ \Auth::user()->phone }}</span></td>
+                                        </tr>
+                                    </table>
+
                                 </div>
                             </div>
                         </div>
-                        <div class='card-footer text-end'>
+                        <div class='card-footer border-top text-end bg-white'>
                             <button class='btn btn-white btn-sm border'  data-bs-toggle="modal" data-bs-target="#changePasswordModal"> <i class='fas fa-edit'></i>&nbsp;Change Password</button>&nbsp;
                             <button class='btn btn-primary btn-sm' data-bs-toggle="modal" data-bs-target="#profileModal"> <i class='fas fa-edit'></i>&nbsp;Edit Profile</button>
                         </div>
@@ -166,7 +155,7 @@
     <script>
         Dropzone.options.dropzone =
             {
-                maxFiles: 5, 
+                maxFiles: 5,
                 maxFilesize: 4,
                 acceptedFiles: "image/*,application/pdf,.doc,.docx,.xls,.xlsx,.csv,.tsv,.ppt,.pptx,.pages,.odt,.rtf",
                 addRemoveLinks: true,
@@ -189,7 +178,7 @@
                         }
                     });
                 },
-                removedfile: function(file) 
+                removedfile: function(file)
                 {
                     if (this.options.dictRemoveFile) {
                         return Dropzone.confirm("Are You Sure to "+this.options.dictRemoveFile, function() {
@@ -215,17 +204,17 @@
                                 }
                             });
                             var fileRef;
-                            return (fileRef = file.previewElement) != null ? 
+                            return (fileRef = file.previewElement) != null ?
                             fileRef.parentNode.removeChild(file.previewElement) : void 0;
                         });
-                    }		
+                    }
                 },
-                success: function(file, response) 
+                success: function(file, response)
                 {
                     file.previewElement.id = response.success;
-                    //console.log(file); 
+                    //console.log(file);
                     // set new images names in dropzone’s preview box.
-                    var olddatadzname = file.previewElement.querySelector("[data-dz-name]");   
+                    var olddatadzname = file.previewElement.querySelector("[data-dz-name]");
                     file.previewElement.querySelector("img").alt = response.success;
                     olddatadzname.innerHTML = response.success;
                 },

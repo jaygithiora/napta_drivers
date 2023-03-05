@@ -39,6 +39,8 @@
     <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
+    <!--croppie-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css"/>
 
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 </head>
@@ -165,7 +167,7 @@
                     </div>
                 </li>
                 <!-- Notifications Dropdown Menu -->
-                
+
                 <li class="nav-item dropdown">
                     <a class="nav-link profile" data-toggle="dropdown" href="#">
                         <i class="far fa-user-circle"></i> {{ \Auth::user()->firstname }} {{ \Auth::user()->lastname }}
@@ -339,7 +341,7 @@
                                 </li>
                             </ul>
                         </li>-->
-                        
+
                         <li class="nav-item {{ Request::is('users*')?'menu-open':'' }}">
                             <a href="#" class="nav-link {{ Request::is('users*')?'active':'' }}">
                                 <i class="nav-icon fas fa-users"></i>
@@ -363,7 +365,7 @@
                                 </li>
                             </ul>
                         </li>
-                        
+
                         <li class="nav-item {{ Request::is('settings*')?'menu-open':'' }}">
                             <a href="#" class="nav-link {{ Request::is('settings*')?'active':'' }}">
                                 <i class="nav-icon fas fa-cog"></i>
@@ -393,7 +395,7 @@
                                 </li>
                             </ul>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a href="{{ url('profile') }}" class="nav-link {{ Request::is('profile')?'active':'' }}">
                                 <i class="nav-icon far fa-user"></i>
@@ -481,6 +483,10 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.js')}}"></script>
     <script src="{{ asset('dist/js/pages/dashboard.js')}}"></script>
+
+    <!-- croppie js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
+
     @stack('js')
 </body>
 
