@@ -7,6 +7,7 @@ use App\Models\Driver;
 use App\Models\DriverApproval;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class DriverController extends Controller
@@ -21,7 +22,10 @@ class DriverController extends Controller
     public function getDrivers(Request $request){
         return DataTables::of(Driver::with(['user.country', 'user.roles'])->get())
             ->addIndexColumn()
-            ->editColumn('name', function($row){
+            ->addColumn('image', function ($row) {
+                $image = $row->user->image != ""?asset("images/profiles/".$row->user->image):asset("images/male_avatar.svg");
+                return '<img src="'.$image.'" class="rounded-circle" width="50">';
+            })->editColumn('name', function($row){
                 return $row->user->firstname.' '.$row->user->lastname;
             })->editColumn('role', function($row){
                 $role = $row->user->roles->first();
@@ -52,8 +56,13 @@ class DriverController extends Controller
     public function driverRequests(){
         return view('account.driver_requests');
     }
-
     public function viewDocumentUpload(Request $request){
         return view('account.document_upload');
+    }
+
+    public function documentReview(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id'=>'required|min:0',
+        ]);
     }
 }

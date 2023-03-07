@@ -28,10 +28,8 @@
                 <!-- small box -->
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile h-100">
-                        <div class='alert alert-secondary'>
-                            <img src="{{asset('images/male_avatar.svg')}}" class='img-fluid'>
-                        </div>
-                        <table class='table border'>
+                        <img src='{{$driver->user->image != ""?asset("images/profiles/".$driver->user->image):asset("images/male_avatar.svg")}}' class='img-fluid rounded w-100' alt='avatar image'>
+                        <table class='table border mt-1'>
                             <tr>
                                 <td>{{$driver->user->firstname}} {{$driver->user->lastname}}</td>
                             <tr>

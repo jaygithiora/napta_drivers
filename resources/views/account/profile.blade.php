@@ -39,12 +39,9 @@
                         <div class="card-body">
                             <div class="row d-flex align-items-center">
                                 <div class="col-sm-6 col-md-5 col-lg-4 text-center">
-                                    <form action='{{ url("/") }}' method="POST">
-                                        @csrf
                                         <input type="file" id="upload" class='d-none' accept="image/png, image/jpeg, image/jpg">
                                         <div class='preview'></div>
-                                        <span class='btn btn-outline-primary btn-sm btn-upload'><i class='fas fa-cloud-upload'></i> Change Image</span>
-                                    </form>
+                                        <button class='btn btn-outline-primary btn-sm btn-upload'><i class='fas fa-cloud-upload'></i> Change Profile</button>
                                 </div>
                                 <div class='col-sm-6 col-md-7 col-lg-8'>
                                     <table>

@@ -181,6 +181,9 @@ a.btn{
 .dropdown-toggle::after {
     content: none;
 }
+.table td {
+    vertical-align: middle;
+}
 /*.dropdown .profile{
     border: 1px solid #333399;
     border-radius: 100px;
