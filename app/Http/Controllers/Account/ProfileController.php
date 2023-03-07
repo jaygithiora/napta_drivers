@@ -123,23 +123,20 @@ class ProfileController extends Controller
     }
 
     public function uploadProfilePicture(Request $request){
-        $folderPath = public_path('upload/');
+        $folderPath = public_path('images/profiles/');
+        $data = $request->image;
+        list($type, $data) = explode(';', $data);
+        list(, $data)      = explode(',', $data);
 
-        $image_parts = explode(";base64,", $request->image);
-        $image_type_aux = explode("image/", $image_parts[0]);
-        $image_type = $image_type_aux[1];
-        $image_base64 = base64_decode($image_parts[1]);
+        $data = base64_decode($data);
+        $image_name= Auth::user()->id.'.png';
+        $path = $folderPath. $image_name;
 
-        $imageName = uniqid() . '.png';
+        file_put_contents($path, $data);
+        $user = User::findOrFail(Auth::user()->id);
+        $user->image = $image_name;
+        $user->save();
 
-        $imageFullPath = $folderPath.$imageName;
-
-        file_put_contents($imageFullPath, $image_base64);
-
-         $saveFile = new Image;
-         $saveFile->title = $imageName;
-         $saveFile->save();
-
-        return response()->json(['success'=>'Crop Image Saved/Uploaded Successfully using jQuery and Ajax In Laravel']);
+        return response()->json(['success'=>'Image Uploaded Successfully']);
     }
 }

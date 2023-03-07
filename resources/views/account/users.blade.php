@@ -37,7 +37,7 @@
                             <table class='table w-100'>
                                 <thead>
                                     <tr>
-                                        <!--<th>#</th>-->
+                                        <th>#</th>
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Phone</th>
@@ -135,6 +135,7 @@
             dom: 'lBtrip', //'lfBtrip'
             columns: [
                 //{ data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'image', name: 'image' },
                 { data: 'name', name: 'name' },
                 { data: 'email', name: 'email' },
                 { data: 'phone', name: 'phone' },

@@ -48,7 +48,7 @@
             @foreach($drivers as $driver)
                 <div class='col-sm-3 mt-3'>
                     <div class='card border h-100'>
-                        <img src='{{asset("images/bg.jpg")}}' class='card-img-top '/>
+                        <img src='{{asset("images/profiles/".$driver->user->image)}}' class='card-img-top '/>
                         <div class='card-body'>
                             <h5><i class='fas fa-circle text-primary small'></i> {{$driver->user->firstname}} {{$driver->user->lastname}}</h5>
                             <span class='text-muted'><i class='fas fa-check-circle text-green'></i> 123 Orders</span><br>

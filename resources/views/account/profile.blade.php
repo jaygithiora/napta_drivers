@@ -27,14 +27,24 @@
                 <div class="col-md-12 mb-3">
                     <div class="card card-primary card-outline">
                         <div class="card-header">
-                            <h5><i class='fas fa-user'></i> Profile</h5>
+                            <div class='row d-flex align-items-center'>
+                                <div class='col'>
+                                    <h5><i class='fas fa-user'></i> Profile</h5>
+                                </div>
+                                <div class='col text-right'>
+                                    <button class='btn btn-primary btn-save-pic btn-sm'>Save Profile</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row d-flex align-items-center">
-                                <div class="col-sm-6 col-md-5 col-lg-4">
-                                    <div class='alert border preview'>
-                                        <img src='{{asset('images/male_avatar.svg')}}' class="img-fluid"/>
-                                    </div>
+                                <div class="col-sm-6 col-md-5 col-lg-4 text-center">
+                                    <form action='{{ url("/") }}' method="POST">
+                                        @csrf
+                                        <input type="file" id="upload" class='d-none' accept="image/png, image/jpeg, image/jpg">
+                                        <div class='preview'></div>
+                                        <span class='btn btn-outline-primary btn-sm btn-upload'><i class='fas fa-cloud-upload'></i> Change Image</span>
+                                    </form>
                                 </div>
                                 <div class='col-sm-6 col-md-7 col-lg-8'>
                                     <table>
@@ -153,6 +163,56 @@
 @endsection
 @push('js')
     <script>
+        $(document).ready(function(){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $uploadCrop = $('.preview').croppie({
+                url: '{{Auth::user()->image != ""?asset("images/profiles/".Auth::user()->image):asset("images/male_avatar.svg")}}',
+                enableExif: true,
+                viewport: {
+                    width: 280,
+                    height: 280,
+                    //type: 'circle'
+                },
+                boundary: {
+                    width: 300,
+                    height: 300
+                }
+            });
+            $('.btn-upload').click(function(){
+                $('#upload').click();
+            });
+            $('#upload').on('change', function () { 
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $uploadCrop.croppie('bind', {
+                        url: e.target.result
+                    }).then(function(){
+                        console.log('jQuery bind complete');
+                    });
+                }
+                reader.readAsDataURL(this.files[0]);
+            });
+            $('.btn-save-pic').on('click', function (ev) {
+                $uploadCrop.croppie('result', {
+                    type: 'canvas',
+                    size: 'viewport'
+                }).then(function (resp) {
+                    $.ajax({
+                        url: "{{ url('profile/upload/picture') }}",
+                        type: "POST",
+                        data: {"image":resp},
+                        success: function (data) {
+                            html = '<img src="' + resp + '" />';
+                            $("#upload-demo-i").html(html);
+                        }
+                    });
+                });
+            });
+        });
         Dropzone.options.dropzone =
             {
                 maxFiles: 5,

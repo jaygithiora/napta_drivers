@@ -40,7 +40,7 @@
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
     <!--croppie-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
 
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 </head>
@@ -485,7 +485,7 @@
     <script src="{{ asset('dist/js/pages/dashboard.js')}}"></script>
 
     <!-- croppie js-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 
     @stack('js')
 </body>

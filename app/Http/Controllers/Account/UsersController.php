@@ -26,10 +26,13 @@ class UsersController extends Controller
     public function getUsers(Request $request)
     {
         return Datatables::of(User::with(['country', 'roles', 'documents']))
-            ->addIndexColumn()
-            ->addColumn('name', function ($row) {
-                return $row->firstname . ' ' . $row->lastname;
-            })->editColumn('created_at', function ($row) {
+        ->addIndexColumn()
+        ->addColumn('image', function ($row) {
+            $image = $row->image != ""?asset("images/profiles/".$row->image):asset("images/male_avatar.svg");
+            return '<img src="'.$image.'" class="rounded-circle" width="50">';
+        })->addColumn('name', function ($row) {
+            return $row->firstname . ' ' . $row->lastname;
+        })->editColumn('created_at', function ($row) {
             return Carbon::parse($row->created_at)->diffForHumans();
         })->addColumn('status', function ($row) {
             return $row->status?"<span class='badge bg-primary'>Active</span>":"<span class='badge bg-danger'>In-Active</span>";
