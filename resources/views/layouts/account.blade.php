@@ -493,7 +493,11 @@
             //localStorage.setItem('toggleMenu', 1);
             let menu = localStorage.getItem('toggleMenu');
             if(menu != null){
-                toggleMenu();
+                if(menu == 1){
+                    $('body').addClass('sidebar-collapse');
+                }else{
+                    $('body').removeClass('sidebar-collapse');
+                }
             }
             $('.toggleMenu').click(function(){
                 if(menu == 1){
@@ -505,13 +509,6 @@
                 }
                 localStorage.setItem('toggleMenu', menu);
             });
-            function toggleMenu(){
-                if(menu == 1){
-                    $('body').addClass('sidebar-collapse');
-                }else{
-                    $('body').removeClass('sidebar-collapse');
-                }
-            }
         });  
     </script>
 </body>
