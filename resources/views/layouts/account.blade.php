@@ -59,7 +59,7 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
+                    <a class="nav-link toggleMenu" data-widget="pushmenu" href="#" role="button"><i
                             class="fas fa-bars"></i></a>
                 </li>
                 <!--<li class="nav-item d-none d-sm-inline-block">
@@ -488,6 +488,32 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 
     @stack('js')
+    <script>
+        $(document).ready(function(){
+            //localStorage.setItem('toggleMenu', 1);
+            let menu = localStorage.getItem('toggleMenu');
+            if(menu != null){
+                toggleMenu();
+            }
+            $('.toggleMenu').click(function(){
+                if(menu == 1){
+                    menu = 0;
+                }else if(menu == 0){
+                    menu = 1;
+                }else{
+                    menu = 1;
+                }
+                localStorage.setItem('toggleMenu', menu);
+            });
+            function toggleMenu(){
+                if(menu == 1){
+                    $('body').addClass('sidebar-collapse');
+                }else{
+                    $('body').removeClass('sidebar-collapse');
+                }
+            }
+        });  
+    </script>
 </body>
 
 </html>

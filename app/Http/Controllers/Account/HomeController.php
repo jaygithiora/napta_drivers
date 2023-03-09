@@ -41,7 +41,9 @@ class HomeController extends Controller
             $driver = Driver::with(['user'])->where('user_id', Auth::user()->id)->first();
         }
         $roleIds = $user->roles->pluck('id');
-        $uploads = DocumentTypeRole::whereIn('role_id', $roleIds)->with('document_type.document_uploads')->whereHas("document_type", function ($query) {
+        $uploads = DocumentTypeRole::whereIn('role_id', $roleIds)->with(['document_type.document_uploads'=>function($query){
+            $query->where('user_id', Auth::user()->id);
+        }])->whereHas("document_type", function ($query) {
             $query->where('required', 1);
         })->get();
         foreach($uploads as $upload){

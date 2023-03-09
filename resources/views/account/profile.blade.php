@@ -32,16 +32,15 @@
                                     <h5><i class='fas fa-user'></i> Profile</h5>
                                 </div>
                                 <div class='col text-right'>
-                                    <button class='btn btn-primary btn-save-pic btn-sm'>Save Profile</button>
+                                    <!--<button class='btn btn-primary  btn-sm'>Save Profile</button>-->
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="row d-flex align-items-center">
                                 <div class="col-sm-6 col-md-5 col-lg-4 text-center">
-                                        <input type="file" id="upload" class='d-none' accept="image/png, image/jpeg, image/jpg">
-                                        <div class='preview'></div>
-                                        <button class='btn btn-outline-primary btn-sm btn-upload'><i class='fas fa-cloud-upload'></i> Change Profile</button>
+                                    <img src='{{Auth::user()->image != ""?asset("images/profiles/".Auth::user()->image):asset("images/male_avatar.svg")}}' class="img-fluid w-100 img-rounded shadow">
+                                    <button class='mt-3 btn btn-outline-primary btn-sm' data-bs-toggle="modal" data-bs-target="#profilePictureModal"><i class='fas fa-cloud-upload'></i> Change Profile</button>
                                 </div>
                                 <div class='col-sm-6 col-md-7 col-lg-8'>
                                     <table>
@@ -157,6 +156,31 @@
             </div>
         </div>
     </div>
+    <!-- Change Profile Picture Modal -->
+    <div class="modal fade" id="profilePictureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><i class='fas fa-edit'></i> Change Profile Picture</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class='img-div-preview'>
+                        <img src='{{Auth::user()->image != ""?asset("images/profiles/".Auth::user()->image):asset("images/male_avatar.svg")}}' class="img-fluid w-100 img-rounded shadow">
+                    </div>
+                    <div class='img-div d-none'>
+                        <input type="file" id="upload" class='d-none' accept="image/png, image/jpeg, image/jpg">
+                        <div class='preview'></div>
+                    </div>
+                    <div class='mt-1 alert'></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary btn-sm btn-upload"><i class='fas fa-cloud-upload-alt'></i> Upload Photo</button>
+                    <button type="button" class="btn btn-primary btn-sm btnSave" disabled='disabled'><i class='fas fa-paper-plane'></i> Update Profile</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('js')
     <script>
@@ -189,11 +213,21 @@
                         url: e.target.result
                     }).then(function(){
                         console.log('jQuery bind complete');
+                        $('.modal-body .img-div').removeClass('d-none');
+                        $('.modal-body .img-div-preview').addClass('d-none');
+                        $('.modal-body .img-div-preview').addClass('d-none');
+                        $('#profilePictureModal .btnSave').removeAttr('disabled');
                     });
                 }
                 reader.readAsDataURL(this.files[0]);
             });
-            $('.btn-save-pic').on('click', function (ev) {
+            $('#profilePictureModal .btnSave').on('click', function (ev) {
+                var btn = $(this);
+                btn.attr('disabled', 'disabled');
+                $('#profilePictureModal .alert').removeClass('d-none');
+                $('#profilePictureModal .alert').addClass('border-secondary');
+                $('#profilePictureModal .alert').addClass('text-secondary');
+                $('#profilePictureModal .alert').html('<i class="fas fa-spinner fa-pulse"></i> <b>Loading!</b> Please wait...');
                 $uploadCrop.croppie('result', {
                     type: 'canvas',
                     size: 'viewport'
@@ -203,8 +237,30 @@
                         type: "POST",
                         data: {"image":resp},
                         success: function (data) {
-                            html = '<img src="' + resp + '" />';
-                            $("#upload-demo-i").html(html);
+                            /*html = '<img src="' + resp + '" />';
+                            $("#upload-demo-i").html(html);*/
+                            $('#profilePictureModal .alert').removeClass('border-secondary');
+                            $('#profilePictureModal .alert').removeClass('text-secondary');
+                            $('#profilePictureModal .alert').addClass('border-success');
+                            $('#profilePictureModal .alert').addClass('text-success');
+                            $('#profilePictureModal .alert').html('<i class="far fa-check-circle"></i> <b>Success!</b> Profile Uploaded successfully');
+                            setTimeout(() => {
+                                $('#profilePictureModal .alert').removeClass('border-success');
+                                $('#profilePictureModal .alert').removeClass('text-success');
+                            }, 3000);
+                            location.href="{{url('profile')}}";
+                        },
+                        error: function(data) {
+                            $('#profilePictureModal .alert').removeClass('border-secondary');
+                            $('#profilePictureModal .alert').removeClass('text-secondary');
+                            $('#profilePictureModal .alert').addClass('border-danger');
+                            $('#profilePictureModal .alert').addClass('text-danger');
+                            $('#profilePictureModal .alert').html('<i class="fas fa-exclamation-circle"></i> <b>Whoops!</b> Something went wrong');
+                            setTimeout(() => {
+                                $('#profilePictureModal .alert').removeClass('border-danger');
+                                $('#profilePictureModal .alert').removeClass('text-danger');
+                                btn.removeAttr('disabled', 'disabled');
+                            }, 3000);
                         }
                     });
                 });

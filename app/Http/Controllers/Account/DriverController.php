@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
+use App\Models\DocumentUpload;
 use App\Models\Driver;
 use App\Models\DriverApproval;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -59,10 +61,30 @@ class DriverController extends Controller
     public function viewDocumentUpload(Request $request){
         return view('account.document_upload');
     }
-
-    public function documentReview(Request $request){
+    public function driverReview(Request $request){
         $validator = Validator::make($request->all(), [
             'id'=>'required|min:0',
+            'comments'=>'required|string',
+            'status'=>'required|min:0'
         ]);
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->messages()], 400);
+        }
+        $driverApproval = new DriverApproval;
+        $driverApproval->driver_id = $request->id;
+        $driverApproval->user_id = Auth::user()->id;
+        $driverApproval->comments = $request->comments;
+        $driverApproval->status = $request->status;
+        if($driverApproval->save()){
+            $driver = Driver::findOrFail($request->id);
+            $driver->status = $request->status;
+            if($driver->save()){
+                return response()->json(['success'=>'Review is successful!']);
+            }else{
+                return response()->json(['error'=>'Unable to update driver status after review'],401);
+            }
+        }else{
+            return response()->json(['error'=>'Unable to save review'],401);
+        }
     }
 }

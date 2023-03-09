@@ -8,6 +8,7 @@ use App\Models\DocumentUpload;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 
@@ -90,12 +91,29 @@ class DocumentController extends Controller
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                         <li><a href="'.asset('uploads/'.$row->name).'" class="dropdown-item" download="'.$row->upload_name.'"><i class="fas fa-cloud-download-alt"></i> Download</a></li>
                                         <li><a href="#" class="dropdown-item text-success btn-approve"><i class="fas fa-thumbs-up"></i> Approve</a></li>
-                                        <li><a href="'.asset('uploads/'.$row->name).'" class="dropdown-item text-danger" download="'.$row->upload_name.'"><i class="fas fa-thumbs-down"></i> Reject</a></li>
+                                        <li><a href="#" class="dropdown-item text-danger btn-reject"><i class="fas fa-thumbs-down"></i> Reject</a></li>
                                     </ul>
                                 </div>'.
                                 '<!--<a href="'.asset('uploads/'.$row->name).'" class="btn btn-primary btn-sm" download="'.$row->upload_name.'"><i class="fas fa-cloud-download-alt"></i></a>-->'
                             . '</div>';
             })->escapeColumns([])
             ->make(true);
+    }
+    
+    public function documentReview(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id'=>'required|min:0',
+            'status'=>'required|min:0'
+        ]);
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->messages()], 400);
+        }
+        $documentUpload = DocumentUpload::findOrFail($request->id);
+        $documentUpload->status = $request->status;
+        if($documentUpload->save()){
+            return response()->json(['success'=>'Status Change is successful!']);
+        }else{
+            return response()->json(['error'=>'Unable to change status'], 401);
+        }
     }
 }

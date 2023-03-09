@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class IndexController extends Controller
 {
     public function index(){
-        $drivers = Driver::with('user.country')->skip(0)->take(12)->get();
+        $drivers = Driver::with('user.country')->where('status', 1)->skip(0)->take(12)->get();
         $vehicleTypes = VehicleType::skip(0)->take(12)->get();
         return view('index', ['vehicle_types'=>$vehicleTypes, 'drivers'=>$drivers]);
     }

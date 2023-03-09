@@ -37,6 +37,7 @@ Route::controller(DriverController::class)->prefix('drivers')->group(function ()
     Route::get('/view/{id}', 'driver');
     Route::get('/requests', 'driverRequests');
     Route::get('document/uploads/{id}', 'viewDocumentUpload');
+    Route::post('review', 'driverReview');
 });
 Route::controller(DocumentController::class)->prefix('documents')->group(function(){
     Route::get('upload/{id}', 'viewDocumentsUpload');
@@ -44,6 +45,7 @@ Route::controller(DocumentController::class)->prefix('documents')->group(functio
     Route::get('datatable/all_documents', 'getDocuments');
     Route::get('my_documents', 'myDocuments');
     Route::get('datatable/my_documents/{id}', 'getMyDocuments');
+    Route::post('review', 'documentReview');
 });
 
 Route::controller(UsersController::class)->prefix('users')->group(function () {

@@ -184,65 +184,55 @@
             ]
         });
         $('.btn-launch-modal').click(function(){
-            $('#userModal .modal-title span').text("New User");
-            $('#userModal input[name=id]').val(0);
-            $('#userModal input[name=firstname]').val("");
-            $('#userModal input[name=lastname]').val("");
-            $('#userModal input[name=email').val("");
-            $('#userModal input[name=phone]').val("");
-            $('#roles').empty();
-            $('#countries').empty();
+            $('#reviewModal .modal-title span').text("New User");
+            $('#reviewModal input[name=id]').val(0);
+            $('#reviewModal input[name=firstname]').val("");
+            $('#reviewModal input[name=lastname]').val("");
+            $('#reviewModal input[name=email').val("");
+            $('#reviewModal input[name=phone]').val("");
         });
-        $('#userModal .btnSave').click(function () {
+        $('#reviewModal .btnSave').click(function () {
             var btn = $(this);
             btn.attr('disabled', 'disabled');
-            $('#userModal .feedback').removeClass('d-none');
-            $('#userModal .feedback').removeClass('alert-danger');
-            $('#userModal .feedback').removeClass('alert-success');
-            $('#userModal .feedback').html("<i class='fas fa-spinner fa-pulse'></i> Saving... Please wait");
-            var formData = $('#userModal form').serialize();
+            $('#reviewModal .feedback').removeClass('d-none');
+            $('#reviewModal .feedback').removeClass('alert-danger');
+            $('#reviewModal .feedback').removeClass('alert-success');
+            $('#reviewModal .feedback').html("<i class='fas fa-spinner fa-pulse'></i> Saving... Please wait");
+            var formData = $('#reviewModal form').serialize();
             $.ajax({
-                url: '{{ url("users/add") }}',
+                url: '{{ url("drivers/review") }}',
                 type: 'POST',
                 data: formData
             }).done(function (data) {
-                $('#userModal .feedback').addClass('alert-success');
-                $('#userModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.success);
+                $('#reviewModal .feedback').addClass('alert-success');
+                $('#reviewModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.success);
                 table.draw();
                 setTimeout(() => {
-                    $('#userModal .feedback').addClass('d-none');
+                    $('#reviewModal .feedback').addClass('d-none');
+                    location.href = "{{url('drivers')}}";
                 }, 3000);
                 btn.removeAttr('disabled');
             }).fail(function (response) {
                 let data = response.responseJSON;
-                $('#userModal .feedback').addClass('alert-danger');
-                $('#userModal .feedback').html("");
+                $('#reviewModal .feedback').addClass('alert-danger');
+                $('#reviewModal .feedback').html("");
                 if (data.errors) {
-                    if (data.errors.firstname) {
-                        $('#userModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.firstname + "<br>");
+                    if (data.errors.id) {
+                        $('#reviewModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.id + "<br>");
                     }
-                    if (data.errors.lastname) {
-                        $('#userModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.lastname + "<br>");
-                    }
-                    if (data.errors.email) {
-                        $('#userModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.email + "<br>");
-                    }
-                    if (data.errors.phone) {
-                        $('#userModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.phone + "<br>");
-                    }
-                    if (data.errors.country) {
-                        $('#userModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.country + "<br>");
+                    if (data.errors.comments) {
+                        $('#reviewModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.comments + "<br>");
                     }
                     if (data.errors.status) {
-                        $('#userModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.status + "<br>");
+                        $('#reviewModal .feedback').append("<i class='fas fa-exclamation-circle'></i> " + data.errors.status + "<br>");
                     }
                 } else if (data.error) {
-                    $('#userModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.error);
+                    $('#reviewModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.error);
                 } else {
-                    $('#userModal .feedback').html("<i class='fas fa-exclamation-circle'></i> <b>Whoops</b> Something went wrong with the server!");
+                    $('#reviewModal .feedback').html("<i class='fas fa-exclamation-circle'></i> <b>Whoops</b> Something went wrong with the server!");
                 }
                 setTimeout(() => {
-                    $('#userModal .feedback').addClass('d-none');
+                    $('#reviewModal .feedback').addClass('d-none');
                 }, 3000);
                 btn.removeAttr('disabled');
             });
@@ -251,7 +241,16 @@
         $(document).on('click', '.table .btn-approve', function(e){
             e.preventDefault();
             var form = $(this).closest('td').find('form');
-            form.find('input[name=status]').val(1);
+            changeStatus(form, 1);
+        });
+        $(document).on('click', '.table .btn-reject', function(e){
+            e.preventDefault();
+            var form = $(this).closest('td').find('form');
+            changeStatus(form, 2);
+        });
+
+        function changeStatus(form, status){
+            form.find('input[name=status]').val(status);
             var formData = form.serialize();
             $('#feedbackModal .alert').addClass('border-secondary');
             $('#feedbackModal .alert').addClass('text-muted');
@@ -263,8 +262,17 @@
                     type: 'POST',
                     data: formData
                 }).done(function(data){
-                    alert("success");
-                    $('#feedbackModal').modal('hide');
+                    $('#feedbackModal .alert').html("<i class='far fa-check-circle'></i> <b>Success</b>. "+data.success);
+                    $('#feedbackModal .alert').removeClass('border-secondary');
+                    $('#feedbackModal .alert').removeClass('text-muted');
+                    $('#feedbackModal .alert').addClass('border-success');
+                    $('#feedbackModal .alert').addClass('text-success');
+                    setTimeout(function(){
+                        table.draw();
+                        $('#feedbackModal').modal('hide');
+                        $('#feedbackModal .alert').removeClass('border-success');
+                        $('#feedbackModal .alert').removeClass('text-success');
+                    }, 2000);
                 }).fail(function(data){
                     $('#feedbackModal .alert').removeClass('border-secondary');
                     $('#feedbackModal .alert').removeClass('text-muted');
@@ -273,11 +281,12 @@
                     $('#feedbackModal .alert').html("<i class='fas fa-exclamation-circle'></i> <b>Whoops</b>. Something went wrong!");
                     setTimeout(function(){
                         $('#feedbackModal').modal('hide');
-                    }, 3000);
+                        $('#feedbackModal .alert').removeClass('border-danger');
+                        $('#feedbackModal .alert').removeClass('text-danger');
+                    }, 2000);
                 });
             });
-            
-        });
+        }
     });
 </script>
 @endpush
