@@ -64,6 +64,7 @@ class DriverController extends Controller
     public function driverReview(Request $request){
         $validator = Validator::make($request->all(), [
             'id'=>'required|min:0',
+            'driver_id'=>'required|min:1',
             'comments'=>'required|string',
             'status'=>'required|min:0'
         ]);
@@ -71,12 +72,15 @@ class DriverController extends Controller
             return response()->json(['errors'=>$validator->messages()], 400);
         }
         $driverApproval = new DriverApproval;
-        $driverApproval->driver_id = $request->id;
+        if($request->id > 0){
+            $driverApproval = DriverApproval::findOrFail($request->id);
+        }
+        $driverApproval->driver_id = $request->driver_id;
         $driverApproval->user_id = Auth::user()->id;
         $driverApproval->comments = $request->comments;
         $driverApproval->status = $request->status;
         if($driverApproval->save()){
-            $driver = Driver::findOrFail($request->id);
+            $driver = Driver::findOrFail($request->driver_id);
             $driver->status = $request->status;
             if($driver->save()){
                 return response()->json(['success'=>'Review is successful!']);
@@ -86,5 +90,26 @@ class DriverController extends Controller
         }else{
             return response()->json(['error'=>'Unable to save review'],401);
         }
+    }
+    public function getDriverReviews(Request $request){
+        return DataTables::of(DriverApproval::with('user')->get())
+            ->addIndexColumn()
+            ->editColumn('name', function($row){
+                return $row->user->firstname.' '.$row->user->lastname;
+            })->editColumn('created_at', function ($row) {
+                return Carbon::parse($row->created_at)->diffForHumans();
+            })->addColumn('status', function ($row) {
+                return $row->status == 0?"<span class='badge bg-secondary'>Pending</span>":($row->status == 1?"<span class='badge bg-primary'>Approved</span>":($row->status == 2?"<span class='badge bg-warning'>Suspended</span>":"<span class='badge bg-danger'>Denied</span>"));
+            })->addColumn('action', function ($row) {
+                $actionBtn = '<div style="white-space: nowrap;" class="text-end">' .
+                                '<span class="d-none id">'.$row->id.'</span>'.
+                                '<span class="d-none comments">'.$row->comments.'</span>'.
+                                '<span class="d-none status">'.$row->status.'</span>'.
+                                '<button class="btn btn-primary btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#reviewModal"><i class="fas fa-edit"></i> Edit</button> ' . '
+                                <!--<a href="javascript:void(0)" class="delete btn btn-outline-primary btn-sm"><i class="fas fa-eye"></i> View</a>-->'
+                            . '</div>';
+                return $actionBtn;
+            })->escapeColumns([])
+            ->make(true);
     }
 }

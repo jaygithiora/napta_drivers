@@ -62,10 +62,11 @@
                             <h5><i class='far fa-user'></i> Driver's Profile</h5>
                         </div>
                         <div class='col text-right'>
-                            <button class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#reviewModal'><i class='fas fa-cog'></i> Review</button>
+                            <button class='btn btn-primary btn-sm btn-launch-modal' data-bs-toggle='modal' data-bs-target='#reviewModal'><i class='fas fa-cog'></i> Review</button>
                         </div>
                     </div>
                 </div>
+
                 <div class='card mb-3'>
                     <div class='card-header'>
                         <div class='row'>
@@ -81,6 +82,32 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Document Type</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th class='text-end'>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class='card mb-3'>
+                    <div class='card-header'>
+                        <div class='row'>
+                            <div class='col'>
+                                <h5><i class='fas fa-comment'></i> Approval Reviews</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='card-body'>
+                        <div class="table-responsive">
+                            <table class='table w-100 reviews'>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Review</th>
+                                        <th>Reviewer</th>
                                         <th>Status</th>
                                         <th>Date</th>
                                         <th class='text-end'>Action</th>
@@ -110,7 +137,8 @@
             <div class="modal-body">
                 <form method="POST" action="{{ url('drivers/review') }}" class="row">
                     @csrf
-                    <input type='hidden' name='id' value='{{ $driver->id }}'>
+                    <input type='hidden' name='id' value='0'>
+                    <input type='hidden' name='driver_id' value='{{ $driver->id }}'>
                     <div class='col-sm-12 form-group'>
                         <label>Review Notes</label>
                         <textarea placeholder="Comments" name="comments" rows='4' class='form-control' required>{{$driverApproval != null?$driverApproval->comments:""}}</textarea>
@@ -120,7 +148,8 @@
                         <select name="status" class='form-control'>
                             <option disabled>Approval Status</option>
                             <option value='1' {{$driverApproval != null?($driverApproval->status==1?"selected":""):""}}>Approve</option>
-                            <option value='2' {{$driverApproval != null?($driverApproval->status==2?"selected":""):""}}>Reject</option>
+                            <option value='2' {{$driverApproval != null?($driverApproval->status==2?"selected":""):""}}>Suspended</option>
+                            <option value='2' {{$driverApproval != null?($driverApproval->status==3?"selected":""):""}}>Denied</option>
                         </select>
                     </div>
                     <div class='alert feedback border d-none'>
@@ -183,13 +212,31 @@
                 },
             ]
         });
+
+        var table = $('.reviews').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ url('drivers/datatable/reviews/'.$driver->id) }}",
+            dom: 'lBtrip', //'lfBtrip'
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'comments', name: 'comments' },
+                { data: 'name', name: 'name' },
+                { data: 'status', name: 'status' },
+                { data: 'created_at', name: 'created_at' },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: true,
+                    searchable: true
+                },
+            ]
+        });
         $('.btn-launch-modal').click(function(){
-            $('#reviewModal .modal-title span').text("New User");
+            $('#reviewModal .modal-title span').text("New Review");
             $('#reviewModal input[name=id]').val(0);
-            $('#reviewModal input[name=firstname]').val("");
-            $('#reviewModal input[name=lastname]').val("");
-            $('#reviewModal input[name=email').val("");
-            $('#reviewModal input[name=phone]').val("");
+            $('#reviewModal input[name=comments]').val("");
+            $('#reviewModal select[name=status]').val(1);
         });
         $('#reviewModal .btnSave').click(function () {
             var btn = $(this);
@@ -209,7 +256,7 @@
                 table.draw();
                 setTimeout(() => {
                     $('#reviewModal .feedback').addClass('d-none');
-                    location.href = "{{url('drivers')}}";
+                    //location.href = "{{url('drivers')}}";
                 }, 3000);
                 btn.removeAttr('disabled');
             }).fail(function (response) {
@@ -219,6 +266,9 @@
                 if (data.errors) {
                     if (data.errors.id) {
                         $('#reviewModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.id + "<br>");
+                    }
+                    if (data.errors.driver_id) {
+                        $('#reviewModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.driver_id + "<br>");
                     }
                     if (data.errors.comments) {
                         $('#reviewModal .feedback').html("<i class='fas fa-exclamation-circle'></i> " + data.errors.comments + "<br>");
@@ -236,6 +286,17 @@
                 }, 3000);
                 btn.removeAttr('disabled');
             });
+        });
+        $(document).on('click', '.reviews .btn-edit', function(){
+            var row = $(this).closest('td');
+            var id = row.find('.id').text();
+            var comments = row.find('.comments').text();
+            var status = row.find('.status').text();
+
+            $('#reviewModal .modal-title span').text("Edit Review");
+            $('#reviewModal input[name=id]').val(id);
+            $('#reviewModal textarea[name=comments]').val(comments);
+            $('#reviewModal select[name=status]').val(status);
         });
         $('#feedbackModal').modal({backdrop: 'static', keyboard: false});
         $(document).on('click', '.table .btn-approve', function(e){

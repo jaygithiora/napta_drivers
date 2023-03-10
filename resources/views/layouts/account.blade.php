@@ -491,6 +491,8 @@
     <script>
         $(document).ready(function(){
             //localStorage.setItem('toggleMenu', 1);
+            //localStorage.removeItem('myCat');
+            //localStorage.clear();
             let menu = localStorage.getItem('toggleMenu');
             if(menu != null){
                 if(menu == 1){

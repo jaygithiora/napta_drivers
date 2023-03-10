@@ -24,7 +24,7 @@
         </div>
         @foreach($vehicle_types as $vehicle_type)
             <div class='col-sm-3 mt-3'>
-                <div class='card border h-100'>
+                <div class='card border-0 shadow-sm h-100'>
                     <div class='card-body'>
                         <h5><i class='fas fa-circle text-primary'></i> {{$vehicle_type->name}}</h5>
                         <span class='text-muted'><i class='fas fa-check-circle text-green'></i> 123 drivers</span>
@@ -47,7 +47,7 @@
             </div>
             @foreach($drivers as $driver)
                 <div class='col-sm-3 mt-3'>
-                    <div class='card shadow h-100'>
+                    <div class='card border-0 shadow-sm h-100'>
                         <div class='card-body'>
                             <div class='row d-flex align-items-center'>
                                 <div class='col-4'>
@@ -83,7 +83,7 @@
             </div>
             @foreach($drivers as $driver)
                 <div class='col-sm-3 mt-3'>
-                    <div class='card border h-100'>
+                    <div class='card border-0 shadow-sm h-100'>
                     <img src='{{$driver->user->image != ""?asset("images/profiles/".$driver->user->image):asset("images/male_avatar.svg")}}'  class='card-img-top '/>
                         <div class='card-body'>
                             <h5><i class='fas fa-circle text-primary small'></i> {{$driver->user->firstname}} {{$driver->user->lastname}}</h5>

@@ -20,12 +20,14 @@ use App\Http\Controllers\Account\DriverController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', [IndexController::class, 'index']);
-Route::get('index/search/countries', [IndexController::class, 'searchCountries']);
-
+Route::controller(IndexController::class)->group(function(){
+    Route::get('/', 'index');
+    Route::get('find/drivers', 'drivers');
+    Route::get('get/drivers', 'getDrivers');
+    Route::get('index/search/countries', 'searchCountries');
+});
+    
 Route::get('register/driver', [RegisterDriverController::class, 'index']);
-
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -38,6 +40,7 @@ Route::controller(DriverController::class)->prefix('drivers')->group(function ()
     Route::get('/requests', 'driverRequests');
     Route::get('document/uploads/{id}', 'viewDocumentUpload');
     Route::post('review', 'driverReview');
+    Route::get('/datatable/reviews/{id}', 'getDriverReviews');
 });
 Route::controller(DocumentController::class)->prefix('documents')->group(function(){
     Route::get('upload/{id}', 'viewDocumentsUpload');
