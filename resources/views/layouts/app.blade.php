@@ -43,7 +43,7 @@
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Home') }}</a>
+                            <a class="nav-link" href="{{ url('/') }}">{{ __('Home') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{url('find/drivers')}}">{{ __('Find a Driver') }}</a>
@@ -52,15 +52,15 @@
                             <a class="nav-link" href="{{url('register/driver')}}">{{ __('Join as Driver') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('About Us') }}</a>
+                            <a class="nav-link" href="{{ url('about_us') }}">{{ __('About Us') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Contact Us') }}</a>
+                            <a class="nav-link" href="{{ url('contact_us') }}">{{ __('Contact Us') }}</a>
                         </li>
                         @guest
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="btn btn-primary btn-sm" href="{{ route('register') }}"><i class='fas fa-pencil-alt'></i>  &nbsp;{{ __('Register') }}</a>&nbsp;&nbsp;
                                 </li>
                             @endif
                             @if (Route::has('login'))

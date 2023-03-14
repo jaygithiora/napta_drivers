@@ -6,12 +6,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0"><i class='far fa-user'></i> Profile</h1>
+                    <!--<h1 class="m-0"><i class='far fa-user'></i> Profile</h1>-->
                 </div><!-- /.col -->
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Profile</li>
+                    <ol class="breadcrumb float-sm-right small">
+                        <li class="breadcrumb-item"><a href="{{ url('home') }}"><b>Home</b></a></li>
+                        <li class="breadcrumb-item active"><b>Profile</b></li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -24,54 +24,45 @@
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
             <div class="row">
-                <div class="col-md-12 mb-3">
-                    <div class="card card-primary card-outline">
-                        <div class="card-header">
-                            <div class='row d-flex align-items-center'>
-                                <div class='col'>
-                                    <h5><i class='fas fa-user'></i> Profile</h5>
+                <div class="col-md-3 mb-3">
+                    <div class="bg-white border">
+                        <div class="p-3">
+                            <!--<div class="row d-flex align-items-center">-->
+                                <div class="text-center">
+                                    <img src='{{Auth::user()->image != ""?asset("images/profiles/".Auth::user()->image):asset("images/male_avatar.svg")}}' class="img-fluid w-100 img-rounded shadow my-image1 border">
                                 </div>
-                                <div class='col text-right'>
-                                    <!--<button class='btn btn-primary  btn-sm'>Save Profile</button>-->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row d-flex align-items-center">
-                                <div class="col-sm-6 col-md-5 col-lg-4 text-center">
-                                    <img src='{{Auth::user()->image != ""?asset("images/profiles/".Auth::user()->image):asset("images/male_avatar.svg")}}' class="img-fluid w-100 img-rounded shadow">
-                                    <button class='mt-3 btn btn-outline-primary btn-sm' data-bs-toggle="modal" data-bs-target="#profilePictureModal"><i class='fas fa-cloud-upload'></i> Change Profile</button>
-                                </div>
-                                <div class='col-sm-6 col-md-7 col-lg-8'>
+                                <div class='col-6 col-sm-8 col-md-9 col-lg-10'>
                                     <table>
                                         <tr>
-                                            <td><b>Name:</b></td>
-                                            <td class='p-1'>{{ \Auth::user()->firstname }} {{ \Auth::user()->lastname }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>Role:</b></td>
-                                            <td class='p-1'>
-                                                @foreach($user->roles as $role)
-                                                    <span class='badge border border-primary text-primary'>{{$role->name}}</span>
-                                                @endforeach
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>Email:</b></td>
-                                            <td class='p-1'><span class="text-muted">{{ \Auth::user()->email }}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>Phone:</b></td>
-                                            <td class='p-1'><span class="text-muted">{{ \Auth::user()->phone }}</span></td>
+                                            <td><h4><b>{{ \Auth::user()->firstname }} {{ \Auth::user()->lastname }}</b> </h4></td>
+                                            <td class='p-1 text-danger'><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i></td>
                                         </tr>
                                     </table>
+                                    <div class='row'>
+                                        <div class='col-12 col-sm-6 p-2'>
+                                            <span class='text-muted small'>EMAIL</span><br>
+                                            {{ \Auth::user()->email }}
+                                        </div>
+                                        <div class='col-6 col-sm-3 p-2'>
+                                            <span class='text-muted small'>ROLE</span><br>
+                                            @foreach($user->roles as $role)
+                                                {{$role->name}}
+                                            @endforeach
+                                        </div>
+                                        <div class='col-6 col-sm-3 p-2'>
+                                            <span class='text-muted small'>PHONE</span><br>
+                                            {{ \Auth::user()->phone }}
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
                         </div>
-                        <div class='card-footer border-top text-end bg-white'>
-                            <button class='btn btn-white btn-sm border'  data-bs-toggle="modal" data-bs-target="#changePasswordModal"> <i class='fas fa-edit'></i>&nbsp;Change Password</button>&nbsp;
-                            <button class='btn btn-primary btn-sm' data-bs-toggle="modal" data-bs-target="#profileModal"> <i class='fas fa-edit'></i>&nbsp;Edit Profile</button>
+                        <div class='col-sm-12 text-end'>
+                        <button class='mt-3 btn btn-white shadow  btn-sm' data-bs-toggle="modal" data-bs-target="#profilePictureModal"><i class='fas fa-cloud-upload'></i> Change Profile</button>
+                                
+                            <button class='btn btn-white btn-sm border w-50'  data-bs-toggle="modal" data-bs-target="#changePasswordModal"> <i class='fas fa-edit'></i>&nbsp;Change Password</button>&nbsp;
+                            <button class='btn btn-primary btn-sm w-50' data-bs-toggle="modal" data-bs-target="#profileModal"> <i class='fas fa-edit'></i>&nbsp;Edit Profile</button>
                         </div>
                     </div>
 
@@ -165,10 +156,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <!--
                     <div class='img-div-preview'>
                         <img src='{{Auth::user()->image != ""?asset("images/profiles/".Auth::user()->image):asset("images/male_avatar.svg")}}' class="img-fluid w-100 img-rounded shadow">
-                    </div>
-                    <div class='img-div d-none'>
+                    </div>-->
+                    <div class='img-div'>
                         <input type="file" id="upload" class='d-none' accept="image/png, image/jpeg, image/jpg">
                         <div class='preview'></div>
                     </div>
@@ -185,6 +177,7 @@
 @push('js')
     <script>
         $(document).ready(function(){
+            let width = 300;
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -194,13 +187,13 @@
                 url: '{{Auth::user()->image != ""?asset("images/profiles/".Auth::user()->image):asset("images/male_avatar.svg")}}',
                 enableExif: true,
                 viewport: {
-                    width: 280,
-                    height: 280,
+                    width: width-20,
+                    height: width-20,
                     //type: 'circle'
                 },
                 boundary: {
-                    width: 300,
-                    height: 300
+                    width: width,
+                    height: width
                 }
             });
             $('.btn-upload').click(function(){
@@ -212,10 +205,10 @@
                     $uploadCrop.croppie('bind', {
                         url: e.target.result
                     }).then(function(){
-                        console.log('jQuery bind complete');
-                        $('.modal-body .img-div').removeClass('d-none');
-                        $('.modal-body .img-div-preview').addClass('d-none');
-                        $('.modal-body .img-div-preview').addClass('d-none');
+                        //console.log('jQuery bind complete');
+                        // $('.modal-body .img-div').removeClass('d-none');
+                        // $('.modal-body .img-div-preview').addClass('d-none');
+                        // $('.modal-body .img-div-preview').addClass('d-none');
                         $('#profilePictureModal .btnSave').removeAttr('disabled');
                     });
                 }

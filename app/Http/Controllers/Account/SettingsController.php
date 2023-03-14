@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use App\Models\DocumentType;
 use App\Models\DocumentTypeRole;
+use App\Models\Driver;
+use App\Models\DriverVehicleType;
 use App\Models\VehicleType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -159,5 +162,55 @@ class SettingsController extends HomeController
         }else{
             return response()->json(['error' => 'Unable to update Vehicle Type!']);
         }
+    }
+
+    public function driverVehicleTypes(Request $request){
+        $driver = Driver::where('user_id',Auth::user()->id)->first();
+        if($driver == null){
+            return redirect()->to('home');
+        }
+        return view('account.driver_vehicle_types', @compact('driver'));
+    }
+
+    public function getDriverVehicleTypes(Request $request){
+        return Datatables::of(DriverVehicleType::with(['user', 'driver', 'vehicle_type'])->whereHas('driver', function($query){
+                $query->where('user_id', Auth::user()->id);
+            })->get())
+            ->addIndexColumn()
+            ->editColumn('created_at', function ($row) {
+                return Carbon::parse($row->created_at)->diffForHumans();
+            })->editColumn('approver', function ($row) {
+                return $row->user != null?$row->user->firstname.' '.$row->user->lastname:'-';
+            })->editColumn('status', function ($row) {
+                return $row->status?"<span class='badge bg-primary'>Active</span>":"<span class='badge bg-secondary'>In-Active</span>";
+            })->addColumn('action', function ($row) {
+                $actionBtn = '<div style="white-space: nowrap;" class="text-end">' .
+                                '<span class="d-none id">'.$row->id.'</span>'.
+                                '<span class="d-none name">'.$row->name.'</span>'.
+                                '<span class="d-none description">'.$row->description.'</span>'.
+                                '<span class="d-none status">'.$row->status.'</span>'.
+                                '<button class="btn-edit btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#vehicleTypeModalq"><i class="fas fa-ban"></i> Disable</button> '
+                            . '</div>';
+                return $actionBtn;
+            })->escapeColumns([])
+            ->make(true);
+    }
+    public function addDriverVehicleTypes(Request $request){
+        $validator = Validator::make($request->all(), [
+            "driver_id"=>'required|integer|min:1',
+            "vehicle_types.*"=>'required|min:1|integer'
+        ]);
+        if ($validator->fails()){
+            return response()->json(['errors' => $validator->messages()], 400);
+        }
+        foreach($request->vehicle_types as $vehicle_type){
+            if(DriverVehicleType::where('driver_id', $request->driver_id)->where('vehicle_type_id',$vehicle_type)->count() == 0){
+                $driverVehicleType = new DriverVehicleType;
+                $driverVehicleType->driver_id = $request->driver_id;
+                $driverVehicleType->vehicle_type_id = $vehicle_type;
+                $driverVehicleType->save();
+            }
+        }
+        return response()->json(['success' => 'Vehicle Types added successfully to profile!']);
     }
 }

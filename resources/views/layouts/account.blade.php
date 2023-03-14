@@ -170,8 +170,15 @@
 
                 <li class="nav-item dropdown">
                     <a class="nav-link profile" data-toggle="dropdown" href="#">
-                        <i class="far fa-user-circle"></i> {{ \Auth::user()->firstname }} {{ \Auth::user()->lastname }}
+                        <div class='user-panel d-flex'>
+                            <div class='image'>
+                                <img src='{{Auth::user()->image != ""?asset("images/profiles/".Auth::user()->image):asset("images/male_avatar.svg")}}' class="img-circle elevation-1">
+                            </div>
+                            <div class='info'>
+                                <span class='d-block text-primary'>{{ \Auth::user()->firstname }} {{ \Auth::user()->lastname }}</span>
+                            </div>
                         <!--<span class="badge badge-warning navbar-badge">15</span>-->
+                        </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <span class="dropdown-item dropdown-header">{{ \Auth::user()->firstname }} {{ \Auth::user()->lastname }}</span>
@@ -391,6 +398,12 @@
                                     <a href="{{ url('settings/vehicle_types') }}" class="nav-link {{ Request::is('settings/vehicle_types')?'active':'' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Vehicle Settings</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('settings/driver/vehicle_types') }}" class="nav-link {{ Request::is('settings/driver/vehicle_types')?'active':'' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>My Vehicle Settings</p>
                                     </a>
                                 </li>
                             </ul>

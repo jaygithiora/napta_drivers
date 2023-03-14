@@ -25,6 +25,7 @@ Route::controller(IndexController::class)->group(function(){
     Route::get('find/drivers', 'drivers');
     Route::get('get/drivers', 'getDrivers');
     Route::get('index/search/countries', 'searchCountries');
+    Route::get('index/search/vehicle_types', 'searchVehicleTypes');
 });
     
 Route::get('register/driver', [RegisterDriverController::class, 'index']);
@@ -81,6 +82,10 @@ Route::controller(SettingsController::class)->prefix('settings')->group(function
     Route::get('vehicle_types', 'vehicleTypes');
     Route::get('datatable/vehicle_types', 'getVehicleTypes');
     Route::post('vehicle_type/add', 'addVehicleType');
+
+    Route::get('driver/vehicle_types', 'driverVehicleTypes');
+    Route::get('driver/datatable/vehicle_types', 'getDriverVehicleTypes');
+    Route::post('driver/vehicle_types/add', 'addDriverVehicleTypes');
 });
 Route::controller(ProfileController::class)->prefix('profile')->group(function () {
     Route::get('/','index');
