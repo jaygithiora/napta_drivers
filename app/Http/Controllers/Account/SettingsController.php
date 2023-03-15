@@ -133,7 +133,7 @@ class SettingsController extends HomeController
                                 '<span class="d-none description">'.$row->description.'</span>'.
                                 '<span class="d-none status">'.$row->status.'</span>'.
                                 '<button class="btn-edit btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#vehicleTypeModal"><i class="fas fa-edit"></i> Edit</button> ' . '
-                                 <!--<a href="'.url('/settings/document_types/view/'.$row->id).'" class="delete btn btn-outline-primary btn-sm"><i class="fas fa-eye"></i> View</a>-->'
+                                 <a href="'.url('/settings/vehicle_types/view/'.$row->id).'" class="delete btn btn-outline-primary btn-sm"><i class="fas fa-eye"></i> View</a>'
                             . '</div>';
                 return $actionBtn;
             })->escapeColumns([])
@@ -143,6 +143,7 @@ class SettingsController extends HomeController
         $validator = Validator::make($request->all(), [
             "id"=>'required|integer|min:0',
             "name"=>'required|string|unique:vehicle_types,name,'.$request->id,
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             "description"=>"nullable|string",
             "status"=>"required|min:0|max:1"
         ]);
@@ -158,12 +159,32 @@ class SettingsController extends HomeController
         $vehicleType->status = $request->status;
 
         if ($vehicleType->save()) {
+            if($request->has('image')){
+                if($vehicleType != null){
+                    $imagePath = public_path("images/vehicle_types/".$vehicleType->image);
+
+                    if (file_exists($imagePath)) {
+                        unlink($imagePath);
+                    }
+                }
+                $imageName = time().'.'.$request->image->extension();  
+                $request->image->move(public_path('images/vehicle_types'), $imageName);
+                $vehicleType->image = $imageName;
+                $vehicleType->save();
+            }
             return response()->json(['success' => 'Vehicle Type updated successfully!']);
         }else{
             return response()->json(['error' => 'Unable to update Vehicle Type!']);
         }
     }
 
+    public function viewVehicleType(Request $request){
+        $vehicleType = VehicleType::findOrFail($request->id);
+        if($vehicleType == null){
+            return redirect()->to('settings/vehicle_types');
+        }
+        return view('account/vehicle_type', ['vehicleType'=>$vehicleType]);
+    }
     public function driverVehicleTypes(Request $request){
         $driver = Driver::where('user_id',Auth::user()->id)->first();
         if($driver == null){

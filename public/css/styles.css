@@ -20,8 +20,21 @@
     background-size: cover;
     background-repeat: no-repeat;
 }
+.carousel-item{
+    background: url('../images/blue-brushstrokes-background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+.carousel-caption{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
 .wrapper{
-    background: url('../images/17973908.jpg');
+    background: url('../images/blue-brushstrokes-background.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -229,3 +242,33 @@ a.btn{
     padding-top: 0.3rem;
     padding-bottom: 0.2rem;
 }*/
+
+.user-name{
+    font-weight: 600;
+    font-size: 1.3em;
+}
+.my-btn{
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-50%, -50%);
+}
+.card{
+    background-color: #ffffff75;
+}
+.table {
+    border-collapse:separate; 
+    border-spacing: 0em 0.4em !important;
+}
+.table tr td{
+    background-color: #fff !important;
+}
+.table tr td{
+    border-width: 0;
+}
+
+tr td:first-child { border-top-left-radius: 10px; }
+tr td:last-child { border-top-right-radius: 10px; }
+
+tr td:first-child { border-bottom-left-radius: 10px; }
+tr td:last-child { border-bottom-right-radius: 10px; }

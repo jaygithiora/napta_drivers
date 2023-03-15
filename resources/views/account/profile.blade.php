@@ -8,7 +8,7 @@
                 <div class="col-sm-6">
                     <!--<h1 class="m-0"><i class='far fa-user'></i> Profile</h1>-->
                 </div><!-- /.col -->
-                <div class="col-sm-6">
+                <!--<div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right small">
                         <li class="breadcrumb-item"><a href="{{ url('home') }}"><b>Home</b></a></li>
                         <li class="breadcrumb-item active"><b>Profile</b></li>
@@ -24,45 +24,47 @@
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
             <div class="row">
-                <div class="col-md-3 mb-3">
+                <div class="col-sm-12 mb-3">
                     <div class="bg-white border">
-                        <div class="p-3">
-                            <!--<div class="row d-flex align-items-center">-->
-                                <div class="text-center">
-                                    <img src='{{Auth::user()->image != ""?asset("images/profiles/".Auth::user()->image):asset("images/male_avatar.svg")}}' class="img-fluid w-100 img-rounded shadow my-image1 border">
-                                </div>
-                                <div class='col-6 col-sm-8 col-md-9 col-lg-10'>
-                                    <table>
-                                        <tr>
-                                            <td><h4><b>{{ \Auth::user()->firstname }} {{ \Auth::user()->lastname }}</b> </h4></td>
-                                            <td class='p-1 text-danger'><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i></td>
-                                        </tr>
-                                    </table>
-                                    <div class='row'>
-                                        <div class='col-12 col-sm-6 p-2'>
-                                            <span class='text-muted small'>EMAIL</span><br>
-                                            {{ \Auth::user()->email }}
-                                        </div>
-                                        <div class='col-6 col-sm-3 p-2'>
-                                            <span class='text-muted small'>ROLE</span><br>
-                                            @foreach($user->roles as $role)
-                                                {{$role->name}}
-                                            @endforeach
-                                        </div>
-                                        <div class='col-6 col-sm-3 p-2'>
-                                            <span class='text-muted small'>PHONE</span><br>
-                                            {{ \Auth::user()->phone }}
-                                        </div>
+                        <div class="row p-4">
+                            <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                                <img src='{{Auth::user()->image != ""?asset("images/profiles/".Auth::user()->image):asset("images/male_avatar.svg")}}' class="img-fluid w-100 border">
+                                <button class='bttn-material-circle bttn-sm bttn-primary my-btn' data-bs-toggle="modal" data-bs-target="#profilePictureModal"><i class='fas fa-camera'></i></button>
+                            </div>
+                            <div class='col-6 col-sm-8 col-md-9 col-lg-10'>
+                                <div class='row'>
+                                    <div class='col'>
+                                        <span class='user-name'>{{ \Auth::user()->firstname }} {{ \Auth::user()->lastname }}</span> &nbsp;&nbsp;<span class='text-muted small'><i class='fas fa-map-marker-alt'></i> {{$user->country->name}}</span>
+                                        <br>
+                                        @foreach($user->roles as $role)
+                                            <span class='badge border border-primary badge-pill text-primary small'><b>{{$role->name}}</b></span>
+                                        @endforeach
+                                        <br>
+                                        <span class='small'>RATINGS</span><br>
+                                        <b><span class='big'>8.6</span> <span class='text-primary'><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star-half'></i></span></b>
+                                        <h6 class='text-muted mt-3'>CONTACT INFORMATION</h6>
+                                        <table>
+                                            <tr>
+                                                <td><span class='text-primary'><b><i class='fas fa-envelope'></i> Email:</b></span></td>
+                                                <td class='p-2'><span class='smalld'>{{ \Auth::user()->email }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class='text-primary'><b><i class='fas fa-phone'></i> Phone:</b></span></td>
+                                                <td class='p-2'><span class='smalld'>{{ \Auth::user()->phone }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class='text-primary'><b><i class='fas fa-calendar'></i> D.O.B:</b></span></td>
+                                                <td class='p-2'><span class='smalld'>{{ \Carbon\Carbon::parse(\Auth::user()->dob)->format('d M, Y') }}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class='col text-end'>
+                                        <button class='bttn-material-circle bttn-sm bttn-danger'  data-bs-toggle="modal" data-bs-target="#changePasswordModal"> <i class='fas fa-lock'></i>&nbsp;Change Password</button>&nbsp;
+                                        <button class='bttn-material-circle bttn-sm bttn-primary' data-bs-toggle="modal" data-bs-target="#profileModal" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit Profile"> <i class='fas fa-edit'></i></button>
                                     </div>
 
                                 </div>
                             </div>
-                        </div>
-                        <div class='col-sm-12 text-end'>
-                        <button class='mt-3 btn btn-white shadow  btn-sm' data-bs-toggle="modal" data-bs-target="#profilePictureModal"><i class='fas fa-cloud-upload'></i> Change Profile</button>
-                                
-                            <button class='btn btn-white btn-sm border w-50'  data-bs-toggle="modal" data-bs-target="#changePasswordModal"> <i class='fas fa-edit'></i>&nbsp;Change Password</button>&nbsp;
-                            <button class='btn btn-primary btn-sm w-50' data-bs-toggle="modal" data-bs-target="#profileModal"> <i class='fas fa-edit'></i>&nbsp;Edit Profile</button>
                         </div>
                     </div>
 

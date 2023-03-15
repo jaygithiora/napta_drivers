@@ -83,6 +83,8 @@ Route::controller(SettingsController::class)->prefix('settings')->group(function
     Route::get('datatable/vehicle_types', 'getVehicleTypes');
     Route::post('vehicle_type/add', 'addVehicleType');
 
+    Route::get('vehicle_types/view/{id}', 'viewVehicleType');
+
     Route::get('driver/vehicle_types', 'driverVehicleTypes');
     Route::get('driver/datatable/vehicle_types', 'getDriverVehicleTypes');
     Route::post('driver/vehicle_types/add', 'addDriverVehicleTypes');

@@ -2,11 +2,11 @@
 
 @section('content')
     <!-- Content Header (Page header) -->
-    <div class="content-header">
+    <div class="content-header" >
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                <h1 class="m-0"><i class='fas fa-truck'></i> Vehicle Types</h1>
+                <h1 class="m-0"><i class='fas fa-truck'></i> View Vehicle Type</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -25,31 +25,30 @@
         <!-- Small boxes (Stat box) -->
         <div class="row">
             <div class="col-md-12 mb-3">
-
-                <!-- small box -->
-                <div class="card card-primary card-outline">
+                <div class="card card-primary card-outline h-100">
                     <div class="card-body box-profile">
-                        <div class="text-end">
-                            <button class="btn btn-primary btn-sm btn-launch-modal" data-bs-toggle="modal" data-bs-target="#vehicleTypeModal"><i
-                                    class='fas fa-plus'></i> Add Vehicle Type</button>
-                        </div>
-                        <div class="table-responsive">
-                            <table class='table w-100'>
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>Description</th>
-                                        <th>Status</th>
-                                        <th>Date</th>
-                                        <th class='text-end'>Action</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
+                        <div class='row'>
+                            <div class='col-4 border-right h-100 p-3'>
+                                <img src='{{$vehicleType->image != null?asset("images/vehicle_types/".$vehicleType->image):asset("images/electric_car.svg")}}'  class='img-fluid'/>
+                            </div>
+                            <div class='col-8 h-100 p-3'>
+                                <div class='row'>
+                                    <div class='col'>
+                                        <h5>{{$vehicleType->name}}</h5>
+                                        {!! $vehicleType->status?"<span class='badge bg-primary badge-pill'>Active</span>":"<span class='badge bg-secondary badge-pill'>In-Active</span>"!!}
+                                    </div>
+                                    <div class='col'>
+                                        <div class='text-right'>
+                                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#vehicleTypeModal"><i
+                                            class='fas fa-edit'></i> Edit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                {!!$vehicleType->description!!}
+                            </div>
                     </div>
                 </div>
-
             </div>
 
             <!-- ./col -->
@@ -70,16 +69,16 @@
             <div class="modal-body">
                 <form method="POST" action="{{ url('settings/vehicle_type/add') }}" class="row" enctype="multipart/form-data">
                     @csrf
-                    <input type='hidden' name='id' value='0'>
+                    <input type='hidden' name='id' value='{{$vehicleType->id}}'>
                     <div class='form-group'>
                         <label>Name</label>
                         <input type='text' placeholder="Name" name="name" class='form-control' autofocus
-                            required />
+                            required value='{{$vehicleType->name}}'/>
                     </div>
                     <div class='form-group'>
                         <label>Description</label>
                         <textarea placeholder="Description" name="description" class='form-control'
-                            required ></textarea>
+                            required >{{$vehicleType->description}}</textarea>
                     </div>
                     <div class='form-group'>
                         <label>Banner</label>
@@ -89,8 +88,8 @@
                         <label>Status</label>
                         <select name="status" class='form-control'>
                             <option disabled>Status</option>
-                            <option value='1'>Active</option>
-                            <option value='0'>In-Active</option>
+                            <option value='1' {{$vehicleType->status?'selected':''}}>Active</option>
+                            <option value='0' {{$vehicleType->status == 0?'selected':''}}>In-Active</option>
                         </select>
                     </div>
                     <div class='alert feedback border d-none'>
@@ -111,25 +110,7 @@
 @push('js')
 <script>
     $(document).ready(function () {
-        var table = $('.table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{{ url('settings/datatable/vehicle_types') }}",
-            dom: 'lBtrip', //'lfBtrip'
-            columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                { data: 'name', name: 'name' },
-                { data: 'description', name: 'description' },
-                { data: 'status', name: 'status' },
-                { data: 'created_at', name: 'created_at' },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: true,
-                    searchable: true
-                },
-            ]
-        });
+        
         $('.btn-launch-modal').click(function(){
             $('#vehicleTypeModal .modal-title span').text("New Vehicle type");
             $('#vehicleTypeModal input[name=id]').val(0);

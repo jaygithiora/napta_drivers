@@ -13,7 +13,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=montserrat:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
     <!--bootstrap-->
     <link rel="stylesheet" href="{{ asset('css/app.css')}}">
@@ -41,6 +41,8 @@
     <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
     <!--croppie-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
+    <!--bttnn style-->
+    <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/bttn.css/0.2.4/bttn.css">
 
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 </head>
@@ -395,13 +397,13 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('settings/vehicle_types') }}" class="nav-link {{ Request::is('settings/vehicle_types')?'active':'' }}">
+                                    <a href="{{ url('settings/vehicle_types') }}" class="nav-link {{ Request::is('settings/vehicle_types') || Request::is('settings/vehicle_types/*')?'active':'' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Vehicle Settings</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('settings/driver/vehicle_types') }}" class="nav-link {{ Request::is('settings/driver/vehicle_types')?'active':'' }}">
+                                    <a href="{{ url('settings/driver/vehicle_types') }}" class="nav-link {{ Request::is('settings/driver/vehicle_types') ?'active':'' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>My Vehicle Settings</p>
                                     </a>

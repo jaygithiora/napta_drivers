@@ -1,10 +1,48 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid main">
+<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="carousel-caption d-none d-md-block">
+                <div class="row d-flex align-items-center dark">
+                    <div class="col-sm-12">
+                        <h5>First slide label</h5>
+                        <p>Some representative placeholder content for the first slide.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <!--<img src="{{asset('images/electric_car.svg')}}" class="d-block w-100" alt="...">-->
+            <div class="carousel-caption d-none d-md-block d-flex align-items-center">
+                <h5>First slide label</h5>
+                <p>Some representative placeholder content for the first slide.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <!--<img src="{{asset('images/male_avatar.svg')}}" class="d-block w-100" alt="...">-->
+            <div class="carousel-caption d-none d-md-block d-flex align-items-center">
+                <h5>First slide label</h5>
+                <p>Some representative placeholder content for the first slide.</p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<div class="container-fluid">
     <div class="row d-flex align-items-center dark">
         <div class="col-sm-12">
-            <div class="container">
+            
+            <!--<div class="container">
                 <div class="col-md-6 pt-5 pb-5">
                     <h3>NAPTA <span class='text-warning'>Professional</span> Drivers</h3>
                     <p>Napta Professional Drivers is a subsidiary of the National Public Transport Alliance –Napta, 
@@ -13,7 +51,7 @@
                     <a href='{{url("register?role=user")}}' class='btn btn-warning'><i class='fas fa-search'></i> Find a Driver</a>&nbsp;
                     <a href='{{url("register?role=driver")}}' class='btn btn-white'><i class='fas fa-user-plus'></i> Join as Driver</a>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
 </div>
