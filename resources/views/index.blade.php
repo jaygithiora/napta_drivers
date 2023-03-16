@@ -3,30 +3,35 @@
 @section('content')
 <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
-        <div class="carousel-item active">
-            <div class="carousel-caption d-none d-md-block">
-                <div class="row d-flex align-items-center dark">
-                    <div class="col-sm-12">
-                        <h5>First slide label</h5>
-                        <p>Some representative placeholder content for the first slide.</p>
+    @php
+        $count = 0;
+    @endphp
+    @foreach($vehicle_types as $vehicle_type)
+        @php 
+            $bg = $vehicle_type->image != ""?asset("images/vehicle_types/".$vehicle_type->image):asset("images/gradient-blue.jpg");
+        @endphp
+        <div class="carousel-item {{$count == 0?'active':''}}" style='background-image: url("{{$bg}}")'>
+            <!--<div class="carousel-caption d-none d-md-block">-->
+                
+                <div class="row d-flex align-items-center carousel-section">
+                    <div class='col-sm-12'>
+                        <div class='container'>
+                            <div class='row'>
+                                <div class="col-sm-12">
+                                    <h1>{{$vehicle_type->name}}</h1>
+                                    <p>{{$vehicle_type->description}}</p>
+                                    <a href='#' class='btn btn-white'>Explore</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <!--</div>-->
         </div>
-        <div class="carousel-item">
-            <!--<img src="{{asset('images/electric_car.svg')}}" class="d-block w-100" alt="...">-->
-            <div class="carousel-caption d-none d-md-block d-flex align-items-center">
-                <h5>First slide label</h5>
-                <p>Some representative placeholder content for the first slide.</p>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <!--<img src="{{asset('images/male_avatar.svg')}}" class="d-block w-100" alt="...">-->
-            <div class="carousel-caption d-none d-md-block d-flex align-items-center">
-                <h5>First slide label</h5>
-                <p>Some representative placeholder content for the first slide.</p>
-            </div>
-        </div>
+        @php
+            $count++;
+        @endphp
+    @endforeach
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -37,12 +42,12 @@
         <span class="visually-hidden">Next</span>
     </button>
 </div>
-
+<!--
 <div class="container-fluid">
     <div class="row d-flex align-items-center dark">
         <div class="col-sm-12">
             
-            <!--<div class="container">
+            <div class="container">
                 <div class="col-md-6 pt-5 pb-5">
                     <h3>NAPTA <span class='text-warning'>Professional</span> Drivers</h3>
                     <p>Napta Professional Drivers is a subsidiary of the National Public Transport Alliance –Napta, 
@@ -51,27 +56,31 @@
                     <a href='{{url("register?role=user")}}' class='btn btn-warning'><i class='fas fa-search'></i> Find a Driver</a>&nbsp;
                     <a href='{{url("register?role=driver")}}' class='btn btn-white'><i class='fas fa-user-plus'></i> Join as Driver</a>
                 </div>
-            </div>-->
+            </div>
         </div>
     </div>
 </div>
+-->
 <div class='container'>
     <div class='row pt-5 pb-5'>
         <div class='col-sm-12'>
             <h4><i class='fas fa-truck'></i> &nbsp;Vehicle Categories</h4>
         </div>
         @foreach($vehicle_types as $vehicle_type)
+            @php 
+                $bg = $vehicle_type->image != ""?asset("images/vehicle_types/".$vehicle_type->image):asset("images/gradient-blue.jpg");
+            @endphp
             <div class='col-sm-3 mt-3'>
                 <div class='card border-0 shadow-sm h-100'>
+                    <img src='{{$bg}}' class='card-img-top'>
                     <div class='card-body'>
                         <h5><i class='fas fa-circle text-primary'></i> {{$vehicle_type->name}}</h5>
-                        <span class='text-muted'><i class='fas fa-check-circle text-green'></i> 123 drivers</span>
+                        <!--<span class='text-muted'><i class='fas fa-check-circle text-green'></i> 123 drivers</span>-->
                         <p>{{$vehicle_type->description}}</p>
                     </div>
-                    <!--
                     <div class='card-footer bg-white border-0 text-center'>
                         <button class='btn btn-primary btn-sm w-100'><i class='fas fa-search'></i> Find Drivers</button>
-                    </div>-->
+                    </div>
                 </div>
             </div>
         @endforeach

@@ -20,19 +20,21 @@
     background-size: cover;
     background-repeat: no-repeat;
 }
+
 .carousel-item{
     background: url('../images/blue-brushstrokes-background.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
+/*
 .carousel-caption{
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-}
+}*/
 .wrapper{
     background: url('../images/blue-brushstrokes-background.jpg');
     background-size: cover;
@@ -58,6 +60,22 @@ body {
     min-height: 100vh;
     background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1));
     color: white;
+}
+.carousel-section{
+    min-height: 80vh;
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1));
+    color: white;
+}
+.carousel-item h1{
+    font-weight: 300;
+    text-transform: uppercase;
+}
+.carousel-item p{
+    font-weight: 300;
+    font-size: 1.3em;
+}
+.carousel-section .btn{
+    border-radius: 0px;
 }
 
 .dark h3 {
