@@ -290,3 +290,13 @@ tr td:last-child { border-top-right-radius: 10px; }
 
 tr td:first-child { border-bottom-left-radius: 10px; }
 tr td:last-child { border-bottom-right-radius: 10px; }
+
+.my-div{
+    height: 40px;
+    width: 40px;
+    background-color: #ddd;
+    border-radius: 50%;
+}
+.btn-pill{
+    border-radius: 100px;
+}

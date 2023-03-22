@@ -26,41 +26,139 @@
             <div class="row">
                 <div class="col-sm-12 mb-3">
                     <div class="bg-white border">
-                        <div class="row p-4">
-                            <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                        <div class="row p-4 d-flex align-items-center">
+                            <div class="col-sm-6 col-md-4 col-lg-3 text-center">
                                 <img src='{{Auth::user()->image != ""?asset("images/profiles/".Auth::user()->image):asset("images/male_avatar.svg")}}' class="img-fluid w-100 border">
                                 <button class='bttn-material-circle bttn-sm bttn-primary my-btn' data-bs-toggle="modal" data-bs-target="#profilePictureModal"><i class='fas fa-camera'></i></button>
                             </div>
-                            <div class='col-6 col-sm-8 col-md-9 col-lg-10'>
+                            <div class='col-sm-6 col-md-8 col-lg-9'>
                                 <div class='row'>
-                                    <div class='col'>
-                                        <span class='user-name'>{{ \Auth::user()->firstname }} {{ \Auth::user()->lastname }}</span> &nbsp;&nbsp;<span class='text-muted small'><i class='fas fa-map-marker-alt'></i> {{$user->country->name}}</span>
-                                        <br>
-                                        @foreach($user->roles as $role)
-                                            <span class='badge border border-primary badge-pill text-primary small'><b>{{$role->name}}</b></span>
-                                        @endforeach
-                                        <br>
-                                        <span class='small'>RATINGS</span><br>
-                                        <b><span class='big'>8.6</span> <span class='text-primary'><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star-half'></i></span></b>
-                                        <h6 class='text-muted mt-3'>CONTACT INFORMATION</h6>
+                                    <div class='col-12 col-md-6 col-lg-4'>
                                         <table>
                                             <tr>
-                                                <td><span class='text-primary'><b><i class='fas fa-envelope'></i> Email:</b></span></td>
-                                                <td class='p-2'><span class='smalld'>{{ \Auth::user()->email }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class='text-primary'><b><i class='fas fa-phone'></i> Phone:</b></span></td>
-                                                <td class='p-2'><span class='smalld'>{{ \Auth::user()->phone }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class='text-primary'><b><i class='fas fa-calendar'></i> D.O.B:</b></span></td>
-                                                <td class='p-2'><span class='smalld'>{{ \Carbon\Carbon::parse(\Auth::user()->dob)->format('d M, Y') }}</td>
+                                                <td class='p-2'>
+                                                    <div class='my-div d-flex align-items-center justify-content-center'>
+                                                        <i class='fas fa-user'></i>
+                                                    </div>
+                                                </td>
+                                                <td class='p-2'>
+                                                    <b>Full Name</b><br>
+                                                    {{$user->firstname}} {{$user->lastname}}
+                                                </td>
                                             </tr>
                                         </table>
                                     </div>
-                                    <div class='col text-end'>
-                                        <button class='bttn-material-circle bttn-sm bttn-danger'  data-bs-toggle="modal" data-bs-target="#changePasswordModal"> <i class='fas fa-lock'></i>&nbsp;Change Password</button>&nbsp;
-                                        <button class='bttn-material-circle bttn-sm bttn-primary' data-bs-toggle="modal" data-bs-target="#profileModal" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit Profile"> <i class='fas fa-edit'></i></button>
+                                    <div class='col-12 col-md-6 col-lg-4'>
+                                        <table>
+                                            <tr>
+                                                <td class='p-2'>
+                                                    <div class='my-div d-flex align-items-center justify-content-center'>
+                                                        <i class='fas fa-globe'></i>
+                                                    </div>
+                                                </td>
+                                                <td class='p-2'>
+                                                    <b>Country</b><br>
+                                                    {{$user->country->name}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class='col-12 col-sm-6 col-md-4 col-lg-3'>
+                                        <table>
+                                            <tr>
+                                                <td class='p-2'>
+                                                    <div class='my-div d-flex align-items-center justify-content-center'>
+                                                        <i class='fas fa-envelope'></i>
+                                                    </div>
+                                                </td>
+                                                <td class='p-2'>
+                                                    <b>Email</b><br>
+                                                    {{$user->email}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class='col-12 col-sm-6 col-md-4 col-lg-3'>
+                                        <table>
+                                            <tr>
+                                                <td class='p-2'>
+                                                    <div class='my-div d-flex align-items-center justify-content-center'>
+                                                        <i class='fas fa-phone'></i>
+                                                    </div>
+                                                </td>
+                                                <td class='p-2'>
+                                                    <b>Phone</b><br>
+                                                    {{$user->phone}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class='col-12 col-sm-6 col-md-4 col-lg-3'>
+                                        <table>
+                                            <tr>
+                                                <td class='p-2'>
+                                                    <div class='my-div d-flex align-items-center justify-content-center'>
+                                                        <i class='fas fa-user-lock'></i>
+                                                    </div>
+                                                </td>
+                                                <td class='p-2'>
+                                                    <b>Role</b><br>
+                                                    @foreach($user->roles as $role)
+                                                        <span class='badge border border-primary badge-pill text-primary small'><b>{{$role->name}}</b></span>
+                                                    @endforeach
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class='col-12 col-sm-6 col-md-4 col-lg-3'>
+                                        <table>
+                                            <tr>
+                                                <td class='p-2'>
+                                                    <div class='my-div d-flex align-items-center justify-content-center'>
+                                                        <i class='fas fa-calendar-alt'></i>
+                                                    </div>
+                                                </td>
+                                                <td class='p-2'>
+                                                    <b>Date of Birth</b><br>
+                                                    {{ \Carbon\Carbon::parse(\Auth::user()->dob)->format('d M, Y') }}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class='col-12 col-sm-6 col-md-4 col-lg-3'>
+                                        <table>
+                                            <tr>
+                                                <td class='p-2'>
+                                                    <div class='my-div d-flex align-items-center justify-content-center'>
+                                                        <i class='fas fa-calendar'></i>
+                                                    </div>
+                                                </td>
+                                                <td class='p-2'>
+                                                    <b>Date Joined</b><br>
+                                                    {{ \Carbon\Carbon::parse(\Auth::user()->created_at)->diffForHumans() }}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class='col-12 col-sm-6 col-md-4 col-lg-3'>
+                                        <table>
+                                            <tr>
+                                                <td class='p-2'>
+                                                    <div class='my-div d-flex align-items-center justify-content-center'>
+                                                        <i class='fas fa-venus-mars'></i>
+                                                    </div>
+                                                </td>
+                                                <td class='p-2'>
+                                                    <b>Gender</b><br>
+                                                    {{ \Carbon\Carbon::parse(\Auth::user()->created_at)->diffForHumans() }}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                        
+                                    <div class='col-12 text-end'>
+                                        <button class='btn btn-outline-primary btn-pill btn-sm'  data-bs-toggle="modal" data-bs-target="#changePasswordModal"> <i class='fas fa-lock'></i>&nbsp;Change Password</button>&nbsp;
+                                        <button class='btn btn-primary btn-pill btn-sm' data-bs-toggle="modal" data-bs-target="#profileModal" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit Profile"> <i class='fas fa-edit'></i>&nbsp;Edit Profile</button>
                                     </div>
 
                                 </div>
