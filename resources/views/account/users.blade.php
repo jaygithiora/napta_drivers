@@ -35,7 +35,7 @@
                         </div>
                         <div class="table-responsive">
                             <table class='table w-100'>
-                                <thead>
+                                <thead class='d-none'>
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>

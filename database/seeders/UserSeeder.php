@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Http\Controllers\Shared\Helper;
 use App\Models\Country;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Foundation\Auth\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -18,17 +19,24 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $role = Role::where('name', 'Super Admin')->first();
-        $country = Country::where('name', 'Kenya')->first();
-        if($role != null && $country != null){
-            $user = new User;
-            $user->firstname = "James";
-            $user->lastname = "Githiora";
-            $user->email = "jaygithiora@gmail.com";
-            $user->phone = "0791162496";
-            $user->password = Hash::make("12345");
-            $user->country_id = $country->id;
-            $user->save();
+        $table = 'users';
+        $file = base_path("database/data/$table" . ".csv");
+        $records = Helper::import_CSV($file);
+
+        foreach ($records as $key => $record) {
+           $user = User::updateOrCreate(
+                ['email' => $record['email']],  // columns to search for
+                [   // data to update or insert
+                    'firstname'=> $record['firstname'],
+                    'lastname'=> $record['lastname'],
+                    'email' => $record['email'],
+                    'phone' => $record['phone'],
+                    'password' => $record['password'],
+                    'country_id' => $record['country_id'],
+                ]
+            );
+            $role = Role::where('name', 'Super Admin')->first();
+            $user->assignRole($role);
         }
     }
 }

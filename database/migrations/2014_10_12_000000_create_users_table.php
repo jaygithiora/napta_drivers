@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('image');
-            $table->date('dob');
+            $table->string('image')->nullable();
+            $table->date('dob')->nullable();
             $table->foreignIdFor(Country::class);
             $table->rememberToken();
             $table->boolean('status')->default(true);

@@ -1,176 +1,266 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-    <div class="carousel-inner">
-    @php
-        $count = 0;
-    @endphp
-    @foreach($vehicle_types as $vehicle_type)
-        @php 
-            $bg = $vehicle_type->image != ""?asset("images/vehicle_types/".$vehicle_type->image):asset("images/gradient-blue.jpg");
-        @endphp
-        <div class="carousel-item {{$count == 0?'active':''}}" style='background-image: url("{{$bg}}")'>
-            <!--<div class="carousel-caption d-none d-md-block">-->
-                
-                <div class="row d-flex align-items-center carousel-section">
-                    <div class='col-sm-12'>
-                        <div class='container'>
-                            <div class='row'>
-                                <div class="col-sm-12">
-                                    <h1>{{$vehicle_type->name}}</h1>
-                                    <p>{{$vehicle_type->description}}</p>
-                                    <a href='#' class='btn btn-white'>Explore</a>
-                                </div>
+    <div class="container-fluid bg">
+        <div class="row d-flex align-items-center dark">
+            <div class="col-sm-12  pt-5 pb-5">
+
+                <div class="container">
+                    <div class='row d-flex align-items-cente'>
+                        <div class="col-md-6">
+                            <h1 class='big'>NAPTA <span class='text-warning'>Professional</span> Drivers</h1>
+                            <h2 class='mb-3 mt-3'>Improving public transport through
+                                <span class='no-bold text-warning'>research</span>, <span
+                                    class='no-bold text-warning'>innovation</span>,
+                                <span class='no-bold text-warning'>training</span>, <span
+                                    class='no-bold text-warning'>advocacy</span>
+                                and <span class='no-bold text-warning'>investments</span>.
+                            </h2>
+                            <div class='pt-3'>
+                                <a href='{{ url('register?role=user') }}' class='btn btn-warning m-2'><i
+                                        class='fas fa-search'></i>
+                                    Find a Driver</a>&nbsp;
+                                <a href='{{ url('register?role=driver') }}' class='btn btn-white m-2'><i
+                                        class='fas fa-user-plus'></i> Join as Driver</a>
                             </div>
                         </div>
-                    </div>
-                </div>
-            <!--</div>-->
-        </div>
-        @php
-            $count++;
-        @endphp
-    @endforeach
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div>
-<!--
-<div class="container-fluid">
-    <div class="row d-flex align-items-center dark">
-        <div class="col-sm-12">
-            
-            <div class="container">
-                <div class="col-md-6 pt-5 pb-5">
-                    <h3>NAPTA <span class='text-warning'>Professional</span> Drivers</h3>
-                    <p>Napta Professional Drivers is a subsidiary of the National Public Transport Alliance –Napta, 
-                        a non-profit organization working to improve public transport through research, innovation, 
-                        training, advocacy and investments.</p>
-                    <a href='{{url("register?role=user")}}' class='btn btn-warning'><i class='fas fa-search'></i> Find a Driver</a>&nbsp;
-                    <a href='{{url("register?role=driver")}}' class='btn btn-white'><i class='fas fa-user-plus'></i> Join as Driver</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
--->
-<div class='container'>
-    <div class='row pt-5 pb-5'>
-        <div class='col-sm-12'>
-            <h4><i class='fas fa-truck'></i> &nbsp;Vehicle Categories</h4>
-        </div>
-        @foreach($vehicle_types as $vehicle_type)
-            @php 
-                $bg = $vehicle_type->image != ""?asset("images/vehicle_types/".$vehicle_type->image):asset("images/gradient-blue.jpg");
-            @endphp
-            <div class='col-sm-3 mt-3'>
-                <div class='card border-0 shadow-sm h-100'>
-                    <img src='{{$bg}}' class='card-img-top'>
-                    <div class='card-body'>
-                        <h5><i class='fas fa-circle text-primary'></i> {{$vehicle_type->name}}</h5>
-                        <!--<span class='text-muted'><i class='fas fa-check-circle text-green'></i> 123 drivers</span>-->
-                        <p>{{$vehicle_type->description}}</p>
-                    </div>
-                    <div class='card-footer bg-white border-0 text-center'>
-                        <button class='btn btn-primary btn-sm w-100'><i class='fas fa-search'></i> Find Drivers</button>
+
+                        <div class="d-none d-md-block col-md-6">
+                            <img src='{{ asset('images/order_ride.svg') }}' class='img-fluid' />
+                        </div>
                     </div>
                 </div>
             </div>
-        @endforeach
+        </div>
     </div>
-</div>
-<div class='container-fluid bg-white'>
+
     <div class='container'>
         <div class='row pt-5 pb-5'>
-            <div class='col-sm-12'>
-                <h4><i class='fas fa-user'></i> &nbsp;Our Top Drivers</h4>
+            <div class="col-md-6 p-5">
+                <img src='{{ asset('images/order_ride.svg') }}' class='img-fluid' />
             </div>
-            @foreach($drivers as $driver)
-                <div class='col-sm-3 mt-3'>
-                    <div class='card border-0 shadow-sm h-100'>
-                        <div class='card-body'>
-                            <div class='row d-flex align-items-center'>
-                                <div class='col-4'>
-                                    <img src='{{$driver->user->image != ""?asset("images/profiles/".$driver->user->image):asset("images/male_avatar.svg")}}' class='img-fluid rounded shadow-sm bg-white'/>
-                                </div>
-                                <div class='col-8'>
-                                    <span style='font-size:1.3em;'><b><!--<i class='fas fa-circle text-primary small'></i>--> {{$driver->user->firstname}} {{$driver->user->lastname}}</b></span><br>
-                                    <!--<span class='text-muted'><i class='fas fa-check-circle text-green'></i> 123 Orders</span><br>-->
-                                    <i class='fas fa-star text-danger'></i><i class='fas fa-star text-danger'></i><i class='fas fa-star text-danger'></i>
-                            <i class='fas fa-star text-danger'></i><i class='fas fa-star-half text-danger'></i>
-                                </div>
-                            </div>
-                            <!--
-                            @foreach($vehicle_types as $vehicle_type)
-                                <span class='badge bg-primary'>{{$vehicle_type->name}}</span>
-                            @endforeach<br>-->
-                        </div>
-                        <!--
-                        <div class='card-footer bg-white border-0 text-center'>
-                            <button class='btn btn-warning btn-sm w-100'><i class='fas fa-search'></i> Find Drivers</button>
-                        </div>-->
-                    </div>
-                </div>
-            @endforeach
+            <div class='col-md-6 p-5'>
+                <h4><i class='fas fa-info-circle'></i> &nbsp;About Napta Drivers</h4>
+                <p>
+                    Napta Drivers Limited (NDL) is a subsidiary of the National Public Transport
+                    Alliance –Napta, a non-profit organization working to improve public transport through
+                    research, innovation, training, advocacy and investments. Napta was incorporated in
+                    2021 under the Companies Act 2015 Laws of Kenya as a Company limited by
+                    guarantee.</p>
+                <p>The objective of the Napta Drivers Limited is to Recruit, Train and Deploy
+                    professional drivers to the transport sector.</p>
+                <p>We provide you with an experienced, reliable, and respected partner in your
+                    transportation business. We provide support to both our drivers and customers. Our
+                    culture is focused on safety, efficiency and productivity, which is exemplified by our
+                    record and a client satisfaction.
+                </p>
+            </div>
         </div>
     </div>
-</div>
-<div class='container-fluid'>
-    <div class='container'>
+
+    <div class='container-fluid bg-warning'>
+        <div class='container'>
+            <div class='row pt-5 pb-5 text-white'>
+                <div class="col-sm-4 text-center">
+                    <span class='big'>Our Clients</span>
+                    <div class="counter" id="counter1" data-target="133">0</div>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <span class='big'>Our Drivers</span>
+                    <div class="counter" id="counter2" data-target="140">0</div>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <span class='big'>Our Partners</span>
+                    <div class="counter" id="counter3" data-target="155">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='container-fluid bg-white'>
         <div class='row pt-5 pb-5'>
-            <div class='col-sm-12'>
-                <h4><i class='fas fa-comments'></i> &nbsp;What our customers had to say</h4>
-            </div>
-            @foreach($drivers as $driver)
-                <div class='col-sm-3 mt-3'>
-                    <div class='card border-0 shadow-sm h-100'>
-                    <img src='{{$driver->user->image != ""?asset("images/profiles/".$driver->user->image):asset("images/male_avatar.svg")}}'  class='card-img-top '/>
-                        <div class='card-body'>
-                            <h5><i class='fas fa-circle text-primary small'></i> {{$driver->user->firstname}} {{$driver->user->lastname}}</h5>
-                            <span class='text-muted'><i class='fas fa-check-circle text-green'></i> 123 Orders</span><br>
-                            @foreach($vehicle_types as $vehicle_type)
-                                <span class='badge bg-primary'>{{$vehicle_type->name}}</span>
-                            @endforeach<br>
-                            <i class='fas fa-star text-danger'></i><i class='fas fa-star text-danger'></i><i class='fas fa-star text-danger'></i>
-                            <i class='fas fa-star text-danger'></i><i class='fas fa-star-half text-danger'></i>
+            <div class="col-md-12">
+                <h4 class='pt-4 pb-4 text-center'>DRIVE WITH US</h4>
+                <div class='container alert bg-white shadow-lg'>
+                    <div class='row'>
+                        <div class='col-sm-6'>
+                            <img src='{{ asset('images/updated_resume.svg') }}' class='card-img-top' />
                         </div>
-                        <!--
-                        <div class='card-footer bg-white border-0 text-center'>
-                            <button class='btn btn-warning btn-sm w-100'><i class='fas fa-search'></i> Find Drivers</button>
-                        </div>-->
+                        <div class='col-sm-6 p-3'>
+                            <!--<div class='d-flex justify-content-center mb-3'>
+                                            <div
+                                                class='myCircleDiv bg-warning text-white d-flex align-items-center justify-content-center'>
+                                                <i class='fas fa-briefcase fa-2x'></i>
+                                            </div>
+                                        </div>-->
+                            <h4>Find Driving Jobs</h4>
+                            <p>NDL can help you find the best driving job. From truck driving to executive chauffer,
+                                we
+                                can link you up with our clients who need qualified, reliable and professional
+                                drivers.
+                                Sign up today.</p>
+                        </div>
                     </div>
                 </div>
-            @endforeach
+
+            </div>
+        </div>
+
+        <div class='container alert bg-white shadow-lg'>
+            <div class='row'>
+                <div class='col-sm-6'>
+                    <img src='{{ asset('images/city_driver.svg') }}' class='img-fluid' />
+                </div>
+                <div class='col-sm-6 p-3'>
+                    <h4>Driving With NDL</h4>
+                    <p>You’ve got experience. While you’re concentrating on the road, are you thinking about
+                        what’s next? NDL can help. NDL has a team of dedicated, responsive recruiters who
+                        will work with you. With support every step of the way, NDL makes it easy for you to
+                        find
+                        your perfect next position fast.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class='container alert bg-white shadow-lg'>
+            <div class='row'>
+                <div class='col-sm-6'>
+                    <img src='{{ asset('images/done_checking.svg') }}' class='img-fluid' />
+                </div>
+                <div class='col-sm-6 p-3'>
+                    <h4>Driver Appreciation - Respect the Drive Program</h4>
+                    <p>We’re excited to announce our program built just for our drivers called Respect the
+                        Drive Program. This exciting initiative is to celebrate our amazing drivers. It’s
+                        all about
+                        you and honoring the work you do day in and day out.
+                        At NDL, our drivers are like our family and the focus of everything we do. You are
+                        the
+                        heart of the road and our lifeline to keep our country moving. We want to honor the
+                        dedication that you put behind the wheel every day by Respecting the Drive.</p>
+                </div>
+            </div>
+        </div>
+        <div class='col-sm-6'>
+            <div class='card  m-3'>
+                <div class='card-body'>
+                    <div class='d-flex justify-content-center mb-3'>
+                        <div class='myCircleDiv bg-warning text-white d-flex align-items-center justify-content-center'>
+                            <i class='fas fa-briefcase fa-2x'></i>
+                        </div>
+                    </div>
+                    <h4>Continuous Professional Development &amp; Training</h4>
+                    <p>NDL Drivers undergo a rigorous Continuous Professional Development &amp; Training
+                        program. The training is based on the EAC Standard Curriculum for Commercial
+                        (Freight &amp; Passenger) Curriculum. The program takes 21 days to complete. The
+                        instructors are highly qualified individuals certified by the National Industrial
+                        Training
+                        Authority (NITA). Upon successful completion, they are awarded a CERTIFICATE OF
+                        COMPETENCE. The Certificate is recognized by NITA and NTSA.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <div class='container-fluid'>
+        <div class='row'>
+            <div class='col-sm-12'>
+
+                <div class='container'>
+                    <div class='row pt-5 pb-5 d-flex align-items-center'>
+                        <div class='col-sm-6 p-5'>
+                            <h4><i class='fas fa-mobile'></i> &nbsp;Meet the NDL Driver Mobile App</h4>
+                            <p>Stay connected and engaged with our new mobile app for you – our drivers.
+                                We want to
+                                ensure you stay connected and engaged as an NDL driver. Our app allows
+                                you to view
+                                time, paychecks, access safety and training information, refer other
+                                great drivers and
+                                provide regular feedback. You can also track hours towards your Respect
+                                the Drive
+                                milestones directly in the app. Like most apps, we’ll continue to add
+                                new functionality as
+                                requested by drivers!</p>
+                            <button class='btn btn-dark btn-round m-3'>
+                                <i class='fab fa-google-play'></i> Google
+                                Play
+                            </button>
+                            <button class='btn btn-dark btn-round m-3'>
+                                <i class='fab fa-app-store'></i> Apple Store
+                            </button>
+                        </div>
+                        <div class='col-sm-6 p-3'>
+                            <img src='{{ asset('images/mobile.svg') }}' class='img-fluid' />
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
-</div>
 @endsection
 @push('js')
-<script>
-    $(document).ready(function(){
-        var header = $(".navbar");
-        $(window).scroll(function() {
-            var scroll = $(window).scrollTop();
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const counters = document.querySelectorAll('.counter');
 
-            if (scroll >= 30) {
-                header.addClass('bg-light');
-                header.removeClass('navbar-dark');
-                header.addClass('navbar-light');
-                header.addClass('shadow-sm');
-            } else {
-                header.removeClass('bg-light');
-                header.addClass('navbar-dark');
-                header.removeClass('navbar-light');
-                header.removeClass('shadow-sm');
+            function isElementInViewport(el) {
+                const rect = el.getBoundingClientRect();
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
             }
+
+            function animateCounters() {
+                counters.forEach(counter => {
+                    if (isElementInViewport(counter) && counter.innerHTML === "0") {
+                        const targetCount = parseInt(counter.dataset.target, 10);
+                        let currentCount = 0;
+
+                        const counterInterval = setInterval(() => {
+                            counter.innerHTML = currentCount++;
+                            if (currentCount > targetCount) {
+                                clearInterval(counterInterval);
+                            }
+                        }, 10);
+
+                        counter.style.opacity = 1;
+                        counter.style.transform = 'translateY(0)';
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', animateCounters);
+            animateCounters(); // Initial check in case counters are already in view on page load
         });
-    });
-</script>
+        $(document).ready(function() {
+
+            /*$(document).ready(function() {
+                var header = $(".navbar");
+                $(window).scroll(function() {
+                    var scroll = $(window).scrollTop();
+
+                    if (scroll >= 30) {
+                        header.addClass('bg-light');
+                        header.removeClass('navbar-dark');
+                        header.addClass('navbar-light');
+                        header.addClass('shadow-sm');
+                    } else {
+                        header.removeClass('bg-light');
+                        header.addClass('navbar-dark');
+                        header.removeClass('navbar-light');
+                        header.removeClass('shadow-sm');
+                    }
+                });*/
+        });
+    </script>
 @endpush
